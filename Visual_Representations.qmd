@@ -1,0 +1,64 @@
+---
+title: "QuantileRegression"
+format: html
+editor: visual
+---
+
+## Quantile Regression
+
+Visualization of quantile regression data
+
+```{r, Imports, echo=FALSE}
+library(sjPlot)
+library(haven)
+library(tidyverse)
+library(equatiomatic)
+library(fastDummies)
+library(pscl)
+
+library(gsheet)
+library(brant)
+library(MASS)
+library(lmtest)
+library(reshape2)
+
+library(nnet)
+library(AER)
+library(boot)
+
+library(asaur)
+```
+
+```{r, 'Getting Data'}
+df <- data2 <- read.csv("prostateSurvival.csv") |>
+  na.omit()
+
+head(df)
+
+df |> count(status)
+df |> count(stage)
+df |> count(ageGroup)
+df |> count(grade)
+
+df$grade <- as.factor(df$grade)
+df |> count(grade)
+df <- dummy_cols(df, select_columns = "stage")
+head(df)
+df <- dummy_cols(df, select_columns = "ageGroup")
+head(df)
+```
+
+```{r, 'Visualizing'}
+df |> ggplot(aes(x = survTime)) +
+  geom_bar() +
+  xlab("Survial time") +
+  theme_bw()
+
+df |> ggplot(aes(x = survTime, y = as.factor(ageGroup), color = as.factor(status), shape = as.factor(stage))) +
+  geom_point(size = 0.9) +
+  ylab("Age group (years)") +
+  xlab("Survial time") +
+  labs(color = "Status", shape = "Stage") +
+  theme_bw()
+```
+
