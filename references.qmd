@@ -1,4 +1,7 @@
 # References {.unnumbered}
 
+[1] R. Koenker and G. Bassett Jr, "REGRESSION QUANTILES," Econometrica (Pre-1986), vol. 46, (1), pp. 33, 1978. Available: https://login.lp.hscl.ufl.edu/login?url=https://www.proquest.com/scholarly-journals/regression-quantiles/docview/214661061/se-2.
+[2] Chai, T., & Draxler, R. R. (2014). Root mean square error (RMSE) or mean absolute error (MAE)? - Arguments against avoiding RMSE in the literature. Geoscientific Model Development, 7(3), 1247. https://link-gale-com.ezproxy.lib.uwf.edu/apps/doc/A481458766/AONE?u=pens49866&sid=bookmark-AONE&xid=4c31b5f6
+
 ::: {#refs}
 :::
