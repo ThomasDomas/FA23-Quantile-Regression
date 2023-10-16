@@ -1,4 +1,5 @@
 # Methods
+
 \subsection{Ordinary least squares}
 
 Ordinary least squares model or OLS, works by creating a line through the data points. Then it calculates the difference between each prediction and observation (residual). And it tries to minimize the squared value of the residuals. The ordinary least squares is defined by:
@@ -55,6 +56,8 @@ $$
 \operatorname{Var}(X)=\mathrm{E}\left[(X_{error} -\mu_{error})^2\right]
 $$
 \subsubsection{Min/max error}
+A measure of the maximum residual for a prediction and the minimum residual.
+
 $$
 f: X \rightarrow \mathbb{R} \text {, if }(\forall e \in X_{error}) f\left(e_i\right) \geq f(e)
 $$
