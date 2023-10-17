@@ -52,7 +52,7 @@ $$
 
 It is a measure of how spread all the errors are from the mean of all errors.
 $$
-\operatorname{Var}(X)=\frac{1}{n}\sum_{i=1}^n(e_i-\mu_{error})^2
+\operatorname{Var}(e)=\frac{1}{n}\sum_{i=1}^n(e_i-\bar{e}})^2
 $$
 
 % $$
