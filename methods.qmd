@@ -51,10 +51,13 @@ $$
 \subsubsection{Variance of error}
 
 It is a measure of how spread all the errors are from the mean of all errors.
+$$
+\operatorname{Var}(X)=\frac{1}{n}\sum_{i=1}^n(e_i-\mu_{error})^2
+$$
 
-$$
-\operatorname{Var}(X)=\mathrm{E}\left[(X_{error} -\mu_{error})^2\right]
-$$
+% $$
+% \operatorname{Var}(X)=\mathrm{E}\left[(X_{error} -\mu_{error})^2\right]
+% $$
 \subsubsection{Min/max error}
 A measure of the maximum residual for a prediction and the minimum residual.
 
