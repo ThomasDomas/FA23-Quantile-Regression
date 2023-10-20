@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>intro</title>
+<title>references</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,7 +20,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -70,16 +89,19 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="intro.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
+    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="references.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 
 
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
-<p>Quantile regression (QR), like any regression model, illustrates the relationship between a response variable and one or more predictor variables. QR differs from traditional regression models, such as ordinary least squares (OLS) regression, in that it estimates the conditional of a response variable, given the predictors’ values, as opposed to the conditional in OLS regression.</p>
-<p>Due to its formula illustrated later, QR has several advantages over OLS, including relaxed assumptions, efficiency in non-Gaussian scenarios, and a broader perspective compared to traditional models. Unlike OLS, QR does not assume the normality of the conditional response variable distribution and is robust to heteroskedasticity. Furthermore, by considering the entire conditional distribution, QR offers a comprehensive understanding of distributions with higher moments—i.e., those with non-zero skewness, kurtosis, or even greater moments which may be significant in extreme distributions such as in financial data— enabling a detailed examination of their shape, asymmetry, and heavy-tailed characteristics. This makes QR a valuable tool for investigating extreme quantiles, which are of particular interest in fields such as epidemiology, and capturing the entire range of the distribution beyond the central tendency and variability, offering insights beyond traditional regression methods.</p>
+<section id="references" class="level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<p>[1] R. Koenker and G. Bassett Jr, “REGRESSION QUANTILES,” Econometrica (Pre-1986), vol.&nbsp;46, (1), pp.&nbsp;33, 1978. Available: https://login.lp.hscl.ufl.edu/login?url=https://www.proquest.com/scholarly-journals/regression-quantiles/docview/214661061/se-2.</p>
+<p>Chai, T., &amp; Draxler, R. R. (2014). Root mean square error (RMSE) or mean absolute error (MAE)? - Arguments against avoiding RMSE in the literature. Geoscientific Model Development, 7(3), 1247. https://link-gale-com.ezproxy.lib.uwf.edu/apps/doc/A481458766/AONE?u=pens49866&amp;sid=bookmark-AONE&amp;xid=4c31b5f6</p>
+<div id="refs" role="list">
+
+</div>
 
 
 </section>
