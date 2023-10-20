@@ -1,9 +1,10 @@
 project:
   type: book
+  output-dir: docs
 
 book:
   title: "FA23-Quantile Regression"
-  author: "Norah Jones"
+  author: ""
   date: "10/7/2023"
   chapters:
     - index.qmd
