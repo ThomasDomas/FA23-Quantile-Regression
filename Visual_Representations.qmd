@@ -12,7 +12,7 @@ Visualization of quantile regression data
 library(sjPlot)
 library(haven)
 library(tidyverse)
-library(equatiomatic)
+#library(equatiomatic)
 library(fastDummies)
 library(pscl)
 
@@ -61,4 +61,3 @@ df |> ggplot(aes(x = survTime, y = as.factor(ageGroup), color = as.factor(status
   labs(color = "Status", shape = "Stage") +
   theme_bw()
 ```
-

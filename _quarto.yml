@@ -7,7 +7,7 @@ book:
   author: ""
   date: "10/7/2023"
   chapters:
-    - index.qmd 
+    - Table_of_Contents.qmd 
     - intro.qmd
     - methods.qmd
     - Visual_Representations.qmd
