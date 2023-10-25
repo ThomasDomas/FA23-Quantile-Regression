@@ -1,7 +1,7 @@
 ## Tables of Contents
 
-[Intro](https://thomasdomas.github.io/FA23-Cox-Proportional/intro.html)
+[Intro](https://thomasdomas.github.io/FA23-Quantile-Regression/intro.html)
 
-[Methods](https://thomasdomas.github.io/FA23-Cox-Proportional/intro.html)
+[Methods](https://thomasdomas.github.io/FA23-Quantile-Regression/intro.html)
 
 [References](https://thomasdomas.github.io/FA23-Quantile-Regression/references.html)
