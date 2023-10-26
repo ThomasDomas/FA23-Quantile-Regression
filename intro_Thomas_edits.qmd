@@ -1,0 +1,16 @@
+# Introduction
+
+Quantile regression (QR), like any regression model, illustrates the relationship between a response variable and one or more predictor variables. QR differs from traditional regression models, such as ordinary least squares (OLS) regression, in that it estimates the conditional \textit{quantiles} of a response variable, given the predictors' values, as opposed to the conditional mean in OLS regression.
+
+Before reviewing quantile regression, perhaps it would be beneficial to review what a quantile is. The formal definition of a quantile, or more exactly a p-quantile, can be expressed using cumulative distribution functions.
+
+Pr[X < x] 
+
+In Koneker's 1978 paper, the $\theta$th quantile regression is defined as any solution to the following problem:
+
+\begin{equation}
+\min _{b \in \mathbf{R}^K}\left[\sum_{t \in\left\{t: y_t \geqslant x_t b\right\}} \theta\left|y_t-x_t b\right|+\sum_{t \in\left\{t: y_t<x_t b\right\}}(1-\theta)\left|y_t-x_t b\right|\right] .
+\end{equation}
+where $$\{x_t: t=1,...,T\}$$ denotes a sequence (row) of K-vectors of a known design matrix and $$\{y_t: t=1,...,T\}$$ is a random sample on the regression process $u_t = y_t - x_t\beta$
+
+Due to its formula illustrated later, QR has several advantages over OLS, including relaxed assumptions, efficiency in non-Gaussian scenarios, and a broader perspective compared to traditional models. Unlike OLS, QR does not assume the normality of the conditional response variable distribution and is robust to heteroskedasticity. Furthermore, by considering the entire conditional distribution, QR offers a comprehensive understanding of distributions with higher moments---i.e., those with non-zero skewness, kurtosis, or even greater moments which may be significant in extreme distributions such as in financial data--- enabling a detailed examination of their shape, asymmetry, and heavy-tailed characteristics. This makes QR a valuable tool for investigating extreme quantiles, which are of particular interest in fields such as epidemiology, and capturing the entire range of the distribution beyond the central tendency and variability, offering insights beyond traditional regression methods.
