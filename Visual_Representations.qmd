@@ -1,14 +1,8 @@
----
-title: "QuantileRegression"
-format: html
-editor: visual
----
-
 ## Quantile Regression
 
 Visualization of quantile regression data
 
-```{r, Imports, echo=FALSE}
+```{r, Imports, echo=FALSE, include=FALSE}
 library(sjPlot)
 library(haven)
 library(tidyverse)
@@ -29,23 +23,9 @@ library(boot)
 library(asaur)
 ```
 
-```{r, 'Getting Data'}
+```{r, 'Getting Data', echo=FALSE, include=FALSE}
 df <- data2 <- read.csv("prostateSurvival.csv") |>
   na.omit()
-
-head(df)
-
-df |> count(status)
-df |> count(stage)
-df |> count(ageGroup)
-df |> count(grade)
-
-df$grade <- as.factor(df$grade)
-df |> count(grade)
-df <- dummy_cols(df, select_columns = "stage")
-head(df)
-df <- dummy_cols(df, select_columns = "ageGroup")
-head(df)
 ```
 
 ```{r, 'Visualizing'}

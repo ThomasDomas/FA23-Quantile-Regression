@@ -1,6 +1,6 @@
 # Methods
 
-\subsection{Ordinary least squares}
+## Ordinary least squares
 
 Ordinary least squares model or OLS, works by creating a line through the data points. Then it calculates the difference between each prediction and observation (residual). And it tries to minimize the squared value of the residuals. The ordinary least squares is defined by:
 
@@ -18,7 +18,7 @@ $$
 \widehat{\alpha} =\bar{y}-\widehat{\beta} \bar{x}
 $$
 
-\subsection{Quantile regression}
+## Quantile regression
 
 In Koneker's 1978 paper, the $\theta^{th}$ Quantile regression is defined as any solution to the following problem:
 
@@ -33,9 +33,9 @@ $$
 $$
  denotes a sequence (row) of K-vectors of a known design matrix and $$\{y_t: t=1,..., T\}$$ is a random sample on the regression process $u_t = y_t - x_t\beta$ \[1\].
 
-\subsection{Evaluation metrics}
+## Evaluation metrics
 
-\subsubsection{Mean absolute error}
+### Mean absolute error
 
 The mean absolute error (MAE) is the average magnitude of the errors of the values predicted by the regression and the actual observed values for the response variable. Because it is a simple average, all errors have the same weight, there are no penalties for different magnitude deviations \[2\]. MAE assumes that the errors are normally distributed, if the error distribution was non-normal, the average may not be a good measure of centrality and can paint a false picture of the goodness-of-fit of the regression curve. MAE also assumes that the errors are unbiased. While the average magnitude of the errors is expected to be non-zero (unless the regression is a perfect fit) the average of the residuals, i.e., the deviation of the predicted value from the actual value, considering underestimation and overestimation. This means on average the regression curve does not over or underestimate.
 
@@ -43,7 +43,7 @@ $$
 \text { MAE }=\frac{1}{n}\sum_{i=1}^n\left|y_i-\hat{y}_i\right|=\frac{1}{n}\sum_{i=1}^n\left|e_i\right|
 $$
 
-\subsubsection{Root mean squared error}
+### Root mean squared error
 
 It calculates the differences between the predictions and the actual observations (residuals) and then gets their quadratic mean for each. This type of error gives a larger penalty for larger errors \[2\]. This error also assumes that the errors are unbiased and that they follow a normal distribution. This gives a picture of the size of residuals in comparison to the regression line.
 
@@ -51,14 +51,14 @@ $$
 \operatorname{RMSE}=\sqrt{\operatorname{MSE}}=\sqrt{\frac{1}{n}\sum_{i=1}^n (y_i-\hat{y}_i)^2}=\sqrt{\frac{1}{n}\sum_{i=1}^n e_i^2}
 $$
 
-\subsubsection{Variance of error}
+### Variance of error
 
 It is a measure of how spread all the errors are from the mean of all errors. 
 $$
 \operatorname{Var}(e)=\frac{1}{n}\sum_{i=1}^n(e_i-\bar{e})^2
 $$
 
-\subsubsection{Min/max error}
+### Min/max error
 
 A measure of the maximum residual for a prediction and the minimum residual.
 
@@ -69,3 +69,5 @@ $$
 $$
 f: X \rightarrow \mathbb{R} \text {, if }(\forall e \in X_{error}) f\left(e_i\right) \leq f(e)
 $$
+
+### ANOVA test??

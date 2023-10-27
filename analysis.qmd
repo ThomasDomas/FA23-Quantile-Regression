@@ -1,0 +1,66 @@
+# Analysis
+```{r, echo=FALSE, include=FALSE}
+# installing/loading the package:
+# if(!require(installr)) {
+#   install.packages("installr"); 
+#   require(installr)
+# } #load / install+load installr
+# # using the package:
+# updateR()
+
+# install.packages('RTools')
+# install.packages("quantreg")
+library("quantreg")
+library(sjPlot)
+library(haven)
+library(tidyverse)
+#library(equatiomatic)
+library(fastDummies)
+library(pscl)
+
+library(gsheet)
+library(brant)
+library(MASS)
+library(lmtest)
+library(reshape2)
+
+library(nnet)
+library(AER)
+library(boot)
+
+library(asaur)
+
+```
+## Visualization??
+
+```{r, 'Getting Data', echo=FALSE, include=FALSE}
+df <- read.csv("prostateSurvival.csv") |>
+  na.omit()
+
+head(df)
+```
+
+## Model creation
+
+### QR model
+
+```{r 'QR model creation'}
+# qreg_model50 = rq(data=df, Scores=df$survTime, tau=0.5)
+```
+
+### OLS model
+
+```{r 'OLS model creation'}
+ols = lm(data=df)
+summary(ols)
+```
+
+## Model evaluation
+
+### Mean absolute error
+
+### Root mean squared error
+
+### Variance of error
+
+### Min/max error
