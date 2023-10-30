@@ -1,4 +1,5 @@
 # Analysis
+
 ```{r, echo=FALSE, include=FALSE}
 # installing/loading the package:
 # if(!require(installr)) {
@@ -11,24 +12,24 @@
 # install.packages('rmarkdown')
 # install.packages("quantreg")
 library("quantreg")
-library(sjPlot)
+#library(sjPlot)
 library(haven)
 library(tidyverse)
 #library(equatiomatic)
-library(fastDummies)
-library(pscl)
+#library(fastDummies)
+#library(pscl)
 
-library(gsheet)
-library(brant)
-library(MASS)
-library(lmtest)
-library(reshape2)
+#library(gsheet)
+#library(brant)
+#library(MASS)
+#library(lmtest)
+#library(reshape2)
 
-library(nnet)
-library(AER)
-library(boot)
+#library(nnet)
+#library(AER)
+#library(boot)
 
-library(asaur)
+#library(asaur)
 
 ```
 

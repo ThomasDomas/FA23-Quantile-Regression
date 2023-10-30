@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>intro</title>
+<title>methods_old</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -58,6 +58,7 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -74,12 +75,71 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
-<p>Quantile regression (QR), like any regression model, illustrates the relationship between a response variable and one or more predictor variables. QR differs from traditional regression models, such as ordinary least squares (OLS) regression, in that it estimates the conditional of a response variable, given the predictors’ values, as opposed to the conditional in OLS regression.</p>
-<p>Due to its formula illustrated later, QR has several advantages over OLS, including relaxed assumptions, efficiency in non-Gaussian scenarios, and a broader perspective compared to traditional models. Unlike OLS, QR does not assume the normality of the conditional response variable distribution and is robust to heteroskedasticity. Furthermore, by considering the entire conditional distribution, QR offers a comprehensive understanding of distributions with higher moments—i.e., those with non-zero skewness, kurtosis, or even greater moments which may be significant in extreme distributions such as in financial data— enabling a detailed examination of their shape, asymmetry, and heavy-tailed characteristics. This makes QR a valuable tool for investigating extreme quantiles, which are of particular interest in fields such as epidemiology, and capturing the entire range of the distribution beyond the central tendency and variability, offering insights beyond traditional regression methods.</p>
+<section id="methods" class="level1">
+<h1>Methods</h1>
+<section id="ordinary-least-squares" class="level2">
+<h2 class="anchored" data-anchor-id="ordinary-least-squares">Ordinary least squares</h2>
+<p>Ordinary least squares model or OLS, works by creating a line through the data points. Then it calculates the difference between each prediction and observation (residual). And it tries to minimize the squared value of the residuals. The ordinary least squares is defined by:</p>
+<p><span class="math display">\[
+y_i=\alpha+\beta x_i+\varepsilon_i .
+\]</span></p>
+<p>The least squares estimates in this case are given by simple formulas</p>
+<p><span class="math display">\[
+\widehat{\beta} =\frac{\sum_{i=1}^n\left(x_i-\bar{x}\right)\left(y_i-\bar{y}\right)}{\sum_{i=1}^n\left(x_i-\bar{x}\right)^2}
+\]</span></p>
+<p><span class="math display">\[
+\widehat{\alpha} =\bar{y}-\widehat{\beta} \bar{x}
+\]</span></p>
+</section>
+<section id="quantile-regression" class="level2">
+<h2 class="anchored" data-anchor-id="quantile-regression">Quantile regression</h2>
+<p>In Koneker’s 1978 paper, the <span class="math inline">\(\theta^{th}\)</span> Quantile regression is defined as any solution to the following problem:</p>
+<p><span class="math display">\[\begin{equation}
+\min _{b \in \mathbf{R}^K}\left[\sum_{t \in\left\{t: y_t \geqslant x_t b\right\}} \theta\left|y_t-x_t b\right|+\sum_{t \in\left\{t: y_t&lt;x_t b\right\}}(1-\theta)\left|y_t-x_t b\right|\right]
+\end{equation}\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\{x_t: t=1,..., T\}
+\]</span> denotes a sequence (row) of K-vectors of a known design matrix and <span class="math display">\[\{y_t: t=1,..., T\}\]</span> is a random sample on the regression process <span class="math inline">\(u_t = y_t - x_t\beta\)</span> [1].</p>
+</section>
+<section id="evaluation-metrics" class="level2">
+<h2 class="anchored" data-anchor-id="evaluation-metrics">Evaluation metrics</h2>
+<section id="mean-absolute-error" class="level3">
+<h3 class="anchored" data-anchor-id="mean-absolute-error">Mean absolute error</h3>
+<p>The mean absolute error (MAE) is the average magnitude of the errors of the values predicted by the regression and the actual observed values for the response variable. Because it is a simple average, all errors have the same weight, there are no penalties for different magnitude deviations [2]. MAE assumes that the errors are normally distributed, if the error distribution was non-normal, the average may not be a good measure of centrality and can paint a false picture of the goodness-of-fit of the regression curve. MAE also assumes that the errors are unbiased. While the average magnitude of the errors is expected to be non-zero (unless the regression is a perfect fit) the average of the residuals, i.e., the deviation of the predicted value from the actual value, considering underestimation and overestimation. This means on average the regression curve does not over or underestimate.</p>
+<p><span class="math display">\[
+\text { MAE }=\frac{1}{n}\sum_{i=1}^n\left|y_i-\hat{y}_i\right|=\frac{1}{n}\sum_{i=1}^n\left|e_i\right|
+\]</span></p>
+</section>
+<section id="root-mean-squared-error" class="level3">
+<h3 class="anchored" data-anchor-id="root-mean-squared-error">Root mean squared error</h3>
+<p>It calculates the differences between the predictions and the actual observations (residuals) and then gets their quadratic mean for each. This type of error gives a larger penalty for larger errors [2]. This error also assumes that the errors are unbiased and that they follow a normal distribution. This gives a picture of the size of residuals in comparison to the regression line.</p>
+<p><span class="math display">\[
+\operatorname{RMSE}=\sqrt{\operatorname{MSE}}=\sqrt{\frac{1}{n}\sum_{i=1}^n (y_i-\hat{y}_i)^2}=\sqrt{\frac{1}{n}\sum_{i=1}^n e_i^2}
+\]</span></p>
+</section>
+<section id="variance-of-error" class="level3">
+<h3 class="anchored" data-anchor-id="variance-of-error">Variance of error</h3>
+<p>It is a measure of how spread all the errors are from the mean of all errors. <span class="math display">\[
+\operatorname{Var}(e)=\frac{1}{n}\sum_{i=1}^n(e_i-\bar{e})^2
+\]</span></p>
+</section>
+<section id="minmax-error" class="level3">
+<h3 class="anchored" data-anchor-id="minmax-error">Min/max error</h3>
+<p>A measure of the maximum residual for a prediction and the minimum residual.</p>
+<p><span class="math display">\[
+f: X \rightarrow \mathbb{R} \text {, if }(\forall e \in X_{error}) f\left(e_i\right) \geq f(e)
+\]</span></p>
+<p><span class="math display">\[
+f: X \rightarrow \mathbb{R} \text {, if }(\forall e \in X_{error}) f\left(e_i\right) \leq f(e)
+\]</span></p>
+</section>
+<section id="anova-test" class="level3">
+<h3 class="anchored" data-anchor-id="anova-test">ANOVA test??</h3>
 
 
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->
