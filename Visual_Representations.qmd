@@ -25,19 +25,64 @@ library(asaur)
 
 ```{r, 'Getting Data', echo=FALSE, include=FALSE}
 df <- data2 <- read.csv("prostateSurvival.csv") |>
-  na.omit()
+  na.omit() |>
+  distinct()
 ```
 
 ```{r, 'Visualizing'}
+df |> count(grade)
+
+df[duplicated(df)]
+
 df |> ggplot(aes(x = survTime)) +
   geom_bar() +
   xlab("Survial time") +
   theme_bw()
 
-df |> ggplot(aes(x = survTime, y = as.factor(ageGroup), color = as.factor(status), shape = as.factor(stage))) +
+df |> ggplot(aes(x = as.factor(ageGroup), y = survTime, color = as.factor(status), shape = as.factor(stage))) +
   geom_point(size = 0.9) +
-  ylab("Age group (years)") +
-  xlab("Survial time") +
+  geom_text(aes(x = 1.5, y = 50, label = "OLS"), color="black", show.legend = FALSE) + 
+  geom_smooth(method = lm, se = F, color = "red") +
+  geom_quantile(quantiles=0.5, color="black") + 
+  xlab("Age group (years)") +
+  ylab("Survial time") +
   labs(color = "Status", shape = "Stage") +
+  theme_bw()
+```
+
+```{r, 'Getting Data housing'}
+df2 <- read.csv("TrainData.csv") |>
+  na.omit() |>
+  distinct()
+
+head(df2)
+colnames(df2)
+```
+
+```{r, 'Visualizing housing'}
+# TotRmsAbvGrd
+
+# df2 |> ggplot(aes(y = SalePrice, x = LotArea, shape = LotShape)) +
+df2 |> ggplot(aes(y = SalePrice, x = LotArea)) +
+  geom_point(size = 0.9) +
+  geom_smooth(method = lm, se = F, color = "black") +
+  geom_quantile(quantiles=0.5, color="red") + 
+  xlab("Sale price ($)") +
+  ylab("Lot area (Square feet)") +
+  theme_bw()
+
+# df2 |> ggplot(aes(y = SalePrice, x = GrLivArea, shape = Foundation)) +
+
+
+
+df2 |> ggplot(aes(y = SalePrice, x = GrLivArea)) +
+  geom_point(size = 0.9) +
+  stat_smooth(method = lm, color = "black") +
+  geom_quantile(quantiles=0.25, color="blue") + 
+  geom_quantile(quantiles=0.5, color="red") + 
+  geom_quantile(quantiles=0.75, color="green") + 
+  xlab("Sale price ($)") +
+  ylab("Above ground area (Square feet)") +
+  # labs(shape = "Foundation type") +
   theme_bw()
 ```

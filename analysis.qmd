@@ -31,13 +31,44 @@ library(boot)
 library(asaur)
 
 ```
-## Visualization??
 
-```{r, 'Getting Data', echo=FALSE, include=FALSE}
-df <- read.csv("prostateSurvival.csv") |>
-  na.omit()
+## Visualization
 
-head(df)
+```{r, 'Getting Data housing'}
+df <- read.csv("TrainData.csv") |>
+  na.omit() |>
+  distinct()
+
+# head(df2)
+# colnames(df2)
+```
+
+```{r, 'Visualizing housing'}
+# TotRmsAbvGrd
+
+# df2 |> ggplot(aes(y = SalePrice, x = LotArea, shape = LotShape)) +
+df |> ggplot(aes(y = SalePrice, x = LotArea)) +
+  geom_point(size = 0.9) +
+  geom_smooth(method = lm, se = F, color = "black") +
+  geom_quantile(quantiles=0.5, color="red") + 
+  xlab("Sale price ($)") +
+  ylab("Lot area (Square feet)") +
+  theme_bw()
+
+# df2 |> ggplot(aes(y = SalePrice, x = GrLivArea, shape = Foundation)) +
+
+
+
+df |> ggplot(aes(y = SalePrice, x = GrLivArea)) +
+  geom_point(size = 0.9) +
+  stat_smooth(method = lm, color = "black") +
+  geom_quantile(quantiles=0.25, color="blue") + 
+  geom_quantile(quantiles=0.5, color="red") + 
+  geom_quantile(quantiles=0.75, color="green") + 
+  xlab("Sale price ($)") +
+  ylab("Above ground area (Square feet)") +
+  # labs(shape = "Foundation type") +
+  theme_bw()
 ```
 
 ## Model creation
@@ -45,13 +76,14 @@ head(df)
 ### QR model
 
 ```{r 'QR model creation'}
-# qreg_model50 = rq(data=df, Scores=df$survTime, tau=0.5)
+qreg_model50 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.5)
+summary(qreg_model50)
 ```
 
 ### OLS model
 
 ```{r 'OLS model creation'}
-ols = lm(data=df)
+ols = lm(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation))
 summary(ols)
 ```
 
