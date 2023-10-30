@@ -10,7 +10,7 @@ book:
     - Table_of_Contents.qmd
     - intro.qmd
     - methods.qmd
-    - Visual_Representations.qmd
+    # - Visual_Representations.qmd
     - analysis.qmd
     - summary.qmd
     - references.qmd

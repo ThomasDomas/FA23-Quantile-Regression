@@ -8,7 +8,7 @@
 # # using the package:
 # updateR()
 
-# install.packages('RTools')
+# install.packages('rmarkdown')
 # install.packages("quantreg")
 library("quantreg")
 library(sjPlot)
@@ -43,31 +43,33 @@ df <- read.csv("TrainData.csv") |>
 # colnames(df2)
 ```
 
-```{r, 'Visualizing housing'}
-# TotRmsAbvGrd
+### Visualizing quantile regression vs OLS
 
-# df2 |> ggplot(aes(y = SalePrice, x = LotArea, shape = LotShape)) +
+```{r, 'Visualizing housing'}
+
 df |> ggplot(aes(y = SalePrice, x = LotArea)) +
   geom_point(size = 0.9) +
   geom_smooth(method = lm, se = F, color = "black") +
+  geom_text(aes(y = 400000, x = 150000, label = "OLS"), color="black") + 
   geom_quantile(quantiles=0.5, color="red") + 
-  xlab("Sale price ($)") +
-  ylab("Lot area (Square feet)") +
+  geom_text(aes(y = 470000, x = 90000, label = "50th quantile"), color="red") + 
+  ylab("Sale price ($)") +
+  xlab("Lot area (Square feet)") +
   theme_bw()
-
-# df2 |> ggplot(aes(y = SalePrice, x = GrLivArea, shape = Foundation)) +
-
 
 
 df |> ggplot(aes(y = SalePrice, x = GrLivArea)) +
   geom_point(size = 0.9) +
   stat_smooth(method = lm, color = "black") +
-  geom_quantile(quantiles=0.25, color="blue") + 
-  geom_quantile(quantiles=0.5, color="red") + 
+  geom_text(aes(x = 4150, y = 500000, label = "OLS"), color="black") + 
+  geom_quantile(quantiles=0.25, color="red") + 
+  geom_text(aes(x = 4000, y = 270000, label = "25th quantile"), color="red") + 
+  geom_quantile(quantiles=0.5, color="blue") + 
+  geom_text(aes(x = 4150, y = 400000, label = "50th"), color="blue") + 
   geom_quantile(quantiles=0.75, color="green") + 
+  geom_text(aes(x = 4000, y = 600000, label = "75th quantile"), color="green") + 
   xlab("Sale price ($)") +
   ylab("Above ground area (Square feet)") +
-  # labs(shape = "Foundation type") +
   theme_bw()
 ```
 
