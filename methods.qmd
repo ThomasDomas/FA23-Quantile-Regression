@@ -38,25 +38,116 @@ $$
 
 ## Quantile regression
 
-In Koneker's 1978 paper, the $\theta^{th}$ Quantile regression is defined as any solution to the following problem:
+In Koneker's 1978 paper, the $\theta$^{th} sample quantile is defined, 0 < $\theta$ < 1, may be defined as any solution the minimization problem:
 
-```{=tex}
+$$
+\begin{equation}
+\min _{b \in \mathbf{R}}\left[\sum_{t \in\left\{t: y_t \geqslant x_t b\right\}} \theta\left|y_t-b\right|+\sum_{t \in\left\{t: y_t< b\right\}}(1-\theta)\left|y_t-x_t b\right|\right] 
+\end{equation}
+$$
+
+
+the $\theta^{th}$ Quantile regression is defined as any solution to the following problem:
+
+## How does the minimization of absolute deviations equal the media?
+
+### Definition of mean
+
+Assume, without loss of generality, that Y is a continuous random variable. The expected value of the absolute sum of deviations from a given center c can be split into the following two terms:
+
+$$
+E|Y - c| = \int_{y\in R}|y-c|f(y)dy \\
+=\int_{y < c} |y-c|f(y)dy + \int_{y>c}|y-c|f(y)dy  \\
+$$
+If y is less than c, then y-c will always be negative. Therefore, |y-c|=-(c-y). By a similar argument, |y-c| is just (y-c) when y > c.
+$$
+=\int_{y<c}(c-y)f(y)dy + \int_{y>c}(y-c)f(y)dy
+$$
+Since the absolute value is convex, differentiating E|y-c| with respect to c and setting the partial derivatives to zero will lead to the solution of the minimum. 
+
+
+$$
+\frac{\partial}{\partial c}E|y-c|=0
+$$
+$$
+\begin{aligned}
+& \left\{\left.(c-y) f(y)\right|_{-\infty} ^c+\int_{y<c} \frac{\partial}{\partial c}(c-y) f(y) d y\right\}+ \\
+& \left\{\left.(y-c) f(y)\right|_c ^{+\infty}+\int_{y>c} \frac{\partial}{\partial c}(y-c) f(y) d y\right\}=0
+\end{aligned}
+$$
+The limit of any PDF approaching positive or negative infinity will equal 0, therefore the previous equation simplifies to:
+
+$$
+\begin{aligned}
+& \left\{\int_{y<c} \frac{\partial}{\partial c}(c-y) f(y) d y\right\}+ \\
+& \left\{\int_{y>c} \frac{\partial}{\partial c}(y-c) f(y) d y\right\}=0
+\end{aligned}
+$$
+Taking the partial, $\frac{\partial}{\partial c}(c-y)f(y)$ =  f(y) and $\frac{\partial}{\partial c}(y-c)f(y)$ = -f(y).
+
+$$
+\begin{aligned}
+& \left\{\int_{y<c} f(y) d y\right\}+ \\
+& \left\{\int_{y>c} -f(y) d y\right\}=0
+\end{aligned}
+$$
+Using the CDF definition and the notion of reciprocals, the previous equation simplifies to:
+F(c)-[1-F(c)] = 0 and thus 2F(c)-1=0 $\arrow$ F(c)=\frac{1}{2} $\arrow$ c=Me.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$$
 \begin{equation}
 \min _{b \in \mathbf{R}^K}\left[\sum_{t \in\left\{t: y_t \geqslant x_t b\right\}} \theta\left|y_t-x_t b\right|+\sum_{t \in\left\{t: y_t<x_t b\right\}}(1-\theta)\left|y_t-x_t b\right|\right] 
 \end{equation}
-```
-where
+$$
+where 
 
 $$
 \{x_t: t=1,..., T\}
 $$ denotes a sequence (row) of K-vectors of a known design matrix and $$\{y_t: t=1,..., T\}$$ is a random sample on the regression process $u_t = y_t - x_t\beta$ \[1\].
 
+The solution can be obtained by applying the derivative and integrating by part as follows
+
+$$
+
+$$
 ## Differences
 
 OLS regression minimizes the sum of squares of residuals, but QR minimizes the sum of weighted absolute errors. The idea behind this is if regression process underestimates or overestimates, the proportion of positive and negative residuals will shift. By using these weights, the bias of the model is reduced and the centrality of the model is able to be more accurately estimated.
 
 OLS only estimates the mean, but RQ estimates the conditional quantile. This allows RQ to perform estimates on different intervals of interest rather than just estimating the mean.
-
 
 ## Intuition
 
@@ -139,8 +230,6 @@ df %>% ggplot(aes(x=hours, y=score)) +
 ```
 
 ### Graphic
-
-
 
 ## Evaluation metrics
 
