@@ -19,8 +19,14 @@ bibliography: references.bib
 
 format:
   html:
+    self-conained: true
     theme: cosmo
   pdf:
     documentclass: scrreprt
+  execute:
+    echo: true
+    warning: false
+    message: false
+    error: true
 
 editor: visual

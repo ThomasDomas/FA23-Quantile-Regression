@@ -16,6 +16,7 @@ library("quantreg")
 library(haven)
 library(gridExtra)
 library(tidyverse)
+library(Metrics)
 #library(equatiomatic)
 #library(fastDummies)
 #library(pscl)
@@ -41,6 +42,10 @@ df <- read.csv("TrainData.csv") |>
   na.omit() |>
   distinct()
 
+```
+
+### Visualizing data
+```{r 'Visualizing data'}
 suppressWarnings({
 
 p1 <- df |> ggplot(aes(x = GrLivArea)) +
@@ -87,6 +92,8 @@ df |> ggplot(aes(y = SalePrice, x = LotArea)) +
   xlab("Lot area (Square feet)") +
   theme_bw()
 
+df |> ggplot(aes(y = SalePrice, x = GrLivArea)) +
+  geom_boxplot()
 
 df |> ggplot(aes(y = SalePrice, x = GrLivArea)) +
   geom_point(size = 0.9) +
@@ -108,23 +115,95 @@ df |> ggplot(aes(y = SalePrice, x = GrLivArea)) +
 ### QR model
 
 ```{r 'QR model creation'}
-qreg_model50 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.5)
-summary(qreg_model50)
+qr50 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.5)
+qr50_summary = summary(qr50)
+qr50_summary
 ```
 
 ### OLS model
 
 ```{r 'OLS model creation'}
 ols = lm(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation))
-summary(ols)
+ols_summary = summary(ols)
+ols_summary
 ```
 
 ## Model evaluation
 
 ### Mean absolute error
+```{r}
+olsMae = mae(predict(ols), df$SalePrice)
+olsMae
+Qr50Mae = mae(predict(qr50), df$SalePrice)
+Qr50Mae
+```
+
+OLS MAE value: `r format(round(olsMae, digits=2), scientific=F)`.
+
+And QR 50th MAE value: `r format(round(Qr50Mae, digits=2), scientific=F)`.
+
+QR for 50th quantile has a lower MAE therefore it is has more accurate predictions.
 
 ### Root mean squared error
+```{r}
+olsRmse = rmse(predict(ols), df$SalePrice)
+olsRmse
+Qr50Rmse = rmse(predict(qr50), df$SalePrice)
+Qr50Rmse
+```
+
+OLS RMSE value: `r format(round(olsRmse, digits=2), scientific=F)`.
+
+And QR 50th RMSE value: `r format(round(Qr50Rmse, digits=2), scientific=F)`.
 
 ### Variance of error
+```{r}
+# anova(ols)
+# anova.rq(qr50)
+
+ols_summary$df[2]
+qr50_summary$rdf
+```
+
+The variance of error for OLS: `r format(ols_summary$df[2], scientific=F)`.
+
+The variance of error for QR 50th: `r format(qr50_summary$rdf, scientific=F)`.
+
 
 ### Min/max error
+```{r 'Min/Max Error'}
+# Min OLS error
+format(round(min(ols_summary$residuals), digits=0), scientific=F)
+# Absolute min OLS error
+format(round(min(abs(ols_summary$residuals)), digits=0), scientific=F)
+# Max OLS error
+format(round(max(ols_summary$residuals), digits=0), scientific=F)
+# Absolute max OLS error
+format(round(max(abs(ols_summary$residuals)), digits=0), scientific=F)
+# Min QR 50th error
+format(round(min(qr50_summary$residuals), digits=0), scientific=F)
+# Absolute min QR 50th error
+format(round(min(abs(qr50_summary$residuals)), digits=0), scientific=F)
+# Max QR 50th error
+format(round(max(qr50_summary$residuals), digits=0), scientific=F)
+# Absolute max QR 50th error
+format(round(max(abs(qr50_summary$residuals)), digits=0), scientific=F)
+```
+
+#### OLS
+Min OLS error: `r format(round(min(ols_summary$residuals), digits=0), scientific=F)`.
+
+Absolute min OLS error: `r format(round(min(abs(ols_summary$residuals)), digits=0), scientific=F)`.
+
+Max OLS error: `r format(round(max(ols_summary$residuals), digits=0), scientific=F)`.
+
+Absolute max OLS error: `r format(round(max(abs(ols_summary$residuals)), digits=0), scientific=F)`.
+
+#### QR
+Min QR 50th error: `r format(round(min(qr50_summary$residuals), digits=0), scientific=F)`.
+
+Absolute min QR 50th error: `r format(round(min(abs(qr50_summary$residuals)), digits=0), scientific=F)`.
+
+Max QR 50th error: `r format(round(max(qr50_summary$residuals), digits=0), scientific=F)`.
+
+Absolute max QR 50th error: `r format(round(max(abs(qr50_summary$residuals)), digits=0), scientific=F)`.
