@@ -38,14 +38,13 @@ $$
 
 ## Quantile regression
 
-In Koneker's 1978 paper, the $\theta$^{th} sample quantile is defined, 0 < $\theta$ < 1, may be defined as any solution the minimization problem:
+In Koneker's 1978 paper, the $\theta$\^{th} sample quantile is defined, 0 \< $\theta$ \< 1, may be defined as any solution the minimization problem:
 
 $$
 \begin{equation}
 \min _{b \in \mathbf{R}}\left[\sum_{t \in\left\{t: y_t \geqslant x_t b\right\}} \theta\left|y_t-b\right|+\sum_{t \in\left\{t: y_t< b\right\}}(1-\theta)\left|y_t-x_t b\right|\right] 
 \end{equation}
 $$
-
 
 the $\theta^{th}$ Quantile regression is defined as any solution to the following problem:
 
@@ -58,192 +57,68 @@ Assume, without loss of generality, that Y is a continuous random variable. The 
 $$
 E|Y - c| = \int_{y\in R}|y-c|f(y)dy \\
 =\int_{y < c} |y-c|f(y)dy + \int_{y>c}|y-c|f(y)dy  \\
-$$
-If y is less than c, then y-c will always be negative. Therefore, |y-c|=-(c-y). By a similar argument, |y-c| is just (y-c) when y > c.
-$$
+$$ If y is less than c, then y-c will always be negative. Therefore, \|y-c\|=-(c-y). By a similar argument, \|y-c\| is just (y-c) when y \> c. $$
 =\int_{y<c}(c-y)f(y)dy + \int_{y>c}(y-c)f(y)dy
-$$
-Since the absolute value is convex, differentiating E|y-c| with respect to c and setting the partial derivatives to zero will lead to the solution of the minimum. 
-
+$$ Since the absolute value is convex, differentiating E\|y-c\| with respect to c and setting the partial derivatives to zero will lead to the solution of the minimum.
 
 $$
 \frac{\partial}{\partial c}E|y-c|=0
-$$
-$$
+$$ $$
 \begin{aligned}
 & \left\{\left.(c-y) f(y)\right|_{-\infty} ^c+\int_{y<c} \frac{\partial}{\partial c}(c-y) f(y) d y\right\}+ \\
 & \left\{\left.(y-c) f(y)\right|_c ^{+\infty}+\int_{y>c} \frac{\partial}{\partial c}(y-c) f(y) d y\right\}=0
 \end{aligned}
-$$
-The limit of any PDF approaching positive or negative infinity will equal 0, therefore the previous equation simplifies to:
+$$ The limit of any PDF approaching positive or negative infinity will equal 0, therefore the previous equation simplifies to:
 
 $$
 \begin{aligned}
 & \left\{\int_{y<c} \frac{\partial}{\partial c}(c-y) f(y) d y\right\}+ \\
 & \left\{\int_{y>c} \frac{\partial}{\partial c}(y-c) f(y) d y\right\}=0
 \end{aligned}
-$$
-Taking the partial, $\frac{\partial}{\partial c}(c-y)f(y)$ =  f(y) and $\frac{\partial}{\partial c}(y-c)f(y)$ = -f(y).
+$$ Taking the partial, $\frac{\partial}{\partial c}(c-y)f(y)$ = f(y) and $\frac{\partial}{\partial c}(y-c)f(y)$ = -f(y).
 
 $$
 \begin{aligned}
 & \left\{\int_{y<c} f(y) d y\right\}+ \\
 & \left\{\int_{y>c} -f(y) d y\right\}=0
 \end{aligned}
-$$
-Using the CDF definition and the notion of reciprocals, the previous equation simplifies to:
-F(c)-[1-F(c)] = 0 and thus 2F(c)-1=0 $\longrightarrow$ F(c)=\frac{1}{2} $\longrightarrow$ c=Me.
+$$ Using the CDF definition and the notion of reciprocals, the previous equation simplifies to: F(c)-\[1-F(c)\] = 0 and thus 2F(c)-1=0 $\longrightarrow$ F(c)=\frac{1}{2} $\longrightarrow$ c=Me.
 
 # Generalization least absolute deviations
 
-The solution of the minimization problem formulated in Equation (1.2) is thus the median. The above solution does not change by multiplying the two components of $E|Y-c|$ by a constant $\theta$ and $(1-\theta)$, respectively. This allows us to formulate the same problem for the generic quantile $\theta$. Namely, using the same strategy for Equation (1.5), we obtain:
-$$
+The solution of the minimization problem formulated in Equation (1.2) is thus the median. The above solution does not change by multiplying the two components of $E|Y-c|$ by a constant $\theta$ and $(1-\theta)$, respectively. This allows us to formulate the same problem for the generic quantile $\theta$. Namely, using the same strategy for Equation (1.5), we obtain: $$
 \frac{\partial}{\partial c} E\left[\rho_\theta(Y-c)\right]=\frac{\partial}{\partial c}\left\{(1-\theta) \int_{-\infty}^c|y-c| f(y) d y+\theta \int_c^{+\infty}|y-c| f(y) d y\right\} .
 $$
 
-Repeating the above argument, we easily obtain:
-$$
+Repeating the above argument, we easily obtain: $$
 \frac{\partial}{\partial c} E\left[\rho_\theta(Y-c)\right]=(1-\theta) F(c)-\theta(1-F(c))=0
-$$
-and then $q_\theta$ as the solution of the minimization problem:
-$$
+$$ and then $q_\theta$ as the solution of the minimization problem: $$
 F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarrow c=q_\theta .
 $$
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-$$
-\begin{equation}
-\min _{b \in \mathbf{R}^K}\left[\sum_{t \in\left\{t: y_t \geqslant x_t b\right\}} \theta\left|y_t-x_t b\right|+\sum_{t \in\left\{t: y_t<x_t b\right\}}(1-\theta)\left|y_t-x_t b\right|\right] 
-\end{equation}
-$$
-where 
-
-$$
-\{x_t: t=1,..., T\}
-$$ denotes a sequence (row) of K-vectors of a known design matrix and $$\{y_t: t=1,..., T\}$$ is a random sample on the regression process $u_t = y_t - x_t\beta$ \[1\].
-
-The solution can be obtained by applying the derivative and integrating by part as follows
-
+By replacing the sorting with optimization, the above line of reasoning generalizes easily to the regression setting. In fact, interpreting $Y$ as a response variable and $\mathbf{X}$ as a set of predictor variables, the idea of the unconditional mean as the minimizer of Equation (1.1) can be extended to the estimation of the conditional mean function: $$
+\hat{\mu}\left(\mathbf{x}_i, \boldsymbol{\beta}\right)=\underset{\mu}{\operatorname{argmin}} E\left[Y-\mu\left(\mathbf{x}_i, \boldsymbol{\beta}\right)\right]^2,
 $$
 
+In the case of a linear mean function, $\mu(x_i, \beta)=x_i^T\beta$ so the previous equation becomes: $$
+\hat{\boldsymbol{\beta}}=\underset{\boldsymbol{\beta}} argmin \space E[Y - x_i^T\beta]^2
 $$
-## Differences
 
-OLS regression minimizes the sum of squares of residuals, but QR minimizes the sum of weighted absolute errors. The idea behind this is if regression process underestimates or overestimates, the proportion of positive and negative residuals will shift. By using these weights, the bias of the model is reduced and the centrality of the model is able to be more accurately estimated.
+By the same argument,
 
-OLS only estimates the mean, but RQ estimates the conditional quantile. This allows RQ to perform estimates on different intervals of interest rather than just estimating the mean.
+$$
+q_\theta=\underset{c}{\operatorname{argmin}} E\left[\rho_\theta(Y-c)\right]
+$$
 
-## Intuition
+where $\rho_\theta($.$)$ denotes the following loss function:
 
-### Right Skew
+$$
+\begin{aligned}
+\rho_\theta(y) & =[\theta-I(y<0)] y \\
+& =[(1-\theta) I(y \leq 0)+\theta I(y>0)]|y| .
+\end{aligned}
+$$
 
-```{r}
-x <- rbeta(10000,5,2)
-hist(x)
-qqnorm(x)
-qqline(x, col= "darkgreen")
-quant <- qnorm(x)
-#quant
-table(sign(quant))
-hist(quant)
-```
-
-### Left Skew
-
-```{r}
-x <- rbeta(10000,2,5)
-hist(x)
-qqnorm(x)
-table(sign(x))
-qqline(x, col= "darkgreen")
-quant <- qnorm(x)
-#quant
-table(sign(quant))
-hist(quant)
-```
-
-### No Skew
-
-```{r}
-x <- rbeta(10000,5,5)
-qqnorm(x)
-quant <- qnorm(x)
-#quant
-table(sign(quant))
-hist(quant)
-```
-
-As we can see, depending on the distribution of the residuals, the theoretical quantiles will have differing proportions of positive and negative values. In the right skew example, there are 1130 negative data points and 8870 positive data points. For instance, let's look to see if we were interested in the 90th percentile, there would be 8870 points that would be multiplied by 0.9, and 1130 points that would be multiplied by 0.1. Thus the burden of minimization is going to be cenetered on finding betas that reduce the sum of those 8870 points to the lowest possible number.
-
-## Example
-
-### Create Data
-
-```{r}
-#make this example reproducible
-set.seed(0)
-
-#create data frame 
-hours <- runif(100, 1, 10)
-score <- 60 + 2*hours + rnorm(100, mean=0, sd=.45*hours)
-df <- data.frame(hours, score)
-
-#view first six rows
-head(df)
-```
-
-### Create Model
-
-```{r}
-#fit model
-model_90 <- rq(score ~ hours, data = df, tau = 0.9)
-summary(model_90)
-model_50 <- rq(score ~ hours, data = df, tau = 0.5)
-summary(model_50)
-model_10 <- rq(score ~ hours, data = df, tau = 0.1)
-summary(model_10)
-
-df %>% ggplot(aes(x=hours, y=score)) +
-  geom_line(aes(color="red", y = 60.25185 + 2.43746*hours)) +
-  geom_line(aes(color="green", y= 60.20392 + 1.92357*hours)) +
-  geom_line(aes(color="blue", y=59.97472 + 1.36072*hours)) +
-  geom_point()
-#view summary of model
-#summary(model)
-#table(sign(resid(model)))
-```
 
 ### Graphic
 
