@@ -6,6 +6,7 @@ library(lme4)
 # library(DHARMa)
 library(quantreg)
 library(dplyr)
+library(ggplot2)
 ```
 
 # Methods
@@ -121,6 +122,15 @@ $$
 
 
 ### Graphic
+```{r}
+data(cars)
+ols <- lm(dist ~ speed, data=cars)
+yhat<-ols$fitted.values
+color = sign(ols$residuals)
+qplot(x=cars$speed, y=cars$dist)+geom_line(y=yhat)+
+       geom_segment(aes(x=cars$speed, xend=cars$speed, y=cars$dist, yend=yhat, group=as.factor(color), color=as.factor(color)))+
+       labs(title="regression errors", color=color)
+```
 
 ## Evaluation metrics
 
