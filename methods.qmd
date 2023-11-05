@@ -92,7 +92,23 @@ $$
 \end{aligned}
 $$
 Using the CDF definition and the notion of reciprocals, the previous equation simplifies to:
-F(c)-[1-F(c)] = 0 and thus 2F(c)-1=0 $\arrow$ F(c)=\frac{1}{2} $\arrow$ c=Me.
+F(c)-[1-F(c)] = 0 and thus 2F(c)-1=0 $\longrightarrow$ F(c)=\frac{1}{2} $\longrightarrow$ c=Me.
+
+# Generalization least absolute deviations
+
+The solution of the minimization problem formulated in Equation (1.2) is thus the median. The above solution does not change by multiplying the two components of $E|Y-c|$ by a constant $\theta$ and $(1-\theta)$, respectively. This allows us to formulate the same problem for the generic quantile $\theta$. Namely, using the same strategy for Equation (1.5), we obtain:
+$$
+\frac{\partial}{\partial c} E\left[\rho_\theta(Y-c)\right]=\frac{\partial}{\partial c}\left\{(1-\theta) \int_{-\infty}^c|y-c| f(y) d y+\theta \int_c^{+\infty}|y-c| f(y) d y\right\} .
+$$
+
+Repeating the above argument, we easily obtain:
+$$
+\frac{\partial}{\partial c} E\left[\rho_\theta(Y-c)\right]=(1-\theta) F(c)-\theta(1-F(c))=0
+$$
+and then $q_\theta$ as the solution of the minimization problem:
+$$
+F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarrow c=q_\theta .
+$$
 
 
 
