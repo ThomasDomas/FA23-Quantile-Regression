@@ -15,9 +15,13 @@ library(ggplot2)
 
 The design matrix is defined to be a matrix $\textbf X$ such that $\textbf X_{ij}$ (the $j^{th}$) column of the i\^{th} row of $\textbf X$) represents the value of the $j^th$ variable associated with the i\^{th} variable object.
 
-A regression model may be represent via matrix multiplication as $$
+A regression model may be represent via matrix multiplication as
+
+$$
 y=\textbf X\beta + e
-$$ where X is the design matrix, $\beta$ is a vector of the model's coefficient (one for each variable), e is a vector of random errors with a mean zero, and y is the vector outputs for each object.
+$$
+
+where X is the design matrix, $\beta$ is a vector of the model's coefficient (one for each variable), e is a vector of random errors with a mean zero, and y is the vector outputs for each object.
 
 ## Ordinary least squares
 
@@ -42,9 +46,15 @@ $$
 In Koneker's 1978 paper, the $\theta$\^{th} sample quantile is defined, 0 \< $\theta$ \< 1, may be defined as any solution the minimization problem:
 
 $$
+<<<<<<< HEAD
 
 \min _{b \in \mathbf{R}}\left[\sum_{t \in\left\{t: y_t \geqslant x_t b\right\}} \theta\left|y_t-b\right|+\sum_{t \in\left\{t: y_t< b\right\}}(1-\theta)\left|y_t-x_t b\right|\right] 
 
+=======
+\begin{aligned}
+\min _{b \in \mathbf{R}}\left[\sum_{t \in\left\{t: y_t \geqslant x_t b\right\}} \theta\left|y_t-b\right|+\sum_{t \in\left\{t: y_t< b\right\}}(1-\theta)\left|y_t-x_t b\right|\right] 
+\end{aligned}
+>>>>>>> a7bfb226bcada60d37a747e594935b389b7451a1
 $$
 
 the $\theta^{th}$ Quantile regression is defined as any solution to the following problem:
@@ -58,9 +68,15 @@ Assume, without loss of generality, that Y is a continuous random variable. The 
 $$
 E|Y - c| = \int_{y\in R}|y-c|f(y)dy \\
 =\int_{y < c} |y-c|f(y)dy + \int_{y>c}|y-c|f(y)dy  \\
-$$ If y is less than c, then y-c will always be negative. Therefore, \|y-c\|=-(c-y). By a similar argument, \|y-c\| is just (y-c) when y \> c. $$
+$$
+
+If y is less than c, then y-c will always be negative. Therefore, \|y-c\|=-(c-y). By a similar argument, \|y-c\| is just (y-c) when y \> c. 
+
+$$
 =\int_{y<c}(c-y)f(y)dy + \int_{y>c}(y-c)f(y)dy
-$$ Since the absolute value is convex, differentiating E\|y-c\| with respect to c and setting the partial derivatives to zero will lead to the solution of the minimum.
+$$ 
+
+Since the absolute value is convex, differentiating E\|y-c\| with respect to c and setting the partial derivatives to zero will lead to the solution of the minimum.
 
 $$
 \frac{\partial}{\partial c}E|y-c|=0
@@ -71,39 +87,59 @@ $$
 & \left\{\left.(c-y) f(y)\right|_{-\infty} ^c+\int_{y<c} \frac{\partial}{\partial c}(c-y) f(y) d y\right\}+ \\
 & \left\{\left.(y-c) f(y)\right|_c ^{+\infty}+\int_{y>c} \frac{\partial}{\partial c}(y-c) f(y) d y\right\}=0
 \end{aligned}
-$$ The limit of any PDF approaching positive or negative infinity will equal 0, therefore the previous equation simplifies to:
+$$
+
+The limit of any PDF approaching positive or negative infinity will equal 0, therefore the previous equation simplifies to:
 
 $$
 \begin{aligned}
 & \left\{\int_{y<c} \frac{\partial}{\partial c}(c-y) f(y) d y\right\}+ \\
 & \left\{\int_{y>c} \frac{\partial}{\partial c}(y-c) f(y) d y\right\}=0
 \end{aligned}
-$$ Taking the partial, $\frac{\partial}{\partial c}(c-y)f(y)$ = f(y) and $\frac{\partial}{\partial c}(y-c)f(y)$ = -f(y).
+$$
+
+Taking the partial, $\frac{\partial}{\partial c}(c-y)f(y)$ = f(y) and $\frac{\partial}{\partial c}(y-c)f(y)$ = -f(y).
 
 $$
 \begin{aligned}
-& \left\{\int_{y<c} f(y) d y\right\}+ \\
-& \left\{\int_{y>c} -f(y) d y\right\}=0
+& \left\{\int_{y<c} \theta f(y) d y\right\}+ \\
+& \left\{\int_{y>c} -\theta f(y) d y\right\}=0
 \end{aligned}
-$$ Using the CDF definition and the notion of reciprocals, the previous equation simplifies to: F(c)-\[1-F(c)\] = 0 and thus 2F(c)-1=0 $\longrightarrow$ F(c)=\frac{1}{2} $\longrightarrow$ c=Me.
+$$
+
+Using the CDF definition and the notion of reciprocals, the previous equation simplifies to: $F(c)-[1-F(c)] = 0$ and thus $2F(c)-1=0$ $\longrightarrow$  $F(c)=\frac{1}{2}$ $\longrightarrow$ c=Me.
+
+Thus the minimization to a weighted least absolute deviation loss function is the value that gives the theta^{th} quantile.
 
 # Generalization least absolute deviations
 
-The solution of the minimization problem formulated in Equation (1.2) is thus the median. The above solution does not change by multiplying the two components of $E|Y-c|$ by a constant $\theta$ and $(1-\theta)$, respectively. This allows us to formulate the same problem for the generic quantile $\theta$. Namely, using the same strategy for Equation (1.5), we obtain: $$
+The solution of the minimization problem formulated in Equation (1.2) is thus the median. The above solution does not change by multiplying the two components of $E|Y-c|$ by a constant $\theta$ and $(1-\theta)$, respectively. This allows us to formulate the same problem for the generic quantile $\theta$. Namely, using the same strategy for Equation (1.5), we obtain: 
+
+$$
 \frac{\partial}{\partial c} E\left[\rho_\theta(Y-c)\right]=\frac{\partial}{\partial c}\left\{(1-\theta) \int_{-\infty}^c|y-c| f(y) d y+\theta \int_c^{+\infty}|y-c| f(y) d y\right\} .
 $$
 
-Repeating the above argument, we easily obtain: $$
+Repeating the above argument, we easily obtain: 
+
+$$
 \frac{\partial}{\partial c} E\left[\rho_\theta(Y-c)\right]=(1-\theta) F(c)-\theta(1-F(c))=0
-$$ and then $q_\theta$ as the solution of the minimization problem: $$
+$$
+
+and then $q_\theta$ as the solution of the minimization problem:
+
+$$
 F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarrow c=q_\theta .
 $$
 
-By replacing the sorting with optimization, the above line of reasoning generalizes easily to the regression setting. In fact, interpreting $Y$ as a response variable and $\mathbf{X}$ as a set of predictor variables, the idea of the unconditional mean as the minimizer of Equation (1.1) can be extended to the estimation of the conditional mean function: $$
+By replacing the sorting with optimization, the above line of reasoning generalizes easily to the regression setting. In fact, interpreting $Y$ as a response variable and $\mathbf{X}$ as a set of predictor variables, the idea of the unconditional mean as the minimizer of Equation (1.1) can be extended to the estimation of the conditional mean function: 
+
+$$
 \hat{\mu}\left(\mathbf{x}_i, \boldsymbol{\beta}\right)=\underset{\mu}{\operatorname{argmin}} E\left[Y-\mu\left(\mathbf{x}_i, \boldsymbol{\beta}\right)\right]^2,
 $$
 
-In the case of a linear mean function, $\mu(x_i, \beta)=x_i^T\beta$ so the previous equation becomes: $$
+In the case of a linear mean function, $\mu(x_i, \beta)=x_i^T\beta$ so the previous equation becomes: 
+
+$$
 \hat{\boldsymbol{\beta}}=\underset{\boldsymbol{\beta}} argmin \space E[Y - x_i^T\beta]^2
 $$
 
@@ -122,18 +158,54 @@ $$
 \end{aligned}
 $$
 
-
 ### Graphic
+
 ```{r}
 data(cars)
-ols <- lm(dist ~ speed, data=cars)
-yhat<-ols$fitted.values
-color = sign(ols$residuals)
+
+
+rq50 <- rq(dist ~ speed, data=cars, tau=0.5)
+yhat<-rq50$fitted.values
+color = sign(rq50$residuals)
 qplot(x=cars$speed, y=cars$dist)+geom_line(y=yhat)+
        geom_segment(aes(x=cars$speed, xend=cars$speed, y=cars$dist, yend=yhat, group=as.factor(color), color=as.factor(color)))+
        labs(title="regression errors using OLS", color=color)
 ```
 
+```{r}
+table(color)
+```
+Notice that approximately half of the distribution of the points are above the QR line and approximately half are above the QR line. Now let's see what happens when we look at the 90th conditional quantile. 
+
+```{r}
+rq90 <- rq(dist ~ speed, data=cars, tau=0.9)
+yhat<-rq90$fitted.values
+color = sign(rq90$residuals)
+qplot(x=cars$speed, y=cars$dist)+geom_line(y=yhat)+
+       geom_segment(aes(x=cars$speed, xend=cars$speed, y=cars$dist, yend=yhat, group=as.factor(color), color=as.factor(color)))+
+       labs(title="regression errors", color=color)
+```
+
+```{r}
+table(color)
+```
+When we input the .9 for the quantile, we get approximately 90% of the points under the QR line and 10% over the QR line. 
+
+```{r}
+rq10 <- rq(dist ~ speed, data=cars, tau=0.1)
+yhat<-rq10$fitted.values
+color = sign(rq10$residuals)
+qplot(x=cars$speed, y=cars$dist)+geom_line(y=yhat)+
+       geom_segment(aes(x=cars$speed, xend=cars$speed, y=cars$dist, yend=yhat, group=as.factor(color), color=as.factor(color)))+
+       labs(title="regression errors", color=color)
+```
+
+```{r}
+table(color)
+```
+When we input 0.1 for the 10th percentile, we get approximately 90% of the points above the QR line and 10% below the QR line. 
+
+Thus, we can see that QR is not online a robust 
 ## Evaluation metrics
 
 ### Mean absolute error
@@ -154,7 +226,9 @@ $$
 
 ### Variance of error
 
-It is a measure of how spread all the errors are from the mean of all errors. $$
+It is a measure of how spread all the errors are from the mean of all errors. 
+
+$$
 \operatorname{Var}(e)=\frac{1}{n}\sum_{i=1}^n(e_i-\bar{e})^2
 $$
 
@@ -169,5 +243,3 @@ $$
 $$
 f: X \rightarrow \mathbb{R} \text {, if }(\forall e \in X_{error}) f\left(e_i\right) \leq f(e)
 $$
-
-### ANOVA test??
