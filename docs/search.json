@@ -37,9 +37,9 @@
   {
     "objectID": "methods.html",
     "href": "methods.html",
-    "title": "",
+    "title": "Methods",
     "section": "",
-    "text": "library(ggplot2)\n#install.packages(\"lme4\")\nlibrary(lme4)\n#install.packages(\"DHARMa\")\n# library(DHARMa)\nlibrary(quantreg)\nlibrary(dplyr)\nlibrary(ggplot2)"
+    "text": "library(ggplot2)\n#install.packages(\"lme4\")\nlibrary(lme4)\n#install.packages(\"DHARMa\")\n# library(DHARMa)\nlibrary(quantreg)\nlibrary(dplyr)\nlibrary(ggplot2)\nlibrary(tinytex)"
   },
   {
     "objectID": "intro_Thomas_edits.html",
@@ -51,7 +51,7 @@
   {
     "objectID": "methods.html#ordinary-least-squares",
     "href": "methods.html#ordinary-least-squares",
-    "title": "",
+    "title": "Methods",
     "section": "Ordinary least squares",
     "text": "Ordinary least squares\nOrdinary least squares model or OLS, works by creating a line through the data points. Then it calculates the difference between each prediction and observation (residual). And it tries to minimize the squared value of the residuals. The ordinary least squares is defined by:\n\\[\ny_i=\\alpha+\\beta x_i+\\varepsilon_i .\n\\]\nThe least squares estimates in this case are given by simple formulas\n\\[\n\\widehat{\\beta} =\\frac{\\sum_{i=1}^n\\left(x_i-\\bar{x}\\right)\\left(y_i-\\bar{y}\\right)}{\\sum_{i=1}^n\\left(x_i-\\bar{x}\\right)^2}\n\\]\n\\[\n\\widehat{\\alpha} =\\bar{y}-\\widehat{\\beta} \\bar{x}\n\\]"
   },
@@ -72,7 +72,7 @@
   {
     "objectID": "methods.html#design-matrix",
     "href": "methods.html#design-matrix",
-    "title": "",
+    "title": "Methods",
     "section": "Design Matrix",
     "text": "Design Matrix\nThe design matrix is defined to be a matrix \\(\\textbf X\\) such that \\(\\textbf X_{ij}\\) (the \\(j^{th}\\)) column of the i^{th} row of \\(\\textbf X\\)) represents the value of the \\(j^th\\) variable associated with the i^{th} variable object.\nA regression model may be represent via matrix multiplication as\n\\[\ny=\\textbf X\\beta + e\n\\]\nwhere X is the design matrix, \\(\\beta\\) is a vector of the model’s coefficient (one for each variable), e is a vector of random errors with a mean zero, and y is the vector outputs for each object."
   },
@@ -170,8 +170,8 @@
   {
     "objectID": "methods.html#how-does-the-minimization-of-absolute-deviations-equal-the-media",
     "href": "methods.html#how-does-the-minimization-of-absolute-deviations-equal-the-media",
-    "title": "",
+    "title": "Methods",
     "section": "How does the minimization of absolute deviations equal the media?",
-    "text": "How does the minimization of absolute deviations equal the media?\n\nDefinition of mean\nAssume, without loss of generality, that Y is a continuous random variable. The expected value of the absolute sum of deviations from a given center c can be split into the following two terms:\n\\[\nE|Y - c| = \\int_{y\\in R}|y-c|f(y)dy \\\\\n=\\int_{y < c} |y-c|f(y)dy + \\int_{y>c}|y-c|f(y)dy  \\\\\n\\]\nIf y is less than c, then y-c will always be negative. Therefore, |y-c|=-(c-y). By a similar argument, |y-c| is just (y-c) when y > c. \n\\[\n=\\int_{y<c}(c-y)f(y)dy + \\int_{y>c}(y-c)f(y)dy\n\\]\nSince the absolute value is convex, differentiating E|y-c| with respect to c and setting the partial derivatives to zero will lead to the solution of the minimum.\n\\[\n\\frac{\\partial}{\\partial c}E|y-c|=0\n\\]\n\\[\n\\begin{aligned}\n& \\left\\{\\left.(c-y) f(y)\\right|_{-\\infty} ^c+\\int_{y<c} \\frac{\\partial}{\\partial c}(c-y) f(y) d y\\right\\}+ \\\\\n& \\left\\{\\left.(y-c) f(y)\\right|_c ^{+\\infty}+\\int_{y>c} \\frac{\\partial}{\\partial c}(y-c) f(y) d y\\right\\}=0\n\\end{aligned}\n\\]\nThe limit of any PDF approaching positive or negative infinity will equal 0, therefore the previous equation simplifies to:\n\\[\n\\begin{aligned}\n& \\left\\{\\int_{y<c} \\frac{\\partial}{\\partial c}(c-y) f(y) d y\\right\\}+ \\\\\n& \\left\\{\\int_{y>c} \\frac{\\partial}{\\partial c}(y-c) f(y) d y\\right\\}=0\n\\end{aligned}\n\\]\nTaking the partial, \\(\\frac{\\partial}{\\partial c}(c-y)f(y)\\) = f(y) and \\(\\frac{\\partial}{\\partial c}(y-c)f(y)\\) = -f(y).\n\\[\n\\begin{aligned}\n& \\left\\{\\int_{y<c} \\theta f(y) d y\\right\\}+ \\\\\n& \\left\\{\\int_{y>c} -\\theta f(y) d y\\right\\}=0\n\\end{aligned}\n\\]\nUsing the CDF definition and the notion of reciprocals, the previous equation simplifies to: \\(F(c)-[1-F(c)] = 0\\) and thus \\(2F(c)-1=0\\) \\(\\longrightarrow\\) \\(F(c)=\\frac{1}{2}\\) \\(\\longrightarrow\\) c=Me.\nThus the minimization to a weighted least absolute deviation loss function is the value that gives the theta^{th} quantile."
+    "text": "How does the minimization of absolute deviations equal the media?\n\nDefinition of mean\nAssume, without loss of generality, that Y is a continuous random variable. The expected value of the absolute sum of deviations from a given center c can be split into the following two terms:\n\\[\nE|Y - c| = \\int_{y\\in R}|y-c|f(y)dy \\\\\n=\\int_{y &lt; c} |y-c|f(y)dy + \\int_{y&gt;c}|y-c|f(y)dy  \\\\\n\\]\nIf y is less than c, then y-c will always be negative. Therefore, |y-c|=-(c-y). By a similar argument, |y-c| is just (y-c) when y &gt; c.\n\\[\n=\\int_{y&lt;c}(c-y)f(y)dy + \\int_{y&gt;c}(y-c)f(y)dy\n\\]\nSince the absolute value is convex, differentiating E|y-c| with respect to c and setting the partial derivatives to zero will lead to the solution of the minimum.\n\\[\n\\frac{\\partial}{\\partial c}E|y-c|=0\n\\]\n\\[\n\\begin{aligned}\n& \\left\\{\\left.(c-y) f(y)\\right|_{-\\infty} ^c+\\int_{y&lt;c} \\frac{\\partial}{\\partial c}(c-y) f(y) d y\\right\\}+ \\\\\n& \\left\\{\\left.(y-c) f(y)\\right|_c ^{+\\infty}+\\int_{y&gt;c} \\frac{\\partial}{\\partial c}(y-c) f(y) d y\\right\\}=0\n\\end{aligned}\n\\]\nThe limit of any PDF approaching positive or negative infinity will equal 0, therefore the previous equation simplifies to:\n\\[\n\\begin{aligned}\n& \\left\\{\\int_{y&lt;c} \\frac{\\partial}{\\partial c}(c-y) f(y) d y\\right\\}+ \\\\\n& \\left\\{\\int_{y&gt;c} \\frac{\\partial}{\\partial c}(y-c) f(y) d y\\right\\}=0\n\\end{aligned}\n\\]\nTaking the partial, \\(\\frac{\\partial}{\\partial c}(c-y)f(y)\\) = f(y) and \\(\\frac{\\partial}{\\partial c}(y-c)f(y)\\) = -f(y).\n\\[\n\\begin{aligned}\n& \\left\\{\\int_{y&lt;c} \\theta f(y) d y\\right\\}+ \\\\\n& \\left\\{\\int_{y&gt;c} -\\theta f(y) d y\\right\\}=0\n\\end{aligned}\n\\]\nUsing the CDF definition and the notion of reciprocals, the previous equation simplifies to: \\(F(c)-[1-F(c)] = 0\\) and thus \\(2F(c)-1=0\\) \\(\\longrightarrow\\) \\(F(c)=\\frac{1}{2}\\) \\(\\longrightarrow\\) c=Me.\nThus the minimization to a weighted least absolute deviation loss function is the value that gives the theta^{th} quantile."
   }
 ]
