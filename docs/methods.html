@@ -4685,13 +4685,13 @@ E|Y - c| = \int_{y\in R}|y-c|f(y)dy \\
 <p><span class="math display">\[
 F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarrow c=q_\theta .
 \]</span></p>
-<p>By replacing the sorting with optimization, the above line of reasoning generalizes easily to the regression setting. In fact, interpreting <span class="math inline">\(Y\)</span> as a response variable and <span class="math inline">\(\mathbf{X}\)</span> as a set of predictor variables, the idea of the unconditional mean as the minimizer of Equation (1.1) can be extended to the estimation of the conditional mean function:</p>
+<p>, interpreting <span class="math inline">\(Y\)</span> as a response variable and <span class="math inline">\(\mathbf{X}\)</span> as a set of predictor variables, the idea of the unconditional median can be extended to the estimation of the conditional median function:</p>
 <p><span class="math display">\[
-\hat{\mu}\left(\mathbf{x}_i, \boldsymbol{\beta}\right)=\underset{\mu}{\operatorname{argmin}} E\left[Y-\mu\left(\mathbf{x}_i, \boldsymbol{\beta}\right)\right]^2,
+\hat{\mu}\left(\mathbf{x}_i, \boldsymbol{\beta}\right)=\underset{\mu}{\operatorname{argmin}} E\left[|Y-\mu\left(\mathbf{x}_i, \boldsymbol{\beta}\right)\right|],
 \]</span></p>
 <p>In the case of a linear mean function, <span class="math inline">\(\mu(x_i, \beta)=x_i^T\beta\)</span> so the previous equation becomes:</p>
 <p><span class="math display">\[
-\hat{\boldsymbol{\beta}}=\underset{\boldsymbol{\beta}} argmin \space E[Y - x_i^T\beta]^2
+\hat{\boldsymbol{\beta}}=\underset{\boldsymbol{\beta}} argmin \space E[|Y - x_i^T\beta|]
 \]</span></p>
 <p>By the same argument,</p>
 <p><span class="math display">\[

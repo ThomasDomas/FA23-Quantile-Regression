@@ -120,16 +120,16 @@ $$
 F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarrow c=q_\theta .
 $$
 
-By replacing the sorting with optimization, the above line of reasoning generalizes easily to the regression setting. In fact, interpreting $Y$ as a response variable and $\mathbf{X}$ as a set of predictor variables, the idea of the unconditional mean as the minimizer of Equation (1.1) can be extended to the estimation of the conditional mean function:
+, interpreting $Y$ as a response variable and $\mathbf{X}$ as a set of predictor variables, the idea of the unconditional median can be extended to the estimation of the conditional median function:
 
 $$
-\hat{\mu}\left(\mathbf{x}_i, \boldsymbol{\beta}\right)=\underset{\mu}{\operatorname{argmin}} E\left[Y-\mu\left(\mathbf{x}_i, \boldsymbol{\beta}\right)\right]^2,
+\hat{\mu}\left(\mathbf{x}_i, \boldsymbol{\beta}\right)=\underset{\mu}{\operatorname{argmin}} E\left[|Y-\mu\left(\mathbf{x}_i, \boldsymbol{\beta}\right)\right|],
 $$
 
 In the case of a linear mean function, $\mu(x_i, \beta)=x_i^T\beta$ so the previous equation becomes:
 
 $$
-\hat{\boldsymbol{\beta}}=\underset{\boldsymbol{\beta}} argmin \space E[Y - x_i^T\beta]^2
+\hat{\boldsymbol{\beta}}=\underset{\boldsymbol{\beta}} argmin \space E[|Y - x_i^T\beta|]
 $$
 
 By the same argument,
