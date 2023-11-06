@@ -80,10 +80,25 @@ $$ Taking the partial, $\frac{\partial}{\partial c}(c-y)f(y)$ = f(y) and $\frac{
 
 $$
 \begin{aligned}
-& \left\{\int_{y<c} f(y) d y\right\}+ \\
-& \left\{\int_{y>c} -f(y) d y\right\}=0
+& \left\{\int_{y<c} \theta f(y) d y\right\}+ \\
+& \left\{\int_{y>c} -\theta f(y) d y\right\}=0
 \end{aligned}
-$$ Using the CDF definition and the notion of reciprocals, the previous equation simplifies to: F(c)-\[1-F(c)\] = 0 and thus 2F(c)-1=0 $\longrightarrow$ F(c)=\frac{1}{2} $\longrightarrow$ c=Me.
+$$ 
+
+Using the CDF definition and the notion of reciprocals, the previous equation simplifies to:
+
+$$
+(1 - \theta) F(c)-\theta(1-F(c)) = 0
+$$
+Expanding
+$$
+F(c) - \theta F(c) - \theta + \theta F(c) = 0
+$$
+Simplifying:
+$$
+F(c) = \theta = q_\theta
+$$
+Thus the minimization to a weighted least absolute deviation loss function is the value that gives the theta^{th} quantile.
 
 # Generalization least absolute deviations
 
@@ -120,18 +135,54 @@ $$
 \end{aligned}
 $$
 
-
 ### Graphic
+
 ```{r}
 data(cars)
-ols <- lm(dist ~ speed, data=cars)
-yhat<-ols$fitted.values
-color = sign(ols$residuals)
+
+
+rq50 <- rq(dist ~ speed, data=cars, tau=0.5)
+yhat<-rq50$fitted.values
+color = sign(rq50$residuals)
 qplot(x=cars$speed, y=cars$dist)+geom_line(y=yhat)+
        geom_segment(aes(x=cars$speed, xend=cars$speed, y=cars$dist, yend=yhat, group=as.factor(color), color=as.factor(color)))+
        labs(title="regression errors", color=color)
 ```
 
+```{r}
+table(color)
+```
+Notice that approximately half of the distribution of the points are above the QR line and approximately half are above the QR line. Now let's see what happens when we look at the 90th conditional quantile. 
+
+```{r}
+rq90 <- rq(dist ~ speed, data=cars, tau=0.9)
+yhat<-rq90$fitted.values
+color = sign(rq90$residuals)
+qplot(x=cars$speed, y=cars$dist)+geom_line(y=yhat)+
+       geom_segment(aes(x=cars$speed, xend=cars$speed, y=cars$dist, yend=yhat, group=as.factor(color), color=as.factor(color)))+
+       labs(title="regression errors", color=color)
+```
+
+```{r}
+table(color)
+```
+When we input the .9 for the quantile, we get approximately 90% of the points under the QR line and 10% over the QR line. 
+
+```{r}
+rq10 <- rq(dist ~ speed, data=cars, tau=0.1)
+yhat<-rq10$fitted.values
+color = sign(rq10$residuals)
+qplot(x=cars$speed, y=cars$dist)+geom_line(y=yhat)+
+       geom_segment(aes(x=cars$speed, xend=cars$speed, y=cars$dist, yend=yhat, group=as.factor(color), color=as.factor(color)))+
+       labs(title="regression errors", color=color)
+```
+
+```{r}
+table(color)
+```
+When we input 0.1 for the 10th percentile, we get approximately 90% of the points above the QR line and 10% below the QR line. 
+
+Thus, we can see that QR is not online a robust 
 ## Evaluation metrics
 
 ### Mean absolute error
