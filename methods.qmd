@@ -42,9 +42,9 @@ $$
 In Koneker's 1978 paper, the $\theta$\^{th} sample quantile is defined, 0 \< $\theta$ \< 1, may be defined as any solution the minimization problem:
 
 $$
-\begin{equation}
+
 \min _{b \in \mathbf{R}}\left[\sum_{t \in\left\{t: y_t \geqslant x_t b\right\}} \theta\left|y_t-b\right|+\sum_{t \in\left\{t: y_t< b\right\}}(1-\theta)\left|y_t-x_t b\right|\right] 
-\end{equation}
+
 $$
 
 the $\theta^{th}$ Quantile regression is defined as any solution to the following problem:
@@ -64,7 +64,9 @@ $$ Since the absolute value is convex, differentiating E\|y-c\| with respect to 
 
 $$
 \frac{\partial}{\partial c}E|y-c|=0
-$$ $$
+$$ 
+
+$$
 \begin{aligned}
 & \left\{\left.(c-y) f(y)\right|_{-\infty} ^c+\int_{y<c} \frac{\partial}{\partial c}(c-y) f(y) d y\right\}+ \\
 & \left\{\left.(y-c) f(y)\right|_c ^{+\infty}+\int_{y>c} \frac{\partial}{\partial c}(y-c) f(y) d y\right\}=0
@@ -129,7 +131,7 @@ yhat<-ols$fitted.values
 color = sign(ols$residuals)
 qplot(x=cars$speed, y=cars$dist)+geom_line(y=yhat)+
        geom_segment(aes(x=cars$speed, xend=cars$speed, y=cars$dist, yend=yhat, group=as.factor(color), color=as.factor(color)))+
-       labs(title="regression errors", color=color)
+       labs(title="regression errors using OLS", color=color)
 ```
 
 ## Evaluation metrics
