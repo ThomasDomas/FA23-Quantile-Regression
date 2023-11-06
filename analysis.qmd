@@ -92,8 +92,8 @@ df |> ggplot(aes(y = SalePrice, x = LotArea)) +
   xlab("Lot area (Square feet)") +
   theme_bw()
 
-df |> ggplot(aes(y = SalePrice, x = GrLivArea)) +
-  geom_boxplot()
+# df |> ggplot(aes(y = SalePrice, x = GrLivArea)) +
+#   geom_boxplot()
 
 df |> ggplot(aes(y = SalePrice, x = GrLivArea)) +
   geom_point(size = 0.9) +
@@ -131,7 +131,7 @@ ols_summary
 ## Model evaluation
 
 ### Mean absolute error
-```{r}
+```{r 'Mean absolute error'}
 olsMae = mae(predict(ols), df$SalePrice)
 olsMae
 Qr50Mae = mae(predict(qr50), df$SalePrice)
@@ -145,7 +145,7 @@ And QR 50th MAE value: `r format(round(Qr50Mae, digits=2), scientific=F)`.
 QR for 50th quantile has a lower MAE therefore it is has more accurate predictions.
 
 ### Root mean squared error
-```{r}
+```{r 'Root mean squared error'}
 olsRmse = rmse(predict(ols), df$SalePrice)
 olsRmse
 Qr50Rmse = rmse(predict(qr50), df$SalePrice)
@@ -156,11 +156,10 @@ OLS RMSE value: `r format(round(olsRmse, digits=2), scientific=F)`.
 
 And QR 50th RMSE value: `r format(round(Qr50Rmse, digits=2), scientific=F)`.
 
-### Variance of error
-```{r}
-# anova(ols)
-# anova.rq(qr50)
+Since OLS algorithm's goal is to minimize RMSE, as expected it has a better (lower) value. But QR has a very similar value which shows how well QR model can keep up even if it is not focusing on optimizing RMSE.
 
+### Variance of error
+```{r 'Variance of error'}
 ols_summary$df[2]
 qr50_summary$rdf
 ```
@@ -169,6 +168,7 @@ The variance of error for OLS: `r format(ols_summary$df[2], scientific=F)`.
 
 The variance of error for QR 50th: `r format(qr50_summary$rdf, scientific=F)`.
 
+Both have the same variance of error.
 
 ### Min/max error
 ```{r 'Min/Max Error'}
