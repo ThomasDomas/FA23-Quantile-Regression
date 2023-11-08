@@ -18,39 +18,15 @@ library(tinytex)
 
 # Methods
 
-## Design Matrix
-
-The design matrix is defined to be a matrix $\textbf X$ such that $\textbf X_{ij}$ (the $j^{th}$) column of the i\^{th} row of $\textbf X$) represents the value of the $j^th$ variable associated with the i\^{th} variable object.
-
-A regression model may be represent via matrix multiplication as
-
-$$
-y=\textbf X\beta + e
-$$
-
-where X is the design matrix, $\beta$ is a vector of the model's coefficient (one for each variable), e is a vector of random errors with a mean zero, and y is the vector outputs for each object.
-
 ## Ordinary least squares
 
-Ordinary least squares model or OLS, works by creating a line through the data points. Then it calculates the difference between each prediction and observation (residual). And it tries to minimize the squared value of the residuals. The ordinary least squares is defined by:
-
+Ordinary least squares (OLS) is a type of method for estimating the conditional betas in a linear equation. The betas are chosen based on the following minimization problem:
 $$
-y_i=\alpha+\beta x_i+\varepsilon_i .
+\hat{\boldsymbol{\beta}}=\underset{\boldsymbol{\beta}} argmin \space E[(Y - x_i^T\beta)^2]
 $$
+where Y is the response, $x_i^T$ is the design matrix, and $\Beta$ is a list of unknown variables. The solution to this minimization problem is going to be when $x_i^T\beta$ equals the mean of observations. 
 
-The least squares estimates in this case are given by simple formulas
-
-$$
-\widehat{\beta} =\frac{\sum_{i=1}^n\left(x_i-\bar{x}\right)\left(y_i-\bar{y}\right)}{\sum_{i=1}^n\left(x_i-\bar{x}\right)^2}
-$$
-
-$$
-\widehat{\alpha} =\bar{y}-\widehat{\beta} \bar{x}
-$$
-
-## How does the minimization of absolute deviations equal the media?
-
-### Definition of mean
+## Proof that mean minimizes sum of squares
 
 Assume, without loss of generality, that Y is a continuous random variable. The expected value of the absolute sum of deviations from a given center c can be split into the following two terms:
 

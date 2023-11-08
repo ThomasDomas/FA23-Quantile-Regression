@@ -4606,33 +4606,14 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 </div>
 <section id="methods" class="level1">
 <h1>Methods</h1>
-<section id="design-matrix" class="level2">
-<h2 class="anchored" data-anchor-id="design-matrix">Design Matrix</h2>
-<p>The design matrix is defined to be a matrix <span class="math inline">\(\textbf X\)</span> such that <span class="math inline">\(\textbf X_{ij}\)</span> (the <span class="math inline">\(j^{th}\)</span>) column of the i^{th} row of <span class="math inline">\(\textbf X\)</span>) represents the value of the <span class="math inline">\(j^th\)</span> variable associated with the i^{th} variable object.</p>
-<p>A regression model may be represent via matrix multiplication as</p>
-<p><span class="math display">\[
-y=\textbf X\beta + e
-\]</span></p>
-<p>where X is the design matrix, <span class="math inline">\(\beta\)</span> is a vector of the model’s coefficient (one for each variable), e is a vector of random errors with a mean zero, and y is the vector outputs for each object.</p>
-</section>
 <section id="ordinary-least-squares" class="level2">
 <h2 class="anchored" data-anchor-id="ordinary-least-squares">Ordinary least squares</h2>
-<p>Ordinary least squares model or OLS, works by creating a line through the data points. Then it calculates the difference between each prediction and observation (residual). And it tries to minimize the squared value of the residuals. The ordinary least squares is defined by:</p>
-<p><span class="math display">\[
-y_i=\alpha+\beta x_i+\varepsilon_i .
-\]</span></p>
-<p>The least squares estimates in this case are given by simple formulas</p>
-<p><span class="math display">\[
-\widehat{\beta} =\frac{\sum_{i=1}^n\left(x_i-\bar{x}\right)\left(y_i-\bar{y}\right)}{\sum_{i=1}^n\left(x_i-\bar{x}\right)^2}
-\]</span></p>
-<p><span class="math display">\[
-\widehat{\alpha} =\bar{y}-\widehat{\beta} \bar{x}
-\]</span></p>
+<p>Ordinary least squares (OLS) is a type of method for estimating the conditional betas in a linear equation. The betas are chosen based on the following minimization problem: <span class="math display">\[
+\hat{\boldsymbol{\beta}}=\underset{\boldsymbol{\beta}} argmin \space E[(Y - x_i^T\beta)^2]
+\]</span> where Y is the response, <span class="math inline">\(x_i^T\)</span> is the design matrix, and <span class="math inline">\(\Beta\)</span> is a list of unknown variables. The solution to this minimization problem is going to be when <span class="math inline">\(x_i^T\beta\)</span> equals the mean of observations.</p>
 </section>
-<section id="how-does-the-minimization-of-absolute-deviations-equal-the-media" class="level2">
-<h2 class="anchored" data-anchor-id="how-does-the-minimization-of-absolute-deviations-equal-the-media">How does the minimization of absolute deviations equal the media?</h2>
-<section id="definition-of-mean" class="level3">
-<h3 class="anchored" data-anchor-id="definition-of-mean">Definition of mean</h3>
+<section id="proof-that-mean-minimizes-sum-of-squares" class="level2">
+<h2 class="anchored" data-anchor-id="proof-that-mean-minimizes-sum-of-squares">Proof that mean minimizes sum of squares</h2>
 <p>Assume, without loss of generality, that Y is a continuous random variable. The expected value of the absolute sum of deviations from a given center c can be split into the following two terms:</p>
 <p><span class="math display">\[
 E|Y - c| = \int_{y\in R}|y-c|f(y)dy \\
@@ -4668,7 +4649,6 @@ E|Y - c| = \int_{y\in R}|y-c|f(y)dy \\
 \]</span></p>
 <p>Using the CDF definition and the notion of reciprocals, the previous equation simplifies to: <span class="math inline">\(F(c)-[1-F(c)] = 0\)</span> and thus <span class="math inline">\(2F(c)-1=0\)</span> <span class="math inline">\(\longrightarrow\)</span> <span class="math inline">\(F(c)=\frac{1}{2}\)</span> <span class="math inline">\(\longrightarrow\)</span> c=Me.</p>
 <p>Thus the minimization to a weighted least absolute deviation loss function is the value that gives the theta^{th} quantile.</p>
-</section>
 </section>
 </section>
 <section id="generalization-least-absolute-deviations" class="level1">
