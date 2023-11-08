@@ -1,6 +1,6 @@
 # Analysis
 
-In this analysis we aim to show that QR can achieve similar, if not better, performance to OLS across various metrics. In order to make the comparisons fair, we will compare the 50th quantile QR, which corresponds to the median, to OLS regression as both the median and mean are measures of centrality. The power of QR is that it is able to produce similar results to OLS regression without having to meet the strict assumptions of OLS such as the assumption of normality. In fact, in this data set neither the response variable or predictor variables meet the assumptions of OLS, and therefore regardless of the performance of OLS it is invalid.
+In this analysis we aim to show that QR can achieve similar— if not better— performance to OLS across various metrics. OLS and QR are very different modeling techniques, and, as such, it is difficult to compare them. However, given that OLS estimates the mean value of the response variable for a given input vector and QR estimates the nth quantile of the response variable for a given input vector, the 50th quantile QR (QR50)— which corresponds to the median— can be used as a comparison to OLS as both the median and mean are measures of centrality. The limitation of this analysis is that the data set does not meet the assumptions of OLS. Specifically, the data is heavily skewed and the conditional distributions are also skewed, meaning median of the conditional distribution is a better proxy for the centrality of the distribution. The power of QR is that it is able to produce similar results to OLS regression without having to meet the strict assumptions of OLS. Regardless of the fact the OLS regressions are statistically invalid, it is still going to minimizee the square deviations of the residuals from the regression curve, which often results much higher scores across popular metrics than other modeling techniques, and will thus serve as a proper benchmark to test the mettle of QR in a data set that is beyond the capabilities of OLS regression.
 
 ```{r, echo=FALSE, include=FALSE}
 # installing/loading the package:
@@ -46,44 +46,87 @@ df <- read.csv("TrainData.csv") |>
 
 ```
 
-### Visualizing data
+### Visualizing the Data
 
-There are many different kinds of predictor variables in this data set. For instance, there are continuous variables like GrLivArea, discrete/coutning variables likr YearBuilt, and categorical variables like HouseStyle. In all cases we cases we can see that the data is not normally distributed, including in the response variable, SalePrice. Thus, the assumptions of OLS are not met so it cannot be used to make predictions on the data. However, for the purposes of comparing the performance of OLS to QR. We will show that QR is able to give similar results for this data set to OLS, and because it does not require the same assumptions as OLS, one can actually use QR in practice for this kind of data, which is more common than normally distributed data in many important fields, like finance and epidemiology. 
+There are many different kinds of predictor variables in this data set. For instance, there are continuous variables such as GrLivArea, counting variables such as YearBuilt, and categorical variables such as HouseStyle. In all of these cases, we can see that the data is not normally distributed, including the response variable, SalePrice. The relationships between the variables and their distributions are illustrated in a joint plot below.
 
-```{r 'Visualizing data'}
+{r 'Visualizing data'}
 suppressWarnings({
 
 p1 <- df |> ggplot(aes(x = GrLivArea)) +
   geom_histogram(binwidth = 100) +
   theme_bw() +
+  theme(axis.text.y = element_blank(),
+        axis.text.x = element_text(angle = 90),
+        axis.ticks.y = element_blank()) +
   ylab(NULL) +
-  xlab("Above Ground Area (sq. ft.)")
+  xlab("House Area (sq. ft.)") +
+  scale_x_continuous(position = "top")
 
 p2 <- df |> ggplot(aes(x = YearBuilt)) +
   geom_histogram(binwidth = 5) +
   theme_bw() +
+  theme(axis.text.y = element_blank(),
+        axis.text.x = element_text(angle = 90),
+        axis.ticks.y = element_blank()) +
   ylab(NULL) +
-  xlab("Year Built")
+  xlab("Year Built") +
+  scale_x_continuous(position = "top")
 
 p3 <- df |> ggplot(aes(x = HouseStyle)) +
   geom_histogram(stat="count") +
   theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(axis.text.y = element_blank(), 
+        axis.text.x = element_text(angle = 90),
+        axis.ticks.y = element_blank()) +
   ylab(NULL) +
-  xlab("House Style")
+  xlab("House Style") +
+  scale_x_discrete(position = "top")
 
-p4 <- df |> ggplot(aes(x = SalePrice)) +
+p4 <- ggplot() + theme_minimal()
+
+p5 <-  df |> ggplot(aes(x = GrLivArea, y = SalePrice)) +
+  geom_point() +
+  theme_bw() +
+  theme(axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  ylab(NULL) +
+  xlab(NULL)
+p6 <-  df |> ggplot(aes(x = YearBuilt, y = SalePrice)) +
+  geom_point() +
+  theme_bw() +
+  theme(axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  ylab(NULL) +
+  xlab(NULL)
+p7 <-  df |> ggplot(aes(x = HouseStyle, y = SalePrice)) +
+  geom_point() +
+  theme_bw() +
+  theme(axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  ylab(NULL) +
+  xlab(NULL)
+
+p8 <- df |> ggplot(aes(x = SalePrice)) +
   geom_histogram(binwidth = 10000) +
   theme_bw() +
   ylab(NULL) +
-  xlab("Sale Price ($)")
+  xlab("Sale Price ($)") + 
+  coord_flip() +
+  scale_x_continuous(position = "top") +
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
 
-grid.arrange(p1, p2, p3, p4, nrow = 2)
+
+grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, nrow = 2)
                  
 })
-```
+
+Thus, the data fails to meet the assumptions of OLS, requiring the usage of a more flexible model like QR.
 
 ### Visualizing quantile regression vs OLS
+
+QR and OLS...
 
 ```{r, 'Visualizing housing'}
 
@@ -96,7 +139,11 @@ df |> ggplot(aes(y = SalePrice, x = LotArea)) +
   ylab("Sale price ($)") +
   xlab("Lot area (Square feet)") +
   theme_bw()
+```
 
+QR and OLS...
+
+```{r, 'Visualizing housing cont'}
 # df |> ggplot(aes(y = SalePrice, x = GrLivArea)) +
 #   geom_boxplot()
 
@@ -114,6 +161,8 @@ df |> ggplot(aes(y = SalePrice, x = GrLivArea)) +
   ylab("Above ground area (Square feet)") +
   theme_bw()
 ```
+
+QR and OLS...
 
 ## Model creation
 
