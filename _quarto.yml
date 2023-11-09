@@ -4,13 +4,12 @@ project:
 
 book:
   title: "FA23-Quantile Regression"
-  author: ""
+  author: "Jorge Galdos, Noureldin Kamel, and Thomas Domas"
   date: "10/7/2023"
   chapters:
     - index.qmd
     - intro.qmd
     - methods.qmd
-    # - Visual_Representations.qmd
     - analysis.qmd
     - summary.qmd
     - references.qmd
