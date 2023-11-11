@@ -137,15 +137,14 @@ p_Reg <- plot(qrs$coefficients[7, ])
 p_CBlock <- plot(qrs$coefficients[8, ])
 p_Conic <- plot(qrs$coefficients[9, ])
 
-grid.arrange(plot(qrs$coefficients[2, ]),
+cowplot::plot_grid(plot(qrs$coefficients[2, ]),
 plot(qrs$coefficients[3, ]),
 plot(qrs$coefficients[4, ]),
 plot(qrs$coefficients[5, ]),
 plot(qrs$coefficients[6, ]),
 plot(qrs$coefficients[7, ]),
 plot(qrs$coefficients[8, ]),
-plot(qrs$coefficients[9, ]),
-ncol=3, nrow=4)
+plot(qrs$coefficients[9, ]))
 ```
 
 ### OLS model
