@@ -1,6 +1,6 @@
 # Analysis
 
-In this analysis we aim to show that QR can achieve similar— if not better— performance to OLS across various metrics. OLS and QR are very different modeling techniques, and, as such, it is difficult to compare them. However, given that OLS estimates the mean value of the response variable for a given input vector and QR estimates the nth quantile of the response variable for a given input vector, the 50th quantile QR (QR50)— which corresponds to the median— can be used as a comparison to OLS as both the median and mean are measures of centrality. The limitation of this analysis is that the data set does not meet the assumptions of OLS. Specifically, the data is heavily skewed and the conditional distributions are also skewed, meaning median of the conditional distribution is a better proxy for the centrality of the distribution. The power of QR is that it is able to produce similar results to OLS regression without having to meet the strict assumptions of OLS. Regardless of the fact the OLS regressions are statistically invalid, it is still going to minimizee the square deviations of the residuals from the regression curve, which often results much higher scores across popular metrics than other modeling techniques, and will thus serve as a proper benchmark to test the mettle of QR in a data set that is beyond the capabilities of OLS regression.
+In this analysis we aim to show that QR can achieve similar--- if not better--- performance to OLS across various metrics. OLS and QR are very different modeling techniques, and, as such, it is difficult to compare them. However, given that OLS estimates the mean value of the response variable for a given input vector and QR estimates the nth quantile of the response variable for a given input vector, the 50th quantile QR (QR50)--- which corresponds to the median--- can be used as a comparison to OLS as both the median and mean are measures of centrality. The limitation of this analysis is that the data set does not meet the assumptions of OLS. Specifically, the data is heavily skewed and the conditional distributions are also skewed, meaning median of the conditional distribution is a better proxy for the centrality of the distribution. The power of QR is that it is able to produce similar results to OLS regression without having to meet the strict assumptions of OLS. Regardless of the fact the OLS regressions are statistically invalid, it is still going to minimizee the square deviations of the residuals from the regression curve, which often results much higher scores across popular metrics than other modeling techniques, and will thus serve as a proper benchmark to test the mettle of QR in a data set that is beyond the capabilities of OLS regression.
 
 ```{r, echo=FALSE, include=FALSE}
 # installing/loading the package:
@@ -19,6 +19,7 @@ library(haven)
 library(gridExtra)
 library(tidyverse)
 library(Metrics)
+require(gridExtra)
 #library(equatiomatic)
 #library(fastDummies)
 #library(pscl)
@@ -50,76 +51,22 @@ df <- read.csv("TrainData.csv") |>
 
 There are many different kinds of predictor variables in this data set. For instance, there are continuous variables such as GrLivArea, counting variables such as YearBuilt, and categorical variables such as HouseStyle. In all of these cases, we can see that the data is not normally distributed, including the response variable, SalePrice. The relationships between the variables and their distributions are illustrated in a joint plot below.
 
-{r 'Visualizing data'}
-suppressWarnings({
+{r 'Visualizing data'} suppressWarnings({
 
-p1 <- df |> ggplot(aes(x = GrLivArea)) +
-  geom_histogram(binwidth = 100) +
-  theme_bw() +
-  theme(axis.text.y = element_blank(),
-        axis.text.x = element_text(angle = 90),
-        axis.ticks.y = element_blank()) +
-  ylab(NULL) +
-  xlab("House Area (sq. ft.)") +
-  scale_x_continuous(position = "top")
+p1 \<- df \|\> ggplot(aes(x = GrLivArea)) + geom_histogram(binwidth = 100) + theme_bw() + theme(axis.text.y = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks.y = element_blank()) + ylab(NULL) + xlab("House Area (sq. ft.)") + scale_x_continuous(position = "top")
 
-p2 <- df |> ggplot(aes(x = YearBuilt)) +
-  geom_histogram(binwidth = 5) +
-  theme_bw() +
-  theme(axis.text.y = element_blank(),
-        axis.text.x = element_text(angle = 90),
-        axis.ticks.y = element_blank()) +
-  ylab(NULL) +
-  xlab("Year Built") +
-  scale_x_continuous(position = "top")
+p2 \<- df \|\> ggplot(aes(x = YearBuilt)) + geom_histogram(binwidth = 5) + theme_bw() + theme(axis.text.y = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks.y = element_blank()) + ylab(NULL) + xlab("Year Built") + scale_x_continuous(position = "top")
 
-p3 <- df |> ggplot(aes(x = HouseStyle)) +
-  geom_histogram(stat="count") +
-  theme_bw() +
-  theme(axis.text.y = element_blank(), 
-        axis.text.x = element_text(angle = 90),
-        axis.ticks.y = element_blank()) +
-  ylab(NULL) +
-  xlab("House Style") +
-  scale_x_discrete(position = "top")
+p3 \<- df \|\> ggplot(aes(x = HouseStyle)) + geom_histogram(stat="count") + theme_bw() + theme(axis.text.y = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks.y = element_blank()) + ylab(NULL) + xlab("House Style") + scale_x_discrete(position = "top")
 
-p4 <- ggplot() + theme_minimal()
+p4 \<- ggplot() + theme_minimal()
 
-p5 <-  df |> ggplot(aes(x = GrLivArea, y = SalePrice)) +
-  geom_point() +
-  theme_bw() +
-  theme(axis.text = element_blank(),
-        axis.ticks = element_blank()) +
-  ylab(NULL) +
-  xlab(NULL)
-p6 <-  df |> ggplot(aes(x = YearBuilt, y = SalePrice)) +
-  geom_point() +
-  theme_bw() +
-  theme(axis.text = element_blank(),
-        axis.ticks = element_blank()) +
-  ylab(NULL) +
-  xlab(NULL)
-p7 <-  df |> ggplot(aes(x = HouseStyle, y = SalePrice)) +
-  geom_point() +
-  theme_bw() +
-  theme(axis.text = element_blank(),
-        axis.ticks = element_blank()) +
-  ylab(NULL) +
-  xlab(NULL)
+p5 \<- df \|\> ggplot(aes(x = GrLivArea, y = SalePrice)) + geom_point() + theme_bw() + theme(axis.text = element_blank(), axis.ticks = element_blank()) + ylab(NULL) + xlab(NULL) p6 \<- df \|\> ggplot(aes(x = YearBuilt, y = SalePrice)) + geom_point() + theme_bw() + theme(axis.text = element_blank(), axis.ticks = element_blank()) + ylab(NULL) + xlab(NULL) p7 \<- df \|\> ggplot(aes(x = HouseStyle, y = SalePrice)) + geom_point() + theme_bw() + theme(axis.text = element_blank(), axis.ticks = element_blank()) + ylab(NULL) + xlab(NULL)
 
-p8 <- df |> ggplot(aes(x = SalePrice)) +
-  geom_histogram(binwidth = 10000) +
-  theme_bw() +
-  ylab(NULL) +
-  xlab("Sale Price ($)") + 
-  coord_flip() +
-  scale_x_continuous(position = "top") +
-  theme(axis.text.x = element_blank(),
-        axis.ticks.x = element_blank())
-
+p8 \<- df \|\> ggplot(aes(x = SalePrice)) + geom_histogram(binwidth = 10000) + theme_bw() + ylab(NULL) + xlab("Sale Price (\$)") + coord_flip() + scale_x_continuous(position = "top") + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
 
 grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, nrow = 2)
-                 
+
 })
 
 Thus, the data fails to meet the assumptions of OLS, requiring the usage of a more flexible model like QR.
@@ -174,6 +121,34 @@ qr50_summary = summary(qr50)
 qr50_summary
 ```
 
+```{r, results='hide', echo=FALSE, message=FALSE, warning=FALSE}
+#Generate all QR models 
+taus <- seq(from=0, to=1, by=.01)
+qrs = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=taus)
+```
+```{r}
+num_of_rows <- nrow(qrs$coefficients)
+print(qrs$coefficients)
+p_grLivArea <- plot(qrs$coefficients[2, ])
+p_LotArea <- plot(qrs$coefficients[3, ])
+p_TotsRmsAbvGrd <- plot(qrs$coefficients[4, ])
+p_IR2 <- plot(qrs$coefficients[5, ])
+p_IR3 <- plot(qrs$coefficients[6, ])
+p_Reg <- plot(qrs$coefficients[7, ])
+p_CBlock <- plot(qrs$coefficients[8, ])
+p_Conic <- plot(qrs$coefficients[9, ])
+
+grid.arrange(plot(qrs$coefficients[2, ]),
+plot(qrs$coefficients[3, ]),
+plot(qrs$coefficients[4, ]),
+plot(qrs$coefficients[5, ]),
+plot(qrs$coefficients[6, ]),
+plot(qrs$coefficients[7, ]),
+plot(qrs$coefficients[8, ]),
+plot(qrs$coefficients[9, ]),
+ncol=3, nrow=4)
+```
+
 ### OLS model
 
 ```{r 'OLS model creation'}
@@ -185,6 +160,7 @@ ols_summary
 ## Model evaluation
 
 ### Mean absolute error
+
 ```{r 'Mean absolute error'}
 olsMae = mae(predict(ols), df$SalePrice)
 olsMae
@@ -199,6 +175,7 @@ And QR 50th MAE value: `r format(round(Qr50Mae, digits=2), scientific=F)`.
 QR for 50th quantile has a lower MAE therefore it is has more accurate predictions.
 
 ### Root mean squared error
+
 ```{r 'Root mean squared error'}
 olsRmse = rmse(predict(ols), df$SalePrice)
 olsRmse
@@ -213,6 +190,7 @@ And QR 50th RMSE value: `r format(round(Qr50Rmse, digits=2), scientific=F)`.
 Since OLS algorithm's goal is to minimize RMSE, as expected it has a better (lower) value. But QR has a very similar value which shows how well QR model can keep up even if it is not focusing on optimizing RMSE.
 
 ### Variance of error
+
 ```{r 'Variance of error'}
 ols_summary$df[2]
 qr50_summary$rdf
@@ -225,6 +203,7 @@ The variance of error for QR 50th: `r format(qr50_summary$rdf, scientific=F)`.
 Both have the same variance of error.
 
 ### Min/max error
+
 ```{r 'Min/Max Error'}
 # Min OLS error
 format(round(min(ols_summary$residuals), digits=0), scientific=F)
@@ -245,6 +224,7 @@ format(round(max(abs(qr50_summary$residuals)), digits=0), scientific=F)
 ```
 
 #### OLS
+
 Min OLS error: `r format(round(min(ols_summary$residuals), digits=0), scientific=F)`.
 
 Absolute min OLS error: `r format(round(min(abs(ols_summary$residuals)), digits=0), scientific=F)`.
@@ -254,6 +234,7 @@ Max OLS error: `r format(round(max(ols_summary$residuals), digits=0), scientific
 Absolute max OLS error: `r format(round(max(abs(ols_summary$residuals)), digits=0), scientific=F)`.
 
 #### QR
+
 Min QR 50th error: `r format(round(min(qr50_summary$residuals), digits=0), scientific=F)`.
 
 Absolute min QR 50th error: `r format(round(min(abs(qr50_summary$residuals)), digits=0), scientific=F)`.
