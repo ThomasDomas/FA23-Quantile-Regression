@@ -128,7 +128,6 @@ qrs = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(Lot
 ```
 ```{r}
 num_of_rows <- nrow(qrs$coefficients)
-print(qrs$coefficients)
 p_grLivArea <- plot(qrs$coefficients[2, ])
 p_LotArea <- plot(qrs$coefficients[3, ])
 p_TotsRmsAbvGrd <- plot(qrs$coefficients[4, ])
