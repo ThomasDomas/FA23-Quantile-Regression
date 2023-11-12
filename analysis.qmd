@@ -11,7 +11,7 @@ In this analysis we aim to show that QR can achieve similar--- if not better--- 
 # # using the package:
 # updateR()
 
-# install.packages('rmarkdown')
+# install.packages('cowplot')
 # install.packages("quantreg")
 library("quantreg")
 #library(sjPlot)
@@ -53,23 +53,29 @@ df <- read.csv("TrainData.csv") |>
 
 There are many different kinds of predictor variables in this data set. For instance, there are continuous variables such as GrLivArea, counting variables such as YearBuilt, and categorical variables such as HouseStyle. In all of these cases, we can see that the data is not normally distributed, including the response variable, SalePrice. The relationships between the variables and their distributions are illustrated in a joint plot below.
 
-{r 'Visualizing data'} suppressWarnings({
+```{r 'Visualizing data'}
+suppressWarnings({
 
-p1 \<- df \|\> ggplot(aes(x = GrLivArea)) + geom_histogram(binwidth = 100) + theme_bw() + theme(axis.text.y = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks.y = element_blank()) + ylab(NULL) + xlab("House Area (sq. ft.)") + scale_x_continuous(position = "top")
+p1 <- df |> ggplot(aes(x = GrLivArea)) + geom_histogram(binwidth = 100) + theme_bw() + theme(axis.text.y = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks.y = element_blank()) + ylab(NULL) + xlab("House Area (sq. ft.)") + scale_x_continuous(position = "top")
 
-p2 \<- df \|\> ggplot(aes(x = YearBuilt)) + geom_histogram(binwidth = 5) + theme_bw() + theme(axis.text.y = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks.y = element_blank()) + ylab(NULL) + xlab("Year Built") + scale_x_continuous(position = "top")
+p2 <- df |> ggplot(aes(x = YearBuilt)) + geom_histogram(binwidth = 5) + theme_bw() + theme(axis.text.y = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks.y = element_blank()) + ylab(NULL) + xlab("Year Built") + scale_x_continuous(position = "top")
 
-p3 \<- df \|\> ggplot(aes(x = HouseStyle)) + geom_histogram(stat="count") + theme_bw() + theme(axis.text.y = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks.y = element_blank()) + ylab(NULL) + xlab("House Style") + scale_x_discrete(position = "top")
+p3 <- df |> ggplot(aes(x = HouseStyle)) + geom_histogram(stat="count") + theme_bw() + theme(axis.text.y = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks.y = element_blank()) + ylab(NULL) + xlab("House Style") + scale_x_discrete(position = "top")
 
-p4 \<- ggplot() + theme_minimal()
+p4 <- ggplot() + theme_minimal()
 
-p5 \<- df \|\> ggplot(aes(x = GrLivArea, y = SalePrice)) + geom_point() + theme_bw() + theme(axis.text = element_blank(), axis.ticks = element_blank()) + ylab(NULL) + xlab(NULL) p6 \<- df \|\> ggplot(aes(x = YearBuilt, y = SalePrice)) + geom_point() + theme_bw() + theme(axis.text = element_blank(), axis.ticks = element_blank()) + ylab(NULL) + xlab(NULL) p7 \<- df \|\> ggplot(aes(x = HouseStyle, y = SalePrice)) + geom_point() + theme_bw() + theme(axis.text = element_blank(), axis.ticks = element_blank()) + ylab(NULL) + xlab(NULL)
+p5 <- df |> ggplot(aes(x = GrLivArea, y = SalePrice)) + geom_point() + theme_bw() + theme(axis.text = element_blank(), axis.ticks = element_blank()) + ylab(NULL) + xlab(NULL)
 
-p8 \<- df \|\> ggplot(aes(x = SalePrice)) + geom_histogram(binwidth = 10000) + theme_bw() + ylab(NULL) + xlab("Sale Price (\$)") + coord_flip() + scale_x_continuous(position = "top") + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+p6 <- df |> ggplot(aes(x = YearBuilt, y = SalePrice)) + geom_point() + theme_bw() + theme(axis.text = element_blank(), axis.ticks = element_blank()) + ylab(NULL) + xlab(NULL)
+
+p7 <- df |> ggplot(aes(x = HouseStyle, y = SalePrice)) + geom_point() + theme_bw() + theme(axis.text = element_blank(), axis.ticks = element_blank()) + ylab(NULL) + xlab(NULL)
+
+p8 <- df |> ggplot(aes(x = SalePrice)) + geom_histogram(binwidth = 10000) + theme_bw() + ylab(NULL) + xlab("Sale Price ($)") + coord_flip() + scale_x_continuous(position = "top") + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
 
 grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, nrow = 2)
 
 })
+```
 
 Thus, the data fails to meet the assumptions of OLS, requiring the usage of a more flexible model like QR.
 
