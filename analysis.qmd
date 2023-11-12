@@ -20,6 +20,8 @@ library(gridExtra)
 library(tidyverse)
 library(Metrics)
 require(gridExtra)
+library(cowplot)
+library(ggplot2)
 #library(equatiomatic)
 #library(fastDummies)
 #library(pscl)
@@ -118,38 +120,39 @@ QR and OLS...
 ```{r 'QR model creation'}
 qr50 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.5)
 qr50_summary = summary(qr50)
-qr50_summary
 ```
 
 ```{r, results='hide', echo=FALSE, message=FALSE, warning=FALSE}
 #Generate all QR models 
 taus <- seq(from=0, to=1, by=.01)
 qrs = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=taus)
+
 ```
 ```{r}
 num_of_rows <- nrow(qrs$coefficients)
-p_grLivArea <- plot(qrs$coefficients[2, ])
-p_LotArea <- plot(qrs$coefficients[3, ])
-p_TotsRmsAbvGrd <- plot(qrs$coefficients[4, ])
-p_IR2 <- plot(qrs$coefficients[5, ])
-p_IR3 <- plot(qrs$coefficients[6, ])
-p_Reg <- plot(qrs$coefficients[7, ])
-p_CBlock <- plot(qrs$coefficients[8, ])
-p_Conic <- plot(qrs$coefficients[9, ])
+par(mfrow = c(2, 2))
+plot.new()
+mtext("Beta change per quantile level", side = 3, line = - 2, outer = TRUE)
+plot(qrs$coefficients[1, ], xlab="Quantiles", ylab="Y-Intercepts")
+plot(qrs$coefficients[2, ], xlab="Quantiles", ylab="Lot-Area")
+plot(qrs$coefficients[3, ], xlab="Quantiles", ylab="TotRmsAbvGrd")
+plot(qrs$coefficients[4, ], xlab="Quantiles", ylab="LotShape-IR2")
+mtext("Beta change per quantile level", side = 3, line = - 2, outer = TRUE)
+plot(qrs$coefficients[5, ], xlab="Quantiles", ylab="LotShape-IR3")
+plot(qrs$coefficients[6, ], xlab="Quantiles", ylab="LotShape-Reg")
+plot(qrs$coefficients[7, ], xlab="Quantiles", ylab="Foundation-CBlock")
+plot(qrs$coefficients[8, ], xlab="Quantiles", ylab="Foundation-PConc")
+mtext("Beta change per quantile level", side = 3, line = - 2, outer = TRUE)
+plot(qrs$coefficients[9, ], xlab="Quantiles", ylab="Foundation-Slab")
+plot(qrs$coefficients[10, ], xlab="Quantiles", ylab="Foundation-Stone")
+plot(qrs$coefficients[11, ], xlab="Quantiles", ylab="Foundation-Wood")
 
-cowplot::plot_grid(plot(qrs$coefficients[2, ]),
-plot(qrs$coefficients[3, ]),
-plot(qrs$coefficients[4, ]),
-plot(qrs$coefficients[5, ]),
-plot(qrs$coefficients[6, ]),
-plot(qrs$coefficients[7, ]),
-plot(qrs$coefficients[8, ]),
-plot(qrs$coefficients[9, ]))
 ```
 
 ### OLS model
 
 ```{r 'OLS model creation'}
+
 ols = lm(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation))
 ols_summary = summary(ols)
 ols_summary
