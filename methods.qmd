@@ -21,7 +21,7 @@ A regression consists of the mean function and the variance function [1]
 
 $$
 E(Y|X=x)=\beta_0 + \beta_1X \\
-Var(Y|X=x) = \sigma^2
+Var(Y|X=x) = \sigma^2 \\
 $$
 Here X is a matrix of observations, and the $\beta$s attempt to estimate the observed outcomes $y_i$. However, the estimates are rarely perfect, so an error, also called a residual, term must be introduced. 
 $$

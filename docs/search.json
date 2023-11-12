@@ -116,7 +116,7 @@
     "href": "methods.html#regression",
     "title": "3  Methods",
     "section": "3.1 Regression",
-    "text": "3.1 Regression\nA regression consists of the mean function and the variance function [1]\n\\[\nE(Y|X=x)=\\beta_0 + \\beta_1X \\\\\nVar(Y|X=x) = \\sigma^2\n\\] Here X is a matrix of observations, and the \\(\\beta\\)s attempt to estimate the observed outcomes \\(y_i\\). However, the estimates are rarely perfect, so an error, also called a residual, term must be introduced. \\[\ny_i = \\hat{y} + \\epsilon_i\n\\] where \\(y_i\\) is the actual response variable, \\(\\hat{y}\\) is the estimate, and \\(\\epsilon\\), the error term, represents the difference between \\(\\hat{y}\\) and \\(y_i\\).\nRegression can use different criterions. These criterions will yield different betas which will have different behaviors."
+    "text": "3.1 Regression\nA regression consists of the mean function and the variance function [1]\n\\[\nE(Y|X=x)=\\beta_0 + \\beta_1X \\\\\nVar(Y|X=x) = \\sigma^2 \\\\\n\\] Here X is a matrix of observations, and the \\(\\beta\\)s attempt to estimate the observed outcomes \\(y_i\\). However, the estimates are rarely perfect, so an error, also called a residual, term must be introduced. \\[\ny_i = \\hat{y} + \\epsilon_i\n\\] where \\(y_i\\) is the actual response variable, \\(\\hat{y}\\) is the estimate, and \\(\\epsilon\\), the error term, represents the difference between \\(\\hat{y}\\) and \\(y_i\\).\nRegression can use different criterions. These criterions will yield different betas which will have different behaviors."
   },
   {
     "objectID": "methods.html",
