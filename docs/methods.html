@@ -4735,7 +4735,7 @@ argmin\sum_i^n \epsilon_i^2 = \sum_i^n (y_i - \hat{y}_i)^2
 </section>
 <section id="proof-the-median-minimizes-the-sum-of-absolute-residuals" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="proof-the-median-minimizes-the-sum-of-absolute-residuals"><span class="header-section-number">3.3</span> Proof the median minimizes the sum of absolute residuals</h2>
-<p>Assume, without loss of generality, that Y is a continuous random variable. The expected value of the absolute sum of deviations from a given center c can be split into the following two terms:</p>
+<p>Assume, without loss of generality, that Y is a continuous random variable. The expected value of the absolute sum of deviations from a given center c can be split into the following two terms [2]:</p>
 <p><span class="math display">\[
 E|Y - c| = \int_{y\in R}|y-c|f(y)dy \\
 =\int_{y &lt; c} |y-c|f(y)dy + \int_{y&gt;c}|y-c|f(y)dy  \\
@@ -4773,7 +4773,7 @@ E|Y - c| = \int_{y\in R}|y-c|f(y)dy \\
 </section>
 <section id="generalization-least-absolute-deviations" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="generalization-least-absolute-deviations"><span class="header-section-number">3.4</span> Generalization least absolute deviations</h2>
-<p>The solution of the minimization problem formulated in Equation (1.2) is thus the median. The above solution does not change by multiplying the two components of <span class="math inline">\(E|Y-c|\)</span> by a constant <span class="math inline">\(\theta\)</span> and <span class="math inline">\((1-\theta)\)</span>, respectively. This allows us to formulate the same problem for the generic quantile <span class="math inline">\(\theta\)</span>. Namely, using the same strategy for Equation (1.5), we obtain:</p>
+<p>The solution of the minimization problem above is thus the median. The above solution does not change by multiplying the two components of <span class="math inline">\(E|Y-c|\)</span> by a constant <span class="math inline">\(\theta\)</span> and <span class="math inline">\((1-\theta)\)</span>, respectively. This allows us to formulate the same problem for the generic quantile <span class="math inline">\(\theta\)</span> sing the same strategy used above:</p>
 <p><span class="math display">\[
 \frac{\partial}{\partial c} E\left[\rho_\theta(Y-c)\right]=\frac{\partial}{\partial c}\left\{(1-\theta) \int_{-\infty}^c|y-c| f(y) d y+\theta \int_c^{+\infty}|y-c| f(y) d y\right\} .
 \]</span></p>
@@ -4879,6 +4879,7 @@ q_\theta=\underset{c}{\operatorname{argmin}} E\left[\rho_\theta(Y-c)\right]
 <section id="citations" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Citations</h1>
 <p>[1]“Applied Linear Regression - ProQuest,” www.proquest.com. https://www.proquest.com/legacydocview/EBC/7103845?accountid=10920. (accessed Nov.&nbsp;12, 2023).</p>
+<p>[2]“Quantile Regression : Theory and Applications” Davino, Cristina., et al.&nbsp;Quantile Regression : Theory and Applications, John Wiley &amp; Sons, Incorporated, 2013. ProQuest Ebook Central, https://www.proquest.com/legacydocview/EBC/1489927?accountid=1092 . (accessed Nov.&nbsp;12, 2023)</p>
 
 
 </section>

@@ -59,7 +59,7 @@ The beta estimate will be the median of all of the points.
 
 ## Proof the median minimizes the sum of absolute residuals
 
-Assume, without loss of generality, that Y is a continuous random variable. The expected value of the absolute sum of deviations from a given center c can be split into the following two terms:
+Assume, without loss of generality, that Y is a continuous random variable. The expected value of the absolute sum of deviations from a given center c can be split into the following two terms [2]:
 
 $$
 E|Y - c| = \int_{y\in R}|y-c|f(y)dy \\
@@ -109,7 +109,7 @@ Thus the minimization to a weighted least absolute deviation loss function is th
 
 ## Generalization least absolute deviations
 
-The solution of the minimization problem formulated in Equation (1.2) is thus the median. The above solution does not change by multiplying the two components of $E|Y-c|$ by a constant $\theta$ and $(1-\theta)$, respectively. This allows us to formulate the same problem for the generic quantile $\theta$. Namely, using the same strategy for Equation (1.5), we obtain:
+The solution of the minimization problem above is thus the median. The above solution does not change by multiplying the two components of $E|Y-c|$ by a constant $\theta$ and $(1-\theta)$, respectively. This allows us to formulate the same problem for the generic quantile $\theta$ sing the same strategy used above:
 
 $$
 \frac{\partial}{\partial c} E\left[\rho_\theta(Y-c)\right]=\frac{\partial}{\partial c}\left\{(1-\theta) \int_{-\infty}^c|y-c| f(y) d y+\theta \int_c^{+\infty}|y-c| f(y) d y\right\} .
@@ -212,3 +212,5 @@ Although OLS is generally better for normally distributed data, QR performs rela
 
 # Citations
 [1]“Applied Linear Regression - ProQuest,” www.proquest.com. https://www.proquest.com/legacydocview/EBC/7103845?accountid=10920. (accessed Nov. 12, 2023).
+
+[2]"Quantile Regression : Theory and Applications" Davino, Cristina., et al. Quantile Regression : Theory and Applications, John Wiley & Sons, Incorporated, 2013. ProQuest Ebook Central, https://www.proquest.com/legacydocview/EBC/1489927?accountid=1092 . (accessed Nov. 12, 2023)
