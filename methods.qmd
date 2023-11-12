@@ -15,13 +15,21 @@ library(tinytex)
 
 # Methods
 
-A regression model may be represented via matrix multiplication as
+## Regression
+
+A regression consists of the mean function and the variance function [1]
 
 $$
-\hat{y}=\alpha + \textbf X\beta + e
+E(Y|X=x)=\beta_0 + \beta_1X \\
+Var(Y|X=x) = \sigma^2
 $$
+Here X is a matrix of observations, and the $\beta$s attempt to estimate the observed outcomes $y_i$. However, the estimates are rarely perfect, so an error, also called a residual, term must be introduced. 
+$$
+y_i = \hat{y} + \epsilon_i
+$$
+where $y_i$ is the actual response variable, $\hat{y}$ is the estimate, and $\epsilon$, the error term, represents the difference between $\hat{y}$ and $y_i$.
 
-where X is the design matrix, $\beta$ is a vector of the model's coefficient (one for each variable), e is a vector of random errors with a mean zero, and y is the vector outputs for each object.
+Regression can use different criterions. These criterions will yield different betas which will have different behaviors. 
 
 ## Ordinary least squares
 
@@ -43,6 +51,7 @@ $$
 $$
 The beta estimate will be the mean of the all the points. 
 
+Another common but less known way of 
 ## Quantile Regression
 Quantile regression is another regression technique, except it minimizes the sum of the absolute residuals:
 $$argmin \space E(|y-\hat{y}|)$$
@@ -200,38 +209,6 @@ Thus, we can see that QR is not online a robust \## Evaluation metrics
 ## Summary of OLS and QR
 OLS minimizes the sum of squared residuals, and QR minimizes the sum of absolute valued residuals. This leads to differing results when placing the regression line. OLS will place the line between the arithmetic mean of all the points, but QR will place its regression line through the median of all of the points. In other words, given an input of the 50th quantile, QR regression will place the regression line in such a way that half of the points will be above the regression line and half will be below the regression line. In general, given an input of the $\theta^{th}$ quantile, QR will place a regression line so that $\theta$ percentage of points will be below the regression line. This allows QR has some interesting benefits.
 Although OLS is generally better for normally distributed data, QR performs relatively well with normally distributed data as well. However, one of the biggest charms of QR is that it can be used on non-normally distributed data. Since QR allows statisticians to look at the behavior across the entire distribution, rather than just fixating on the mean. With QR, one can see at what intervals the model breaks down or excels. 
-### Mean absolute error
 
-The mean absolute error (MAE) is the average magnitude of the errors of the values predicted by the regression and the actual observed values for the response variable. Because it is a simple average, all errors have the same weight, there are no penalties for different magnitude deviations \[2\]. MAE assumes that the errors are normally distributed, if the error distribution was non-normal, the average may not be a good measure of centrality and can paint a false picture of the goodness-of-fit of the regression curve. MAE also assumes that the errors are unbiased. While the average magnitude of the errors is expected to be non-zero (unless the regression is a perfect fit) the average of the residuals, i.e., the deviation of the predicted value from the actual value, considering underestimation and overestimation. This means on average the regression curve does not over or underestimate.
-
-$$
-\text { MAE }=\frac{1}{n}\sum_{i=1}^n\left|y_i-\hat{y}_i\right|=\frac{1}{n}\sum_{i=1}^n\left|e_i\right|
-$$
-
-### Root mean squared error
-
-It calculates the differences between the predictions and the actual observations (residuals) and then gets their quadratic mean for each. This type of error gives a larger penalty for larger errors \[2\]. This error also assumes that the errors are unbiased and that they follow a normal distribution. This gives a picture of the size of residuals in comparison to the regression line.
-
-$$
-\operatorname{RMSE}=\sqrt{\operatorname{MSE}}=\sqrt{\frac{1}{n}\sum_{i=1}^n (y_i-\hat{y}_i)^2}=\sqrt{\frac{1}{n}\sum_{i=1}^n e_i^2}
-$$
-
-### Variance of error
-
-It is a measure of how spread all the errors are from the mean of all errors.
-
-$$
-\operatorname{Var}(e)=\frac{1}{n}\sum_{i=1}^n(e_i-\bar{e})^2
-$$
-
-### Min/max error
-
-A measure of the maximum residual for a prediction and the minimum residual.
-
-$$
-f: X \rightarrow \mathbb{R} \text {, if }(\forall e \in X_{error}) f\left(e_i\right) \geq f(e)
-$$
-
-$$
-f: X \rightarrow \mathbb{R} \text {, if }(\forall e \in X_{error}) f\left(e_i\right) \leq f(e)
-$$
+# Citations
+[1]“Applied Linear Regression - ProQuest,” www.proquest.com. https://www.proquest.com/legacydocview/EBC/7103845?accountid=10920. (accessed Nov. 12, 2023).

@@ -4667,19 +4667,15 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#ordinary-least-squares" id="toc-ordinary-least-squares" class="nav-link active" data-scroll-target="#ordinary-least-squares"><span class="header-section-number">3.1</span> Ordinary least squares</a></li>
-  <li><a href="#quantile-regression" id="toc-quantile-regression" class="nav-link" data-scroll-target="#quantile-regression"><span class="header-section-number">3.2</span> Quantile Regression</a></li>
+  <li><a href="#regression" id="toc-regression" class="nav-link active" data-scroll-target="#regression"><span class="header-section-number">3.1</span> Regression</a></li>
+  <li><a href="#ordinary-least-squares" id="toc-ordinary-least-squares" class="nav-link" data-scroll-target="#ordinary-least-squares"><span class="header-section-number">3.2</span> Ordinary least squares</a></li>
   <li><a href="#proof-the-median-minimizes-the-sum-of-absolute-residuals" id="toc-proof-the-median-minimizes-the-sum-of-absolute-residuals" class="nav-link" data-scroll-target="#proof-the-median-minimizes-the-sum-of-absolute-residuals"><span class="header-section-number">3.3</span> Proof the median minimizes the sum of absolute residuals</a></li>
   <li><a href="#generalization-least-absolute-deviations" id="toc-generalization-least-absolute-deviations" class="nav-link" data-scroll-target="#generalization-least-absolute-deviations"><span class="header-section-number">3.4</span> Generalization least absolute deviations</a>
   <ul class="collapse">
   <li><a href="#graphic" id="toc-graphic" class="nav-link" data-scroll-target="#graphic"><span class="header-section-number">3.4.1</span> Graphic</a></li>
   </ul></li>
-  <li><a href="#summary-of-ols-and-qr" id="toc-summary-of-ols-and-qr" class="nav-link" data-scroll-target="#summary-of-ols-and-qr"><span class="header-section-number">3.5</span> Summary of OLS and QR</a>
-  <ul class="collapse">
-  <li><a href="#root-mean-squared-error" id="toc-root-mean-squared-error" class="nav-link" data-scroll-target="#root-mean-squared-error"><span class="header-section-number">3.5.1</span> Root mean squared error</a></li>
-  <li><a href="#variance-of-error" id="toc-variance-of-error" class="nav-link" data-scroll-target="#variance-of-error"><span class="header-section-number">3.5.2</span> Variance of error</a></li>
-  <li><a href="#minmax-error" id="toc-minmax-error" class="nav-link" data-scroll-target="#minmax-error"><span class="header-section-number">3.5.3</span> Min/max error</a></li>
-  </ul></li>
+  <li><a href="#summary-of-ols-and-qr" id="toc-summary-of-ols-and-qr" class="nav-link" data-scroll-target="#summary-of-ols-and-qr"><span class="header-section-number">3.5</span> Summary of OLS and QR</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">4</span> Citations</a></li>
   </ul>
 </nav>
     </div>
@@ -4711,13 +4707,19 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tinytex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>A regression model may be represented via matrix multiplication as</p>
+<section id="regression" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="regression"><span class="header-section-number">3.1</span> Regression</h2>
+<p>A regression consists of the mean function and the variance function [1]</p>
 <p><span class="math display">\[
-\hat{y}=\alpha + \textbf X\beta + e
-\]</span></p>
-<p>where X is the design matrix, <span class="math inline">\(\beta\)</span> is a vector of the model’s coefficient (one for each variable), e is a vector of random errors with a mean zero, and y is the vector outputs for each object.</p>
-<section id="ordinary-least-squares" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="ordinary-least-squares"><span class="header-section-number">3.1</span> Ordinary least squares</h2>
+E(Y|X=x)=\beta_0 + \beta_1X \\
+Var(Y|X=x) = \sigma^2
+\]</span> Here X is a matrix of observations, and the <span class="math inline">\(\beta\)</span>s attempt to estimate the observed outcomes <span class="math inline">\(y_i\)</span>. However, the estimates are rarely perfect, so an error, also called a residual, term must be introduced. <span class="math display">\[
+y_i = \hat{y} + \epsilon_i
+\]</span> where <span class="math inline">\(y_i\)</span> is the actual response variable, <span class="math inline">\(\hat{y}\)</span> is the estimate, and <span class="math inline">\(\epsilon\)</span>, the error term, represents the difference between <span class="math inline">\(\hat{y}\)</span> and <span class="math inline">\(y_i\)</span>.</p>
+<p>Regression can use different criterions. These criterions will yield different betas which will have different behaviors.</p>
+</section>
+<section id="ordinary-least-squares" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="ordinary-least-squares"><span class="header-section-number">3.2</span> Ordinary least squares</h2>
 <p>Ordinary least squares model, or OLS, is one of many ways of placing a regression line through points. It does this by minimizing the sum of squared residuals:</p>
 <p><span class="math display">\[
 argmin\sum_i^n \epsilon_i^2 = \sum_i^n (y_i - \hat{y}_i)^2
@@ -4729,10 +4731,7 @@ argmin\sum_i^n \epsilon_i^2 = \sum_i^n (y_i - \hat{y}_i)^2
 <p><span class="math display">\[
 \widehat{\alpha} =\bar{y}-\widehat{\beta} \bar{x}
 \]</span> The beta estimate will be the mean of the all the points.</p>
-</section>
-<section id="quantile-regression" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="quantile-regression"><span class="header-section-number">3.2</span> Quantile Regression</h2>
-<p>Quantile regression is another regression technique, except it minimizes the sum of the absolute residuals: <span class="math display">\[argmin \space E(|y-\hat{y}|)\]</span> The beta estimate will be the median of all of the points.</p>
+<p>Another common but less known way of ## Quantile Regression Quantile regression is another regression technique, except it minimizes the sum of the absolute residuals: <span class="math display">\[argmin \space E(|y-\hat{y}|)\]</span> The beta estimate will be the median of all of the points.</p>
 </section>
 <section id="proof-the-median-minimizes-the-sum-of-absolute-residuals" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="proof-the-median-minimizes-the-sum-of-absolute-residuals"><span class="header-section-number">3.3</span> Proof the median minimizes the sum of absolute residuals</h2>
@@ -4875,37 +4874,13 @@ q_\theta=\underset{c}{\operatorname{argmin}} E\left[\rho_\theta(Y-c)\right]
 </section>
 <section id="summary-of-ols-and-qr" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="summary-of-ols-and-qr"><span class="header-section-number">3.5</span> Summary of OLS and QR</h2>
-<p>OLS minimizes the sum of squared residuals, and QR minimizes the sum of absolute valued residuals. This leads to differing results when placing the regression line. OLS will place the line between the arithmetic mean of all the points, but QR will place its regression line through the median of all of the points. In other words, given an input of the 50th quantile, QR regression will place the regression line in such a way that half of the points will be above the regression line and half will be below the regression line. In general, given an input of the <span class="math inline">\(\theta^{th}\)</span> quantile, QR will place a regression line so that <span class="math inline">\(\theta\)</span> percentage of points will be below the regression line. This allows QR has some interesting benefits. Although OLS is generally better for normally distributed data, QR performs relatively well with normally distributed data as well. However, one of the biggest charms of QR is that it can be used on non-normally distributed data. Since QR allows statisticians to look at the behavior across the entire distribution, rather than just fixating on the mean. With QR, one can see at what intervals the model breaks down or excels. ### Mean absolute error</p>
-<p>The mean absolute error (MAE) is the average magnitude of the errors of the values predicted by the regression and the actual observed values for the response variable. Because it is a simple average, all errors have the same weight, there are no penalties for different magnitude deviations [2]. MAE assumes that the errors are normally distributed, if the error distribution was non-normal, the average may not be a good measure of centrality and can paint a false picture of the goodness-of-fit of the regression curve. MAE also assumes that the errors are unbiased. While the average magnitude of the errors is expected to be non-zero (unless the regression is a perfect fit) the average of the residuals, i.e., the deviation of the predicted value from the actual value, considering underestimation and overestimation. This means on average the regression curve does not over or underestimate.</p>
-<p><span class="math display">\[
-\text { MAE }=\frac{1}{n}\sum_{i=1}^n\left|y_i-\hat{y}_i\right|=\frac{1}{n}\sum_{i=1}^n\left|e_i\right|
-\]</span></p>
-<section id="root-mean-squared-error" class="level3" data-number="3.5.1">
-<h3 data-number="3.5.1" class="anchored" data-anchor-id="root-mean-squared-error"><span class="header-section-number">3.5.1</span> Root mean squared error</h3>
-<p>It calculates the differences between the predictions and the actual observations (residuals) and then gets their quadratic mean for each. This type of error gives a larger penalty for larger errors [2]. This error also assumes that the errors are unbiased and that they follow a normal distribution. This gives a picture of the size of residuals in comparison to the regression line.</p>
-<p><span class="math display">\[
-\operatorname{RMSE}=\sqrt{\operatorname{MSE}}=\sqrt{\frac{1}{n}\sum_{i=1}^n (y_i-\hat{y}_i)^2}=\sqrt{\frac{1}{n}\sum_{i=1}^n e_i^2}
-\]</span></p>
+<p>OLS minimizes the sum of squared residuals, and QR minimizes the sum of absolute valued residuals. This leads to differing results when placing the regression line. OLS will place the line between the arithmetic mean of all the points, but QR will place its regression line through the median of all of the points. In other words, given an input of the 50th quantile, QR regression will place the regression line in such a way that half of the points will be above the regression line and half will be below the regression line. In general, given an input of the <span class="math inline">\(\theta^{th}\)</span> quantile, QR will place a regression line so that <span class="math inline">\(\theta\)</span> percentage of points will be below the regression line. This allows QR has some interesting benefits. Although OLS is generally better for normally distributed data, QR performs relatively well with normally distributed data as well. However, one of the biggest charms of QR is that it can be used on non-normally distributed data. Since QR allows statisticians to look at the behavior across the entire distribution, rather than just fixating on the mean. With QR, one can see at what intervals the model breaks down or excels.</p>
 </section>
-<section id="variance-of-error" class="level3" data-number="3.5.2">
-<h3 data-number="3.5.2" class="anchored" data-anchor-id="variance-of-error"><span class="header-section-number">3.5.2</span> Variance of error</h3>
-<p>It is a measure of how spread all the errors are from the mean of all errors.</p>
-<p><span class="math display">\[
-\operatorname{Var}(e)=\frac{1}{n}\sum_{i=1}^n(e_i-\bar{e})^2
-\]</span></p>
-</section>
-<section id="minmax-error" class="level3" data-number="3.5.3">
-<h3 data-number="3.5.3" class="anchored" data-anchor-id="minmax-error"><span class="header-section-number">3.5.3</span> Min/max error</h3>
-<p>A measure of the maximum residual for a prediction and the minimum residual.</p>
-<p><span class="math display">\[
-f: X \rightarrow \mathbb{R} \text {, if }(\forall e \in X_{error}) f\left(e_i\right) \geq f(e)
-\]</span></p>
-<p><span class="math display">\[
-f: X \rightarrow \mathbb{R} \text {, if }(\forall e \in X_{error}) f\left(e_i\right) \leq f(e)
-\]</span></p>
+<section id="citations" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Citations</h1>
+<p>[1]“Applied Linear Regression - ProQuest,” www.proquest.com. https://www.proquest.com/legacydocview/EBC/7103845?accountid=10920. (accessed Nov.&nbsp;12, 2023).</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

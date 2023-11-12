@@ -31,8 +31,8 @@
     "objectID": "methods.html#ordinary-least-squares",
     "href": "methods.html#ordinary-least-squares",
     "title": "3  Methods",
-    "section": "3.1 Ordinary least squares",
-    "text": "3.1 Ordinary least squares\nOrdinary least squares model, or OLS, is one of many ways of placing a regression line through points. It does this by minimizing the sum of squared residuals:\n\\[\nargmin\\sum_i^n \\epsilon_i^2 = \\sum_i^n (y_i - \\hat{y}_i)^2\n\\]\nThe least squares estimates in this case are given by simple formulas\n\\[\n\\widehat{\\beta} =\\frac{\\sum_{i=1}^n\\left(x_i-\\bar{x}\\right)\\left(y_i-\\bar{y}\\right)}{\\sum_{i=1}^n\\left(x_i-\\bar{x}\\right)^2}\n\\]\n\\[\n\\widehat{\\alpha} =\\bar{y}-\\widehat{\\beta} \\bar{x}\n\\] The beta estimate will be the mean of the all the points."
+    "section": "3.2 Ordinary least squares",
+    "text": "3.2 Ordinary least squares\nOrdinary least squares model, or OLS, is one of many ways of placing a regression line through points. It does this by minimizing the sum of squared residuals:\n\\[\nargmin\\sum_i^n \\epsilon_i^2 = \\sum_i^n (y_i - \\hat{y}_i)^2\n\\]\nThe least squares estimates in this case are given by simple formulas\n\\[\n\\widehat{\\beta} =\\frac{\\sum_{i=1}^n\\left(x_i-\\bar{x}\\right)\\left(y_i-\\bar{y}\\right)}{\\sum_{i=1}^n\\left(x_i-\\bar{x}\\right)^2}\n\\]\n\\[\n\\widehat{\\alpha} =\\bar{y}-\\widehat{\\beta} \\bar{x}\n\\] The beta estimate will be the mean of the all the points.\nAnother common but less known way of ## Quantile Regression Quantile regression is another regression technique, except it minimizes the sum of the absolute residuals: \\[argmin \\space E(|y-\\hat{y}|)\\] The beta estimate will be the median of all of the points."
   },
   {
     "objectID": "methods.html#how-does-the-minimization-of-absolute-deviations-equal-the-media",
@@ -101,14 +101,28 @@
     "objectID": "methods.html#quantile-regression",
     "href": "methods.html#quantile-regression",
     "title": "3  Methods",
-    "section": "3.2 Quantile Regression",
-    "text": "3.2 Quantile Regression\nQuantile regression is another regression technique, except it minimizes the sum of the absolute residuals: \\[argmin \\space E(|y-\\hat{y}|)\\] The beta estimate will be the median of all of the points."
+    "section": "3.3 Quantile Regression",
+    "text": "3.3 Quantile Regression\nQuantile regression is another regression technique, except it minimizes the sum of the absolute residuals: \\[argmin \\space E(|y-\\hat{y}|)\\] The beta estimate will be the median of all of the points."
   },
   {
     "objectID": "methods.html#summary-of-ols-and-qr",
     "href": "methods.html#summary-of-ols-and-qr",
     "title": "3  Methods",
     "section": "3.5 Summary of OLS and QR",
-    "text": "3.5 Summary of OLS and QR\nOLS minimizes the sum of squared residuals, and QR minimizes the sum of absolute valued residuals. This leads to differing results when placing the regression line. OLS will place the line between the arithmetic mean of all the points, but QR will place its regression line through the median of all of the points. In other words, given an input of the 50th quantile, QR regression will place the regression line in such a way that half of the points will be above the regression line and half will be below the regression line. In general, given an input of the \\(\\theta^{th}\\) quantile, QR will place a regression line so that \\(\\theta\\) percentage of points will be below the regression line. This allows QR has some interesting benefits. Although OLS is generally better for normally distributed data, QR performs relatively well with normally distributed data as well. However, one of the biggest charms of QR is that it can be used on non-normally distributed data. Since QR allows statisticians to look at the behavior across the entire distribution, rather than just fixating on the mean. With QR, one can see at what intervals the model breaks down or excels. ### Mean absolute error\nThe mean absolute error (MAE) is the average magnitude of the errors of the values predicted by the regression and the actual observed values for the response variable. Because it is a simple average, all errors have the same weight, there are no penalties for different magnitude deviations [2]. MAE assumes that the errors are normally distributed, if the error distribution was non-normal, the average may not be a good measure of centrality and can paint a false picture of the goodness-of-fit of the regression curve. MAE also assumes that the errors are unbiased. While the average magnitude of the errors is expected to be non-zero (unless the regression is a perfect fit) the average of the residuals, i.e., the deviation of the predicted value from the actual value, considering underestimation and overestimation. This means on average the regression curve does not over or underestimate.\n\\[\n\\text { MAE }=\\frac{1}{n}\\sum_{i=1}^n\\left|y_i-\\hat{y}_i\\right|=\\frac{1}{n}\\sum_{i=1}^n\\left|e_i\\right|\n\\]\n\n3.5.1 Root mean squared error\nIt calculates the differences between the predictions and the actual observations (residuals) and then gets their quadratic mean for each. This type of error gives a larger penalty for larger errors [2]. This error also assumes that the errors are unbiased and that they follow a normal distribution. This gives a picture of the size of residuals in comparison to the regression line.\n\\[\n\\operatorname{RMSE}=\\sqrt{\\operatorname{MSE}}=\\sqrt{\\frac{1}{n}\\sum_{i=1}^n (y_i-\\hat{y}_i)^2}=\\sqrt{\\frac{1}{n}\\sum_{i=1}^n e_i^2}\n\\]\n\n\n3.5.2 Variance of error\nIt is a measure of how spread all the errors are from the mean of all errors.\n\\[\n\\operatorname{Var}(e)=\\frac{1}{n}\\sum_{i=1}^n(e_i-\\bar{e})^2\n\\]\n\n\n3.5.3 Min/max error\nA measure of the maximum residual for a prediction and the minimum residual.\n\\[\nf: X \\rightarrow \\mathbb{R} \\text {, if }(\\forall e \\in X_{error}) f\\left(e_i\\right) \\geq f(e)\n\\]\n\\[\nf: X \\rightarrow \\mathbb{R} \\text {, if }(\\forall e \\in X_{error}) f\\left(e_i\\right) \\leq f(e)\n\\]"
+    "text": "3.5 Summary of OLS and QR\nOLS minimizes the sum of squared residuals, and QR minimizes the sum of absolute valued residuals. This leads to differing results when placing the regression line. OLS will place the line between the arithmetic mean of all the points, but QR will place its regression line through the median of all of the points. In other words, given an input of the 50th quantile, QR regression will place the regression line in such a way that half of the points will be above the regression line and half will be below the regression line. In general, given an input of the \\(\\theta^{th}\\) quantile, QR will place a regression line so that \\(\\theta\\) percentage of points will be below the regression line. This allows QR has some interesting benefits. Although OLS is generally better for normally distributed data, QR performs relatively well with normally distributed data as well. However, one of the biggest charms of QR is that it can be used on non-normally distributed data. Since QR allows statisticians to look at the behavior across the entire distribution, rather than just fixating on the mean. With QR, one can see at what intervals the model breaks down or excels."
+  },
+  {
+    "objectID": "methods.html#regression",
+    "href": "methods.html#regression",
+    "title": "3  Methods",
+    "section": "3.1 Regression",
+    "text": "3.1 Regression\nA regression consists of the mean function and the variance function [1]\n\\[\nE(Y|X=x)=\\beta_0 + \\beta_1X \\\\\nVar(Y|X=x) = \\sigma^2\n\\] Here X is a matrix of observations, and the \\(\\beta\\)s attempt to estimate the observed outcomes \\(y_i\\). However, the estimates are rarely perfect, so an error, also called a residual, term must be introduced. \\[\ny_i = \\hat{y} + \\epsilon_i\n\\] where \\(y_i\\) is the actual response variable, \\(\\hat{y}\\) is the estimate, and \\(\\epsilon\\), the error term, represents the difference between \\(\\hat{y}\\) and \\(y_i\\).\nRegression can use different criterions. These criterions will yield different betas which will have different behaviors."
+  },
+  {
+    "objectID": "methods.html",
+    "href": "methods.html",
+    "title": "3  Methods",
+    "section": "",
+    "text": "4 Citations\n[1]“Applied Linear Regression - ProQuest,” www.proquest.com. https://www.proquest.com/legacydocview/EBC/7103845?accountid=10920. (accessed Nov. 12, 2023)."
   }
 ]
