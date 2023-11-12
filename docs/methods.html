@@ -4667,19 +4667,21 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#design-matrix" id="toc-design-matrix" class="nav-link active" data-scroll-target="#design-matrix"><span class="header-section-number">3.1</span> Design Matrix</a></li>
-  <li><a href="#ordinary-least-squares" id="toc-ordinary-least-squares" class="nav-link" data-scroll-target="#ordinary-least-squares"><span class="header-section-number">3.2</span> Ordinary least squares</a></li>
-  <li><a href="#how-does-the-minimization-of-absolute-deviations-equal-the-media" id="toc-how-does-the-minimization-of-absolute-deviations-equal-the-media" class="nav-link" data-scroll-target="#how-does-the-minimization-of-absolute-deviations-equal-the-media"><span class="header-section-number">3.3</span> How does the minimization of absolute deviations equal the media?</a>
+  <li><a href="#ordinary-least-squares" id="toc-ordinary-least-squares" class="nav-link active" data-scroll-target="#ordinary-least-squares"><span class="header-section-number">3.1</span> Ordinary least squares</a></li>
+  <li><a href="#proof-the-median-minimizes-the-sum-of-absolute-residuals" id="toc-proof-the-median-minimizes-the-sum-of-absolute-residuals" class="nav-link" data-scroll-target="#proof-the-median-minimizes-the-sum-of-absolute-residuals"><span class="header-section-number">3.2</span> Proof the median minimizes the sum of absolute residuals</a></li>
+  <li><a href="#generalization-least-absolute-deviations" id="toc-generalization-least-absolute-deviations" class="nav-link" data-scroll-target="#generalization-least-absolute-deviations"><span class="header-section-number">3.3</span> Generalization least absolute deviations</a>
   <ul class="collapse">
-  <li><a href="#definition-of-mean" id="toc-definition-of-mean" class="nav-link" data-scroll-target="#definition-of-mean"><span class="header-section-number">3.3.1</span> Definition of mean</a></li>
+  <li><a href="#graphic" id="toc-graphic" class="nav-link" data-scroll-target="#graphic"><span class="header-section-number">3.3.1</span> Graphic</a></li>
   </ul></li>
-  <li><a href="#generalization-least-absolute-deviations" id="toc-generalization-least-absolute-deviations" class="nav-link" data-scroll-target="#generalization-least-absolute-deviations"><span class="header-section-number">3.4</span> Generalization least absolute deviations</a>
+  <li><a href="#benefits-of-ols" id="toc-benefits-of-ols" class="nav-link" data-scroll-target="#benefits-of-ols"><span class="header-section-number">3.4</span> Benefits of OLS</a></li>
+  <li><a href="#outperforms-other-regression-methods-when-data-is-normally-distributed." id="toc-outperforms-other-regression-methods-when-data-is-normally-distributed." class="nav-link" data-scroll-target="#outperforms-other-regression-methods-when-data-is-normally-distributed."><span class="header-section-number">3.5</span> -Outperforms other regression methods when data is normally distributed.</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">3.6</span> </a></li>
+  <li><a href="#benefits-of-qr" id="toc-benefits-of-qr" class="nav-link" data-scroll-target="#benefits-of-qr"><span class="header-section-number">3.7</span> Benefits of QR</a></li>
+  <li><a href="#summary-of-differences-between-ols-and-qr" id="toc-summary-of-differences-between-ols-and-qr" class="nav-link" data-scroll-target="#summary-of-differences-between-ols-and-qr"><span class="header-section-number">3.8</span> Summary of differences between OLS and QR</a>
   <ul class="collapse">
-  <li><a href="#graphic" id="toc-graphic" class="nav-link" data-scroll-target="#graphic"><span class="header-section-number">3.4.1</span> Graphic</a></li>
-  <li><a href="#mean-absolute-error" id="toc-mean-absolute-error" class="nav-link" data-scroll-target="#mean-absolute-error"><span class="header-section-number">3.4.2</span> Mean absolute error</a></li>
-  <li><a href="#root-mean-squared-error" id="toc-root-mean-squared-error" class="nav-link" data-scroll-target="#root-mean-squared-error"><span class="header-section-number">3.4.3</span> Root mean squared error</a></li>
-  <li><a href="#variance-of-error" id="toc-variance-of-error" class="nav-link" data-scroll-target="#variance-of-error"><span class="header-section-number">3.4.4</span> Variance of error</a></li>
-  <li><a href="#minmax-error" id="toc-minmax-error" class="nav-link" data-scroll-target="#minmax-error"><span class="header-section-number">3.4.5</span> Min/max error</a></li>
+  <li><a href="#root-mean-squared-error" id="toc-root-mean-squared-error" class="nav-link" data-scroll-target="#root-mean-squared-error"><span class="header-section-number">3.8.1</span> Root mean squared error</a></li>
+  <li><a href="#variance-of-error" id="toc-variance-of-error" class="nav-link" data-scroll-target="#variance-of-error"><span class="header-section-number">3.8.2</span> Variance of error</a></li>
+  <li><a href="#minmax-error" id="toc-minmax-error" class="nav-link" data-scroll-target="#minmax-error"><span class="header-section-number">3.8.3</span> Min/max error</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -4712,18 +4714,17 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tinytex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="design-matrix" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="design-matrix"><span class="header-section-number">3.1</span> Design Matrix</h2>
-<p>The design matrix is defined to be a matrix <span class="math inline">\(\textbf X\)</span> such that <span class="math inline">\(\textbf X_{ij}\)</span> (the <span class="math inline">\(j^{th}\)</span>) column of the i^{th} row of <span class="math inline">\(\textbf X\)</span>) represents the value of the <span class="math inline">\(j^th\)</span> variable associated with the i^{th} variable object.</p>
 <p>A regression model may be represent via matrix multiplication as</p>
 <p><span class="math display">\[
-y=\textbf X\beta + e
+\hat{y}=\textbf X\beta + e
 \]</span></p>
 <p>where X is the design matrix, <span class="math inline">\(\beta\)</span> is a vector of the model’s coefficient (one for each variable), e is a vector of random errors with a mean zero, and y is the vector outputs for each object.</p>
-</section>
-<section id="ordinary-least-squares" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="ordinary-least-squares"><span class="header-section-number">3.2</span> Ordinary least squares</h2>
-<p>Ordinary least squares model or OLS, works by creating a line through the data points. Then it calculates the difference between each prediction and observation (residual). And it tries to minimize the squared value of the residuals. The ordinary least squares is defined by:</p>
+<section id="ordinary-least-squares" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="ordinary-least-squares"><span class="header-section-number">3.1</span> Ordinary least squares</h2>
+<p>Ordinary least squares model or OLS, is one of many ways of placing a regression line through points. It does this by minimizing the sum of squared residuals:</p>
+<p><span class="math display">\[
+\sum_i^n \epsilon_i^2 = \sum_i^n (y_i - \hat{y}_i)^2
+\]</span></p>
 <p><span class="math display">\[
 y_i=\alpha+\beta x_i+\varepsilon_i .
 \]</span></p>
@@ -4735,10 +4736,8 @@ y_i=\alpha+\beta x_i+\varepsilon_i .
 \widehat{\alpha} =\bar{y}-\widehat{\beta} \bar{x}
 \]</span></p>
 </section>
-<section id="how-does-the-minimization-of-absolute-deviations-equal-the-media" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="how-does-the-minimization-of-absolute-deviations-equal-the-media"><span class="header-section-number">3.3</span> How does the minimization of absolute deviations equal the media?</h2>
-<section id="definition-of-mean" class="level3" data-number="3.3.1">
-<h3 data-number="3.3.1" class="anchored" data-anchor-id="definition-of-mean"><span class="header-section-number">3.3.1</span> Definition of mean</h3>
+<section id="proof-the-median-minimizes-the-sum-of-absolute-residuals" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="proof-the-median-minimizes-the-sum-of-absolute-residuals"><span class="header-section-number">3.2</span> Proof the median minimizes the sum of absolute residuals</h2>
 <p>Assume, without loss of generality, that Y is a continuous random variable. The expected value of the absolute sum of deviations from a given center c can be split into the following two terms:</p>
 <p><span class="math display">\[
 E|Y - c| = \int_{y\in R}|y-c|f(y)dy \\
@@ -4775,9 +4774,8 @@ E|Y - c| = \int_{y\in R}|y-c|f(y)dy \\
 <p>Using the CDF definition and the notion of reciprocals, the previous equation simplifies to: <span class="math inline">\(F(c)-[1-F(c)] = 0\)</span> and thus <span class="math inline">\(2F(c)-1=0\)</span> <span class="math inline">\(\longrightarrow\)</span> <span class="math inline">\(F(c)=\frac{1}{2}\)</span> <span class="math inline">\(\longrightarrow\)</span> c=Me.</p>
 <p>Thus the minimization to a weighted least absolute deviation loss function is the value that gives the theta^{th} quantile.</p>
 </section>
-</section>
-<section id="generalization-least-absolute-deviations" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="generalization-least-absolute-deviations"><span class="header-section-number">3.4</span> Generalization least absolute deviations</h2>
+<section id="generalization-least-absolute-deviations" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="generalization-least-absolute-deviations"><span class="header-section-number">3.3</span> Generalization least absolute deviations</h2>
 <p>The solution of the minimization problem formulated in Equation (1.2) is thus the median. The above solution does not change by multiplying the two components of <span class="math inline">\(E|Y-c|\)</span> by a constant <span class="math inline">\(\theta\)</span> and <span class="math inline">\((1-\theta)\)</span>, respectively. This allows us to formulate the same problem for the generic quantile <span class="math inline">\(\theta\)</span>. Namely, using the same strategy for Equation (1.5), we obtain:</p>
 <p><span class="math display">\[
 \frac{\partial}{\partial c} E\left[\rho_\theta(Y-c)\right]=\frac{\partial}{\partial c}\left\{(1-\theta) \int_{-\infty}^c|y-c| f(y) d y+\theta \int_c^{+\infty}|y-c| f(y) d y\right\} .
@@ -4809,8 +4807,8 @@ q_\theta=\underset{c}{\operatorname{argmin}} E\left[\rho_\theta(Y-c)\right]
 &amp; =[(1-\theta) I(y \leq 0)+\theta I(y&gt;0)]|y| .
 \end{aligned}
 \]</span></p>
-<section id="graphic" class="level3" data-number="3.4.1">
-<h3 data-number="3.4.1" class="anchored" data-anchor-id="graphic"><span class="header-section-number">3.4.1</span> Graphic</h3>
+<section id="graphic" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="graphic"><span class="header-section-number">3.3.1</span> Graphic</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(cars)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -4876,29 +4874,43 @@ q_\theta=\underset{c}{\operatorname{argmin}} E\left[\rho_\theta(Y-c)\right]
 <p>When we input 0.1 for the 10th percentile, we get approximately 90% of the points above the QR line and 10% below the QR line.</p>
 <p>Thus, we can see that QR is not online a robust ## Evaluation metrics</p>
 </section>
-<section id="mean-absolute-error" class="level3" data-number="3.4.2">
-<h3 data-number="3.4.2" class="anchored" data-anchor-id="mean-absolute-error"><span class="header-section-number">3.4.2</span> Mean absolute error</h3>
+</section>
+<section id="benefits-of-ols" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="benefits-of-ols"><span class="header-section-number">3.4</span> Benefits of OLS</h2>
+</section>
+<section id="outperforms-other-regression-methods-when-data-is-normally-distributed." class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="outperforms-other-regression-methods-when-data-is-normally-distributed."><span class="header-section-number">3.5</span> -Outperforms other regression methods when data is normally distributed.</h2>
+</section>
+<section id="section" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="section"><span class="header-section-number">3.6</span> </h2>
+</section>
+<section id="benefits-of-qr" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="benefits-of-qr"><span class="header-section-number">3.7</span> Benefits of QR</h2>
+<p>-Robust for any distribution of data. -Many models can be created based on the inputted quantile parameter.</p>
+</section>
+<section id="summary-of-differences-between-ols-and-qr" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="summary-of-differences-between-ols-and-qr"><span class="header-section-number">3.8</span> Summary of differences between OLS and QR</h2>
+<p>OLS minimizes the sum of squared residuals, and QR minimizes the sum of absolute valued residuals. This leads to differing results when placing the regression line. OLS will place the line between the arithmetic mean of all the points, but QR will place its regression line through the median of all of the points. In other words, given an input of the 50th quantile, QR regression will place the regression line in such a way that half of the points will be above the regression line and half will be below the regression line. In general, given an input of the <span class="math inline">\(\theta^{th}\)</span> quantile, QR will place a regression line so that <span class="math inline">\(\theta\)</span> percentage of points will be below the regression line. This allows QR has some interesting benefits. Although OLS is generally better for normally distributed data, QR performs relatively well with normally distributed data as well. However, one of the biggest charms of QR is that it can be used on non-normally distributed data. Since QR allows statisticians to look at the behavior across the entire distribution, rather than just fixating on the mean. With QR, one can see at what intervals the model breaks down or excels. This allows a model to be fine-tuned ### Mean absolute error</p>
 <p>The mean absolute error (MAE) is the average magnitude of the errors of the values predicted by the regression and the actual observed values for the response variable. Because it is a simple average, all errors have the same weight, there are no penalties for different magnitude deviations [2]. MAE assumes that the errors are normally distributed, if the error distribution was non-normal, the average may not be a good measure of centrality and can paint a false picture of the goodness-of-fit of the regression curve. MAE also assumes that the errors are unbiased. While the average magnitude of the errors is expected to be non-zero (unless the regression is a perfect fit) the average of the residuals, i.e., the deviation of the predicted value from the actual value, considering underestimation and overestimation. This means on average the regression curve does not over or underestimate.</p>
 <p><span class="math display">\[
 \text { MAE }=\frac{1}{n}\sum_{i=1}^n\left|y_i-\hat{y}_i\right|=\frac{1}{n}\sum_{i=1}^n\left|e_i\right|
 \]</span></p>
-</section>
-<section id="root-mean-squared-error" class="level3" data-number="3.4.3">
-<h3 data-number="3.4.3" class="anchored" data-anchor-id="root-mean-squared-error"><span class="header-section-number">3.4.3</span> Root mean squared error</h3>
+<section id="root-mean-squared-error" class="level3" data-number="3.8.1">
+<h3 data-number="3.8.1" class="anchored" data-anchor-id="root-mean-squared-error"><span class="header-section-number">3.8.1</span> Root mean squared error</h3>
 <p>It calculates the differences between the predictions and the actual observations (residuals) and then gets their quadratic mean for each. This type of error gives a larger penalty for larger errors [2]. This error also assumes that the errors are unbiased and that they follow a normal distribution. This gives a picture of the size of residuals in comparison to the regression line.</p>
 <p><span class="math display">\[
 \operatorname{RMSE}=\sqrt{\operatorname{MSE}}=\sqrt{\frac{1}{n}\sum_{i=1}^n (y_i-\hat{y}_i)^2}=\sqrt{\frac{1}{n}\sum_{i=1}^n e_i^2}
 \]</span></p>
 </section>
-<section id="variance-of-error" class="level3" data-number="3.4.4">
-<h3 data-number="3.4.4" class="anchored" data-anchor-id="variance-of-error"><span class="header-section-number">3.4.4</span> Variance of error</h3>
+<section id="variance-of-error" class="level3" data-number="3.8.2">
+<h3 data-number="3.8.2" class="anchored" data-anchor-id="variance-of-error"><span class="header-section-number">3.8.2</span> Variance of error</h3>
 <p>It is a measure of how spread all the errors are from the mean of all errors.</p>
 <p><span class="math display">\[
 \operatorname{Var}(e)=\frac{1}{n}\sum_{i=1}^n(e_i-\bar{e})^2
 \]</span></p>
 </section>
-<section id="minmax-error" class="level3" data-number="3.4.5">
-<h3 data-number="3.4.5" class="anchored" data-anchor-id="minmax-error"><span class="header-section-number">3.4.5</span> Min/max error</h3>
+<section id="minmax-error" class="level3" data-number="3.8.3">
+<h3 data-number="3.8.3" class="anchored" data-anchor-id="minmax-error"><span class="header-section-number">3.8.3</span> Min/max error</h3>
 <p>A measure of the maximum residual for a prediction and the minimum residual.</p>
 <p><span class="math display">\[
 f: X \rightarrow \mathbb{R} \text {, if }(\forall e \in X_{error}) f\left(e_i\right) \geq f(e)

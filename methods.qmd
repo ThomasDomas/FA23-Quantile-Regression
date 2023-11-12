@@ -15,21 +15,21 @@ library(tinytex)
 
 # Methods
 
-## Design Matrix
-
-The design matrix is defined to be a matrix $\textbf X$ such that $\textbf X_{ij}$ (the $j^{th}$) column of the i\^{th} row of $\textbf X$) represents the value of the $j^th$ variable associated with the i\^{th} variable object.
-
 A regression model may be represent via matrix multiplication as
 
 $$
-y=\textbf X\beta + e
+\hat{y}=\textbf X\beta + e
 $$
 
 where X is the design matrix, $\beta$ is a vector of the model's coefficient (one for each variable), e is a vector of random errors with a mean zero, and y is the vector outputs for each object.
 
 ## Ordinary least squares
 
-Ordinary least squares model or OLS, works by creating a line through the data points. Then it calculates the difference between each prediction and observation (residual). And it tries to minimize the squared value of the residuals. The ordinary least squares is defined by:
+Ordinary least squares model or OLS, is one of many ways of placing a regression line through points. It does this by minimizing the sum of squared residuals:
+
+$$
+\sum_i^n \epsilon_i^2 = \sum_i^n (y_i - \hat{y}_i)^2
+$$
 
 $$
 y_i=\alpha+\beta x_i+\varepsilon_i .
@@ -45,9 +45,7 @@ $$
 \widehat{\alpha} =\bar{y}-\widehat{\beta} \bar{x}
 $$
 
-## How does the minimization of absolute deviations equal the median?
-
-### Definition of mean
+## Proof the median minimizes the sum of absolute residuals
 
 Assume, without loss of generality, that Y is a continuous random variable. The expected value of the absolute sum of deviations from a given center c can be split into the following two terms:
 
@@ -196,6 +194,20 @@ When we input 0.1 for the 10th percentile, we get approximately 90% of the point
 
 Thus, we can see that QR is not online a robust \## Evaluation metrics
 
+## Benefits of OLS
+-Outperforms other regression methods when data is normally distributed. 
+-
+
+##
+
+## Benefits of QR 
+-Robust for any distribution of data.
+-Many models can be created based on the inputted quantile parameter.
+
+
+## Summary of differences between OLS and QR
+OLS minimizes the sum of squared residuals, and QR minimizes the sum of absolute valued residuals. This leads to differing results when placing the regression line. OLS will place the line between the arithmetic mean of all the points, but QR will place its regression line through the median of all of the points. In other words, given an input of the 50th quantile, QR regression will place the regression line in such a way that half of the points will be above the regression line and half will be below the regression line. In general, given an input of the $\theta^{th}$ quantile, QR will place a regression line so that $\theta$ percentage of points will be below the regression line. This allows QR has some interesting benefits.
+Although OLS is generally better for normally distributed data, QR performs relatively well with normally distributed data as well. However, one of the biggest charms of QR is that it can be used on non-normally distributed data. Since QR allows statisticians to look at the behavior across the entire distribution, rather than just fixating on the mean. With QR, one can see at what intervals the model breaks down or excels. This allows a model to be fine-tuned 
 ### Mean absolute error
 
 The mean absolute error (MAE) is the average magnitude of the errors of the values predicted by the regression and the actual observed values for the response variable. Because it is a simple average, all errors have the same weight, there are no penalties for different magnitude deviations \[2\]. MAE assumes that the errors are normally distributed, if the error distribution was non-normal, the average may not be a good measure of centrality and can paint a false picture of the goodness-of-fit of the regression curve. MAE also assumes that the errors are unbiased. While the average magnitude of the errors is expected to be non-zero (unless the regression is a perfect fit) the average of the residuals, i.e., the deviation of the predicted value from the actual value, considering underestimation and overestimation. This means on average the regression curve does not over or underestimate.
