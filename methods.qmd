@@ -45,7 +45,7 @@ $$
 \widehat{\alpha} =\bar{y}-\widehat{\beta} \bar{x}
 $$
 
-## How does the minimization of absolute deviations equal the media?
+## How does the minimization of absolute deviations equal the median?
 
 ### Definition of mean
 
