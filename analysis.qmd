@@ -320,11 +320,11 @@ Lot shape for 90th quantile of data is not a significant variable while in the 5
 
 ```{r, Warning=FALSE}
 qrs_summary <- summary(qrs, se = "iid")
-qrs_summary[10]
-qrs_summary[25]
-qrs_summary[50]
-qrs_summary[75]
-qrs_summary[90]
+qrs_summary[11]
+qrs_summary[26]
+qrs_summary[51]
+qrs_summary[76]
+qrs_summary[91]
 ```
 
 Alpha=0.05
