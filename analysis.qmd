@@ -290,7 +290,7 @@ Max QR 50th error: `r format(round(max(qr50_summary$residuals), digits=0), scien
 
 Absolute max QR 50th error: `r format(round(max(abs(qr50_summary$residuals)), digits=0), scientific=F)`.
 
-### Tests for significant variables
+## Tests for significant variables
 
 ```{r, Warning=FALSE}
 qr50_r_foundation = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape), tau=0.5)
@@ -328,7 +328,11 @@ qrs_summary[90]
 
 Alpha=0.05
 For Q10: GrLivArea, LotArea are signifiacnt while TotRmsAbvGrd is not
+
 For Q25: GrLivArea, LotArea and TotRmsAbvGrd are all significant
+
 For Q50: GrLivArea, LotArea and TotRmsAbvGrd are all significant
+
 For Q75: GrLivArea, LotArea and TotRmsAbvGrd are all significant
+
 For Q90: GrLivArea, LotArea and TotRmsAbvGrd are all significant
