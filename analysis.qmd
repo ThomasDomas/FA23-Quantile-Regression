@@ -186,9 +186,20 @@ fullDataLength
 count10per = fullDataLength / 10
 count10per
 sorted_df <- df[order(-df$SalePrice),]
-length(sorted_df)
+names(sorted_df)
+length(sorted_df$SalePrice)
 Q90SalePrice <- top_n(sorted_df, count10per)
-length(Q90SalePrice)
+length(Q90SalePrice$SalePrice)
+qr90_p = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.90)
+
+mae(predict(ols, newdata=Q90SalePrice), Q90SalePrice$SalePrice)
+mae(predict(qr90_p, newdata=Q90SalePrice), Q90SalePrice$SalePrice)
+
+olsMae = mae(predict(ols, newdata=Q90SalePrice$SalePrice), )
+olsMae
+
+qr90_pMae = mae(predict(qr90_p), Q90SalePrice$SalePrice)
+qr90_pMae
 ```
 
 ```{r, results='hide', echo=FALSE, message=FALSE, warning=FALSE}
@@ -269,6 +280,9 @@ anova_90_lotshape
 # qr10_r_lotshape = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(Foundation), tau=0.10)
 # anova_10_lotshape <- anova(qr10, qr10_r_lotshape)
 # anova_10_lotshape
+
+```
+```{r}
 
 ```
 
