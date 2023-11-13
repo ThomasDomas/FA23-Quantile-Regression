@@ -301,14 +301,15 @@ qr50_r_lotShape = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + a
 anova_50_lotShape <- anova(qr50, qr50_r_lotShape)
 anova_50_lotShape
 
-qr90 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.90)
-qr90_r_foundation = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape), tau=0.90)
-anova_90_foundation <- anova(qr90, qr90_r_foundation)
-anova_90_foundation
+## Suddenly started showing the same error
+# qr90              = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.90)
+# qr90_r_foundation = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape), tau=0.90)
+# anova_90_foundation <- anova(qr90, qr90_r_foundation)
+# anova_90_foundation
 
-qr90_r_lotshape = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(Foundation), tau=0.90)
-anova_90_lotshape <- anova(qr90, qr90_r_lotshape)
-anova_90_lotshape
+# qr90_r_lotshape = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(Foundation), tau=0.90)
+# anova_90_lotshape <- anova(qr90, qr90_r_lotshape)
+# anova_90_lotshape
 
 ## q75 and q10 gives errors
 ```
