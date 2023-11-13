@@ -189,6 +189,38 @@ And QR 50th MAE value: `r format(round(Qr50Mae, digits=2), scientific=F)`.
 
 QR for 50th quantile has a lower MAE therefore it is has more accurate predictions.
 
+```{r 'MAE for different quantiles'}
+fullDataLength = length(df$SalePrice)
+fullDataLength
+count10per = fullDataLength / 10
+count10per
+sorted_df_desc <- df[order(-df$SalePrice),]
+Q90SalePrice <- sorted_df_desc[0:count10per, ] # data greater than 90% of data
+length(Q90SalePrice$SalePrice)
+
+qr90_p = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.90)
+
+mae(predict(ols, newdata=Q90SalePrice), Q90SalePrice$SalePrice)
+mae(predict(qr90_p, newdata=Q90SalePrice), Q90SalePrice$SalePrice)
+
+###########
+sorted_df_asc <- df[order(df$SalePrice),]
+length(sorted_df_asc$SalePrice)
+Q10SalePrice <- sorted_df_asc[0:count10per, ] # data lower than 90% of data
+length(Q10SalePrice$SalePrice)
+
+qr10_p = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.10)
+
+mae(predict(ols, newdata=Q10SalePrice), Q10SalePrice$SalePrice)
+mae(predict(qr10_p, newdata=Q10SalePrice), Q10SalePrice$SalePrice)
+
+```
+
+Quantile regression for tau = 0.9 is a lot better than OLS in accuracy for predicting the 90th quantile
+
+Quantile regression for tau = 0.1 is a lot better than OLS in accuracy for predicting the 10th quantile
+
+
 ### Root mean squared error
 
 ```{r 'Root mean squared error'}
