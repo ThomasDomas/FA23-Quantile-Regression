@@ -11,17 +11,19 @@ In this analysis we aim to show that QR can achieve similar--- if not better--- 
 # # using the package:
 # updateR()
 
-# install.packages('cowplot')
+# install.packages('fastDummies')
 # install.packages("quantreg")
-library("quantreg")
+library(quantreg)
 #library(sjPlot)
 library(haven)
+library(fastDummies)
 library(gridExtra)
 library(tidyverse)
 library(Metrics)
 require(gridExtra)
 library(cowplot)
 library(ggplot2)
+library(tidyr)
 #library(equatiomatic)
 #library(fastDummies)
 #library(pscl)
@@ -44,6 +46,7 @@ library(ggplot2)
 
 ```{r, 'Getting Data housing'}
 df <- read.csv("TrainData.csv") |>
+  select(SalePrice, GrLivArea, LotArea, TotRmsAbvGrd, LotShape, Foundation, YearBuilt, HouseStyle) |>
   na.omit() |>
   distinct()
 
@@ -123,17 +126,80 @@ QR and OLS...
 
 ### QR model
 
+```{r}
+get_is_sig_pred_cont <- function(c, m, varName, pvalue, res) {
+    dont = ifelse(pvalue < 0.05, "", "don't")
+    paste(c(
+        "(With $\\alpha$ = 0.05)",
+        "Hypotheses:",
+        c(sprintf("- H<sub>0</sub>: $\\beta$<sub>%s</sub> = 0", varName)),
+        c(sprintf("- H<sub>1</sub>: $\\beta$<sub>%s</sub> $\\neq$ 0", varName)),
+        "p-value:",
+        c(sprintf("-   p<sub>%s</sub> = %s ($\\alpha$ = 0.05)", varName, pvalue)),
+        "Rejection rule:",
+        "-   Reject H<sub>0</sub> if p \\< $\\alpha$",
+        "Conclusion:",
+        c(sprintf("-   We %s have sufficient evidence to conclude that %s is a significant predictor of %s", dont, varName, res))
+    ), collapse = "\n\n")
+}
+
+get_is_sig_pred_cat <- function(c, m, basevar, varNames, pvalue, res) {
+    dont = ifelse(pvalue < 0.05, "", "don't")
+    h0 <- "-   H<sub>0</sub>: "
+    for (x in varNames) {
+        h0 <- paste(sprintf("%s $\\beta$<sub>%s</sub> =", h0, x))
+    }
+    h0 <- paste(sprintf("%s 0", h0))
+
+    h1 <- "-   H<sub>1</sub>: At least one $\\beta$<sub>i</sub> $\\neq$ 0, i = {"
+    for (x in varNames) {
+        h1 <- paste(sprintf("%s %s,", h1, x))
+    }
+    h1 <- substring(h1, 1, nchar(h1) - 1)
+    h1 <- paste(sprintf("%s }", h1))
+
+    paste(c(
+        "(With $\\alpha$ = 0.05)",
+        "Hypotheses:",
+        h0,
+        h1,
+        "p-value:",
+        c(sprintf("-   p<sub>%s</sub> = %s ($\\alpha$ = 0.05)", basevar, pvalue)),
+        "Rejection rule:",
+        "-   Reject H<sub>0</sub> if p \\< $\\alpha$",
+        "Conclusion:",
+        c(sprintf("-   We %s have sufficient evidence to conclude that %s is a significant predictor of %s", dont, basevar, res))
+    ), collapse = "\n\n")
+}
+# get_is_sig_pred_cont(c2c, m2c, "Procedure.Heart.Attack.Cost", 12, "Rating safety")[[1]][1]
+```
+
 ```{r 'QR model creation'}
-qr50 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.5)
+qr50 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.50)
 qr50_summary = summary(qr50)
+```
+
+
+```{r}
+fullDataLength = length(df$SalePrice)
+fullDataLength
+count10per = fullDataLength / 10
+count10per
+sorted_df <- df[order(-df$SalePrice),]
+length(sorted_df)
+Q90SalePrice <- top_n(sorted_df, count10per)
+length(Q90SalePrice)
 ```
 
 ```{r, results='hide', echo=FALSE, message=FALSE, warning=FALSE}
 #Generate all QR models 
-taus <- seq(from=0, to=1, by=.01)
-qrs = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=taus)
-
+taus <- seq(from=0.01, to=1, by=.01)
+df <- dummy_cols(df, select_columns="LotShape")
+df <- dummy_cols(df, select_columns="Foundation")
+colnames(df)
+qrs <- rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + LotShape_IR1 + LotShape_IR2 + Foundation_BrkTil + Foundation_CBlock + Foundation_PConc + Foundation_Slab + Foundation_Stone, tau=taus)
 ```
+
 ```{r}
 num_of_rows <- nrow(qrs$coefficients)
 par(mfrow = c(2, 2))
@@ -152,8 +218,94 @@ mtext("Beta change per quantile level", side = 3, line = - 2, outer = TRUE)
 plot(qrs$coefficients[9, ], xlab="Quantiles", ylab="Foundation-Slab")
 plot(qrs$coefficients[10, ], xlab="Quantiles", ylab="Foundation-Stone")
 plot(qrs$coefficients[11, ], xlab="Quantiles", ylab="Foundation-Wood")
+# names(qrs)
+# qrs$fitted.values[2,]
+# names(qrs$model)
+# qrs$model[1,]
+# anova(qrs, test="Wald", se="iid", joint=FALSE)
+# qrs
+# fp <- predict(qrs, newdata=df, , stepfun=TRUE)
+# head(fp)
+# # names(fp)
+# fpr <- rearrange(fp)
+# # names(fpr)
+# fpr[[2]]
+# plot(fp[[2]],main = "besbts")
+# lines(fpr[[2]], col="red")
+# legend(.2,20,c("raw","cooked"),lty = c(1,1),col=c("black","red"))
+plot(summary(qrs, se = "iid"))
+# summary(qrs, se = "iid")[[1]]$coefficients[1,][4]
+# names(qrs)
+qrs_summary <- summary(qrs, se = "iid")
+```
+
+
+```{r, warning=FALSE}
+qr50_r_foundation = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape), tau=0.5)
+anova_50_foundation <- anova(qr50, qr50_r_foundation)
+anova_50_foundation
+
+qr50_r_lotShape = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(Foundation), tau=0.5)
+anova_50_lotShape <- anova(qr50, qr50_r_lotShape)
+anova_50_lotShape
+
+qr90 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.90)
+qr90_r_foundation = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape), tau=0.90)
+anova_90_foundation <- anova(qr90, qr90_r_foundation)
+anova_90_foundation
+
+qr90_r_lotshape = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(Foundation), tau=0.90)
+anova_90_lotshape <- anova(qr90, qr90_r_lotshape)
+anova_90_lotshape
+
+### Many quantiles give the error:
+### Error in base::backsolve(r, x, k = k, upper.tri = upper.tri, transpose = transpose,  :
+###  singular matrix in 'backsolve'. First zero in diagonal [12]
+# qr10 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.10)
+# qr10_r_foundation = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape), tau=0.10)
+# anova_10_foundation <- anova(qr10, qr10_r_foundation)
+# anova_10_foundation
+
+# qr10_r_lotshape = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(Foundation), tau=0.10)
+# anova_10_lotshape <- anova(qr10, qr10_r_lotshape)
+# anova_10_lotshape
 
 ```
+
+#### Testing for significant variables
+```{r 'Testing for QR significant variables'}
+
+# get_rq <- function(x) {
+#   return (rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + LotShape_IR1 + LotShape_IR2 + Foundation_BrkTil + Foundation_CBlock + Foundation_PConc + Foundation_Slab + Foundation_Stone, tau=x))
+# }
+# # tauus <- function(x) x
+# qr_list2 <- sapply(taus, get_rq)
+# # qr_list2 <- vapply(taus, get_rq, numeric(1), use_names=TRUE)
+# summary(qr_list2[[1]])
+# names(qr_list2[[2]])
+# qr_list2
+# summary(qr_list2[[50]])
+# qr_list3 <- list()
+# lapply(qr_list2, function(qr_model) {
+#   qr_list3[[qr_model$tau]] <- qr_model
+# })
+
+# for (i in seq(0, 99)) {
+#   qr_list3[[qr_list2[[i]]$tau]] <- c(qr_list2[[i]])
+# }
+# dic <- c()
+# for(qrmodel in qr_list2) {
+#   # qrmodel$tau
+#   plot(summary(qrmodel))
+# }
+# names(dic)
+# qr_list3
+
+# length(qr_list2)
+# names(qrs)
+# summary(qrs[0])
+```
+
 
 ### OLS model
 
