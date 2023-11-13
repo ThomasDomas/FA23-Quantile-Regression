@@ -315,6 +315,7 @@ anova_50_lotShape
 ```
 
 Alpha=0.05
+
 Lot shape for 90th quantile of data is not a significant variable while in the 50th quantile it is.
 
 ```{r, Warning=FALSE}
@@ -327,6 +328,7 @@ qrs_summary[90]
 ```
 
 Alpha=0.05
+
 For Q10: GrLivArea, LotArea are signifiacnt while TotRmsAbvGrd is not
 
 For Q25: GrLivArea, LotArea and TotRmsAbvGrd are all significant
