@@ -328,7 +328,11 @@ qrs_summary[90]
 
 Alpha=0.05
 For Q10: GrLivArea, LotArea are signifiacnt while TotRmsAbvGrd is not
+
 For Q25: GrLivArea, LotArea and TotRmsAbvGrd are all significant
+
 For Q50: GrLivArea, LotArea and TotRmsAbvGrd are all significant
+
 For Q75: GrLivArea, LotArea and TotRmsAbvGrd are all significant
+
 For Q90: GrLivArea, LotArea and TotRmsAbvGrd are all significant
