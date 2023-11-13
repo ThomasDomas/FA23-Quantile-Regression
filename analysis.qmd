@@ -289,3 +289,45 @@ Absolute min QR 50th error: `r format(round(min(abs(qr50_summary$residuals)), di
 Max QR 50th error: `r format(round(max(qr50_summary$residuals), digits=0), scientific=F)`.
 
 Absolute max QR 50th error: `r format(round(max(abs(qr50_summary$residuals)), digits=0), scientific=F)`.
+
+### Tests for significant variables
+
+```{r, Warning=FALSE}
+qr50_r_foundation = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape), tau=0.5)
+anova_50_foundation <- anova(qr50, qr50_r_foundation)
+anova_50_foundation
+
+qr50_r_lotShape = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(Foundation), tau=0.5)
+anova_50_lotShape <- anova(qr50, qr50_r_lotShape)
+anova_50_lotShape
+
+qr90 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.90)
+qr90_r_foundation = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape), tau=0.90)
+anova_90_foundation <- anova(qr90, qr90_r_foundation)
+anova_90_foundation
+
+qr90_r_lotshape = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(Foundation), tau=0.90)
+anova_90_lotshape <- anova(qr90, qr90_r_lotshape)
+anova_90_lotshape
+
+## q75 and q10 gives errors
+```
+
+Alpha=0.05
+Lot shape for 90th quantile of data is not a significant variable while in the 50th quantile it is.
+
+```{r, Warning=FALSE}
+qrs_summary <- summary(qrs, se = "iid")
+qrs_summary[10]
+qrs_summary[25]
+qrs_summary[50]
+qrs_summary[75]
+qrs_summary[90]
+```
+
+Alpha=0.05
+For Q10: GrLivArea, LotArea are signifiacnt while TotRmsAbvGrd is not
+For Q25: GrLivArea, LotArea and TotRmsAbvGrd are all significant
+For Q50: GrLivArea, LotArea and TotRmsAbvGrd are all significant
+For Q75: GrLivArea, LotArea and TotRmsAbvGrd are all significant
+For Q90: GrLivArea, LotArea and TotRmsAbvGrd are all significant
