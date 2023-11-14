@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -4470,7 +4470,8 @@ vertical-align: -.125em;
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
@@ -4489,7 +4490,7 @@ vertical-align: -.125em;
       <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./analysis.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Analysis</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -4577,6 +4578,7 @@ vertical-align: -.125em;
   <li><a href="#variance-of-error" id="toc-variance-of-error" class="nav-link" data-scroll-target="#variance-of-error"><span class="header-section-number">4.4.3</span> Variance of error</a></li>
   <li><a href="#minmax-error" id="toc-minmax-error" class="nav-link" data-scroll-target="#minmax-error"><span class="header-section-number">4.4.4</span> Min/max error</a></li>
   </ul></li>
+  <li><a href="#tests-for-significant-variables" id="toc-tests-for-significant-variables" class="nav-link" data-scroll-target="#tests-for-significant-variables"><span class="header-section-number">4.5</span> Tests for significant variables</a></li>
   </ul>
 </nav>
     </div>
@@ -4783,17 +4785,68 @@ F-statistic: 225.6 on 11 and 1448 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>OLS MAE value: 32186.89.</p>
 <p>And QR 50th MAE value: 31160.69.</p>
 <p>QR for 50th quantile has a lower MAE therefore it is has more accurate predictions.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fullDataLength <span class="ot">=</span> <span class="fu">length</span>(df<span class="sc">$</span>SalePrice)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>fullDataLength</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1460</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>count10per <span class="ot">=</span> fullDataLength <span class="sc">/</span> <span class="dv">10</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>count10per</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 146</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>sorted_df_desc <span class="ot">&lt;-</span> df[<span class="fu">order</span>(<span class="sc">-</span>df<span class="sc">$</span>SalePrice),]</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>Q90SalePrice <span class="ot">&lt;-</span> sorted_df_desc[<span class="dv">0</span><span class="sc">:</span>count10per, ] <span class="co"># data greater than 90% of data</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(Q90SalePrice<span class="sc">$</span>SalePrice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 146</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>qr90_p <span class="ot">=</span> <span class="fu">rq</span>(<span class="at">data=</span>df, SalePrice <span class="sc">~</span> GrLivArea <span class="sc">+</span> LotArea <span class="sc">+</span> TotRmsAbvGrd <span class="sc">+</span> <span class="fu">as.factor</span>(LotShape) <span class="sc">+</span> <span class="fu">as.factor</span>(Foundation), <span class="at">tau=</span><span class="fl">0.90</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mae</span>(<span class="fu">predict</span>(ols, <span class="at">newdata=</span>Q90SalePrice), Q90SalePrice<span class="sc">$</span>SalePrice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 82879.02</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mae</span>(<span class="fu">predict</span>(qr90_p, <span class="at">newdata=</span>Q90SalePrice), Q90SalePrice<span class="sc">$</span>SalePrice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 55993.4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="do">###########</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>sorted_df_asc <span class="ot">&lt;-</span> df[<span class="fu">order</span>(df<span class="sc">$</span>SalePrice),]</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(sorted_df_asc<span class="sc">$</span>SalePrice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1460</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>Q10SalePrice <span class="ot">&lt;-</span> sorted_df_asc[<span class="dv">0</span><span class="sc">:</span>count10per, ] <span class="co"># data lower than 90% of data</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(Q10SalePrice<span class="sc">$</span>SalePrice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 146</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>qr10_p <span class="ot">=</span> <span class="fu">rq</span>(<span class="at">data=</span>df, SalePrice <span class="sc">~</span> GrLivArea <span class="sc">+</span> LotArea <span class="sc">+</span> TotRmsAbvGrd <span class="sc">+</span> <span class="fu">as.factor</span>(LotShape) <span class="sc">+</span> <span class="fu">as.factor</span>(Foundation), <span class="at">tau=</span><span class="fl">0.10</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mae</span>(<span class="fu">predict</span>(ols, <span class="at">newdata=</span>Q10SalePrice), Q10SalePrice<span class="sc">$</span>SalePrice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 30663.33</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mae</span>(<span class="fu">predict</span>(qr10_p, <span class="at">newdata=</span>Q10SalePrice), Q10SalePrice<span class="sc">$</span>SalePrice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 19342.85</code></pre>
+</div>
+</div>
+<p>Quantile regression for tau = 0.9 is a lot better than OLS in accuracy for predicting the 90th quantile</p>
+<p>Quantile regression for tau = 0.1 is a lot better than OLS in accuracy for predicting the 10th quantile</p>
 </section>
 <section id="root-mean-squared-error" class="level3" data-number="4.4.2">
 <h3 data-number="4.4.2" class="anchored" data-anchor-id="root-mean-squared-error"><span class="header-section-number">4.4.2</span> Root mean squared error</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>olsRmse <span class="ot">=</span> <span class="fu">rmse</span>(<span class="fu">predict</span>(ols), df<span class="sc">$</span>SalePrice)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>olsRmse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>olsRmse <span class="ot">=</span> <span class="fu">rmse</span>(<span class="fu">predict</span>(ols), df<span class="sc">$</span>SalePrice)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>olsRmse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 48209.34</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>Qr50Rmse <span class="ot">=</span> <span class="fu">rmse</span>(<span class="fu">predict</span>(qr50), df<span class="sc">$</span>SalePrice)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>Qr50Rmse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>Qr50Rmse <span class="ot">=</span> <span class="fu">rmse</span>(<span class="fu">predict</span>(qr50), df<span class="sc">$</span>SalePrice)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>Qr50Rmse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 49434.81</code></pre>
 </div>
@@ -4805,11 +4858,11 @@ F-statistic: 225.6 on 11 and 1448 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="variance-of-error" class="level3" data-number="4.4.3">
 <h3 data-number="4.4.3" class="anchored" data-anchor-id="variance-of-error"><span class="header-section-number">4.4.3</span> Variance of error</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ols_summary<span class="sc">$</span>df[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>ols_summary<span class="sc">$</span>df[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1448</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>qr50_summary<span class="sc">$</span>rdf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>qr50_summary<span class="sc">$</span>rdf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1448</code></pre>
 </div>
@@ -4821,43 +4874,43 @@ F-statistic: 225.6 on 11 and 1448 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="minmax-error" class="level3" data-number="4.4.4">
 <h3 data-number="4.4.4" class="anchored" data-anchor-id="minmax-error"><span class="header-section-number">4.4.4</span> Min/max error</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Min OLS error</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(ols_summary<span class="sc">$</span>residuals), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Min OLS error</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(ols_summary<span class="sc">$</span>residuals), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "-422488"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min OLS error</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(ols_summary<span class="sc">$</span>residuals)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min OLS error</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(ols_summary<span class="sc">$</span>residuals)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "5"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Max OLS error</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(ols_summary<span class="sc">$</span>residuals), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Max OLS error</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(ols_summary<span class="sc">$</span>residuals), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "326538"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max OLS error</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(ols_summary<span class="sc">$</span>residuals)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max OLS error</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(ols_summary<span class="sc">$</span>residuals)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "422488"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Min QR 50th error</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(qr50_summary<span class="sc">$</span>residuals), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Min QR 50th error</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(qr50_summary<span class="sc">$</span>residuals), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "-440106"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min QR 50th error</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(qr50_summary<span class="sc">$</span>residuals)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min QR 50th error</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(qr50_summary<span class="sc">$</span>residuals)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "0"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Max QR 50th error</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(qr50_summary<span class="sc">$</span>residuals), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Max QR 50th error</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(qr50_summary<span class="sc">$</span>residuals), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "351819"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max QR 50th error</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(qr50_summary<span class="sc">$</span>residuals)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max QR 50th error</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(qr50_summary<span class="sc">$</span>residuals)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "440106"</code></pre>
 </div>
@@ -4875,10 +4928,188 @@ F-statistic: 225.6 on 11 and 1448 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Absolute min QR 50th error: 0.</p>
 <p>Max QR 50th error: 351819.</p>
 <p>Absolute max QR 50th error: 440106.</p>
-
-
 </section>
 </section>
+</section>
+<section id="tests-for-significant-variables" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="tests-for-significant-variables"><span class="header-section-number">4.5</span> Tests for significant variables</h2>
+<div class="cell" data-warning="false">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>qr50_r_foundation <span class="ot">=</span> <span class="fu">rq</span>(<span class="at">data=</span>df, SalePrice <span class="sc">~</span> GrLivArea <span class="sc">+</span> LotArea <span class="sc">+</span> TotRmsAbvGrd <span class="sc">+</span> <span class="fu">as.factor</span>(LotShape), <span class="at">tau=</span><span class="fl">0.5</span>)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>anova_50_foundation <span class="ot">&lt;-</span> <span class="fu">anova</span>(qr50, qr50_r_foundation)</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>anova_50_foundation</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Quantile Regression Analysis of Deviance Table
+
+Model 1: SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation)
+Model 2: SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape)
+  Df Resid Df F value    Pr(&gt;F)    
+1  5     1448  107.25 &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>qr50_r_lotShape <span class="ot">=</span> <span class="fu">rq</span>(<span class="at">data=</span>df, SalePrice <span class="sc">~</span> GrLivArea <span class="sc">+</span> LotArea <span class="sc">+</span> TotRmsAbvGrd <span class="sc">+</span> <span class="fu">as.factor</span>(Foundation), <span class="at">tau=</span><span class="fl">0.5</span>)</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>anova_50_lotShape <span class="ot">&lt;-</span> <span class="fu">anova</span>(qr50, qr50_r_lotShape)</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>anova_50_lotShape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Quantile Regression Analysis of Deviance Table
+
+Model 1: SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation)
+Model 2: SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(Foundation)
+  Df Resid Df F value    Pr(&gt;F)    
+1  3     1448  11.431 2.076e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Suddenly started showing the same error</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="co"># qr90              = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.90)</span></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="co"># qr90_r_foundation = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape), tau=0.90)</span></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a><span class="co"># anova_90_foundation &lt;- anova(qr90, qr90_r_foundation)</span></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a><span class="co"># anova_90_foundation</span></span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a><span class="co"># qr90_r_lotshape = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(Foundation), tau=0.90)</span></span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a><span class="co"># anova_90_lotshape &lt;- anova(qr90, qr90_r_lotshape)</span></span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a><span class="co"># anova_90_lotshape</span></span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a><span class="do">## q75 and q10 gives errors</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Alpha=0.05</p>
+<p>Lot shape for 90th quantile of data is not a significant variable while in the 50th quantile it is.</p>
+<div class="cell" data-warning="false">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>qrs_summary <span class="ot">&lt;-</span> <span class="fu">summary</span>(qrs, <span class="at">se =</span> <span class="st">"iid"</span>)</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>qrs_summary[<span class="dv">11</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+
+Call: rq(formula = SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + 
+    as.factor(LotShape) + as.factor(Foundation), tau = taus, 
+    data = df)
+
+tau: [1] 0.1
+
+Coefficients:
+                            Value        Std. Error   t value      Pr(&gt;|t|)    
+(Intercept)                  44918.14302   9958.59407      4.51049      0.00001
+GrLivArea                       59.78170      6.21876      9.61312      0.00000
+LotArea                          0.50734      0.19525      2.59836      0.00946
+TotRmsAbvGrd                 -3760.05409   1913.59402     -1.96492      0.04961
+as.factor(LotShape)IR2        4840.55113  11118.13396      0.43537      0.66336
+as.factor(LotShape)IR3       -5205.53288  21961.71862     -0.23703      0.81267
+as.factor(LotShape)Reg      -20808.18943   3849.00985     -5.40611      0.00000
+as.factor(Foundation)CBlock  20043.98876   6163.21192      3.25220      0.00117
+as.factor(Foundation)PConc   50167.36211   6223.23114      8.06130      0.00000
+as.factor(Foundation)Slab     -264.83374  14627.67625     -0.01810      0.98556
+as.factor(Foundation)Stone  -20399.97469  27696.29871     -0.73656      0.46151
+as.factor(Foundation)Wood    28298.38924  38945.74192      0.72661      0.46758</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>qrs_summary[<span class="dv">26</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+
+Call: rq(formula = SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + 
+    as.factor(LotShape) + as.factor(Foundation), tau = taus, 
+    data = df)
+
+tau: [1] 0.25
+
+Coefficients:
+                            Value        Std. Error   t value      Pr(&gt;|t|)    
+(Intercept)                  41165.58421   5987.79675      6.87491      0.00000
+GrLivArea                       81.67625      3.73915     21.84353      0.00000
+LotArea                          0.84671      0.11740      7.21222      0.00000
+TotRmsAbvGrd                 -6198.50115   1150.58531     -5.38726      0.00000
+as.factor(LotShape)IR2       -3045.31134   6684.99247     -0.45554      0.64879
+as.factor(LotShape)IR3      -27511.62099  13204.90687     -2.08344      0.03739
+as.factor(LotShape)Reg      -15954.88024   2314.29140     -6.89407      0.00000
+as.factor(Foundation)CBlock  21328.47662   3705.75003      5.75551      0.00000
+as.factor(Foundation)PConc   53186.21269   3741.83774     14.21393      0.00000
+as.factor(Foundation)Slab    -5887.42110   8795.17246     -0.66939      0.50335
+as.factor(Foundation)Stone    2363.35803  16652.93375      0.14192      0.88716
+as.factor(Foundation)Wood     9632.53510  23416.87844      0.41135      0.68088</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>qrs_summary[<span class="dv">51</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+
+Call: rq(formula = SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + 
+    as.factor(LotShape) + as.factor(Foundation), tau = taus, 
+    data = df)
+
+tau: [1] 0.5
+
+Coefficients:
+                            Value        Std. Error   t value      Pr(&gt;|t|)    
+(Intercept)                  36326.81296   5436.57878      6.68193      0.00000
+GrLivArea                       96.66934      3.39494     28.47457      0.00000
+LotArea                          0.99940      0.10659      9.37597      0.00000
+TotRmsAbvGrd                 -6476.18114   1044.66600     -6.19928      0.00000
+as.factor(LotShape)IR2       -5084.13375   6069.59282     -0.83764      0.40237
+as.factor(LotShape)IR3      -21074.80675  11989.30415     -1.75780      0.07899
+as.factor(LotShape)Reg      -11065.07360   2101.24492     -5.26596      0.00000
+as.factor(Foundation)CBlock  21252.40678   3364.61019      6.31645      0.00000
+as.factor(Foundation)PConc   53311.16094   3397.37578     15.69186      0.00000
+as.factor(Foundation)Slab   -16867.20619   7985.51619     -2.11222      0.03484
+as.factor(Foundation)Stone   14561.54748  15119.91638      0.96307      0.33567
+as.factor(Foundation)Wood    -2008.81877  21261.19333     -0.09448      0.92474</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>qrs_summary[<span class="dv">76</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+
+Call: rq(formula = SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + 
+    as.factor(LotShape) + as.factor(Foundation), tau = taus, 
+    data = df)
+
+tau: [1] 0.75
+
+Coefficients:
+                            Value        Std. Error   t value      Pr(&gt;|t|)    
+(Intercept)                  20216.61382   4907.47544      4.11955      0.00004
+GrLivArea                      102.16809      3.06453     33.33890      0.00000
+LotArea                          1.98556      0.09622     20.63605      0.00000
+TotRmsAbvGrd                 -3296.98802    942.99613     -3.49629      0.00049
+as.factor(LotShape)IR2         532.14098   5478.88276      0.09713      0.92264
+as.factor(LotShape)IR3      -30920.98346  10822.47093     -2.85711      0.00434
+as.factor(LotShape)Reg       -9234.62078   1896.74578     -4.86867      0.00000
+as.factor(Foundation)CBlock  17513.10496   3037.15674      5.76628      0.00000
+as.factor(Foundation)PConc   62442.29045   3066.73349     20.36117      0.00000
+as.factor(Foundation)Slab   -21750.93811   7208.34301     -3.01747      0.00259
+as.factor(Foundation)Stone   10874.35060  13648.40306      0.79675      0.42573
+as.factor(Foundation)Wood   -23402.17460  19191.99344     -1.21937      0.22290</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>qrs_summary[<span class="dv">91</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+
+Call: rq(formula = SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + 
+    as.factor(LotShape) + as.factor(Foundation), tau = taus, 
+    data = df)
+
+tau: [1] 0.9
+
+Coefficients:
+                            Value        Std. Error   t value      Pr(&gt;|t|)    
+(Intercept)                  12828.54575   7945.83405      1.61450      0.10664
+GrLivArea                      122.35645      4.96187     24.65934      0.00000
+LotArea                          3.20480      0.15579     20.57135      0.00000
+TotRmsAbvGrd                 -5722.68136   1526.83204     -3.74808      0.00019
+as.factor(LotShape)IR2       -7348.43491   8871.01600     -0.82836      0.40760
+as.factor(LotShape)IR3      -33498.31739  17522.97265     -1.91168      0.05611
+as.factor(LotShape)Reg       -5890.42705   3071.07543     -1.91803      0.05530
+as.factor(Foundation)CBlock  14295.60618   4917.54747      2.90706      0.00370
+as.factor(Foundation)PConc   85822.78104   4965.43604     17.28404      0.00000
+as.factor(Foundation)Slab   -13083.82686  11671.23464     -1.12103      0.26246
+as.factor(Foundation)Stone   -2166.19118  22098.52031     -0.09802      0.92193
+as.factor(Foundation)Wood   -53100.42094  31074.30628     -1.70882      0.08770</code></pre>
+</div>
+</div>
+<p>Alpha=0.05</p>
+<p>For Q10: GrLivArea, LotArea are signifiacnt while TotRmsAbvGrd is not</p>
+<p>For Q25: GrLivArea, LotArea and TotRmsAbvGrd are all significant</p>
+<p>For Q50: GrLivArea, LotArea and TotRmsAbvGrd are all significant</p>
+<p>For Q75: GrLivArea, LotArea and TotRmsAbvGrd are all significant</p>
+<p>For Q90: GrLivArea, LotArea and TotRmsAbvGrd are all significant</p>
+
+
 </section>
 
 </main> <!-- /main -->
