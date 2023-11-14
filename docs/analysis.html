@@ -4976,130 +4976,85 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>Lot shape for 90th quantile of data is not a significant variable while in the 50th quantile it is.</p>
 <div class="cell" data-warning="false">
 <div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>qrs_summary <span class="ot">&lt;-</span> <span class="fu">summary</span>(qrs, <span class="at">se =</span> <span class="st">"iid"</span>)</span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>qrs_summary[<span class="dv">11</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="co">#tau: 0.1</span></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>qrs_summary[<span class="dv">11</span>][[<span class="dv">1</span>]]<span class="sc">$</span>coefficients[,<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[[1]]
-
-Call: rq(formula = SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + 
-    as.factor(LotShape) + as.factor(Foundation), tau = taus, 
-    data = df)
-
-tau: [1] 0.1
-
-Coefficients:
-                            Value        Std. Error   t value      Pr(&gt;|t|)    
-(Intercept)                  44918.14302   9958.59407      4.51049      0.00001
-GrLivArea                       59.78170      6.21876      9.61312      0.00000
-LotArea                          0.50734      0.19525      2.59836      0.00946
-TotRmsAbvGrd                 -3760.05409   1913.59402     -1.96492      0.04961
-as.factor(LotShape)IR2        4840.55113  11118.13396      0.43537      0.66336
-as.factor(LotShape)IR3       -5205.53288  21961.71862     -0.23703      0.81267
-as.factor(LotShape)Reg      -20808.18943   3849.00985     -5.40611      0.00000
-as.factor(Foundation)CBlock  20043.98876   6163.21192      3.25220      0.00117
-as.factor(Foundation)PConc   50167.36211   6223.23114      8.06130      0.00000
-as.factor(Foundation)Slab     -264.83374  14627.67625     -0.01810      0.98556
-as.factor(Foundation)Stone  -20399.97469  27696.29871     -0.73656      0.46151
-as.factor(Foundation)Wood    28298.38924  38945.74192      0.72661      0.46758</code></pre>
+<pre><code>                (Intercept)                   GrLivArea 
+               6.990039e-06                0.000000e+00 
+                    LotArea                TotRmsAbvGrd 
+               9.462071e-03                4.961475e-02 
+     as.factor(LotShape)IR2      as.factor(LotShape)IR3 
+               6.633556e-01                8.126689e-01 
+     as.factor(LotShape)Reg as.factor(Foundation)CBlock 
+               7.523292e-08                1.171528e-03 
+ as.factor(Foundation)PConc   as.factor(Foundation)Slab 
+               1.554312e-15                9.855576e-01 
+ as.factor(Foundation)Stone   as.factor(Foundation)Wood 
+               4.615095e-01                4.675820e-01 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>qrs_summary[<span class="dv">26</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co">#tau: 0.25</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>qrs_summary[<span class="dv">26</span>][[<span class="dv">1</span>]]<span class="sc">$</span>coefficients[,<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[[1]]
-
-Call: rq(formula = SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + 
-    as.factor(LotShape) + as.factor(Foundation), tau = taus, 
-    data = df)
-
-tau: [1] 0.25
-
-Coefficients:
-                            Value        Std. Error   t value      Pr(&gt;|t|)    
-(Intercept)                  41165.58421   5987.79675      6.87491      0.00000
-GrLivArea                       81.67625      3.73915     21.84353      0.00000
-LotArea                          0.84671      0.11740      7.21222      0.00000
-TotRmsAbvGrd                 -6198.50115   1150.58531     -5.38726      0.00000
-as.factor(LotShape)IR2       -3045.31134   6684.99247     -0.45554      0.64879
-as.factor(LotShape)IR3      -27511.62099  13204.90687     -2.08344      0.03739
-as.factor(LotShape)Reg      -15954.88024   2314.29140     -6.89407      0.00000
-as.factor(Foundation)CBlock  21328.47662   3705.75003      5.75551      0.00000
-as.factor(Foundation)PConc   53186.21269   3741.83774     14.21393      0.00000
-as.factor(Foundation)Slab    -5887.42110   8795.17246     -0.66939      0.50335
-as.factor(Foundation)Stone    2363.35803  16652.93375      0.14192      0.88716
-as.factor(Foundation)Wood     9632.53510  23416.87844      0.41135      0.68088</code></pre>
+<pre><code>                (Intercept)                   GrLivArea 
+               9.192647e-12                0.000000e+00 
+                    LotArea                TotRmsAbvGrd 
+               8.841816e-13                8.339263e-08 
+     as.factor(LotShape)IR2      as.factor(LotShape)IR3 
+               6.487859e-01                3.738624e-02 
+     as.factor(LotShape)Reg as.factor(Foundation)CBlock 
+               8.069989e-12                1.052729e-08 
+ as.factor(Foundation)PConc   as.factor(Foundation)Slab 
+               0.000000e+00                5.033520e-01 
+ as.factor(Foundation)Stone   as.factor(Foundation)Wood 
+               8.871642e-01                6.808767e-01 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>qrs_summary[<span class="dv">51</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co">#tau: 0.5</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>qrs_summary[<span class="dv">51</span>][[<span class="dv">1</span>]]<span class="sc">$</span>coefficients[,<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[[1]]
-
-Call: rq(formula = SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + 
-    as.factor(LotShape) + as.factor(Foundation), tau = taus, 
-    data = df)
-
-tau: [1] 0.5
-
-Coefficients:
-                            Value        Std. Error   t value      Pr(&gt;|t|)    
-(Intercept)                  36326.81296   5436.57878      6.68193      0.00000
-GrLivArea                       96.66934      3.39494     28.47457      0.00000
-LotArea                          0.99940      0.10659      9.37597      0.00000
-TotRmsAbvGrd                 -6476.18114   1044.66600     -6.19928      0.00000
-as.factor(LotShape)IR2       -5084.13375   6069.59282     -0.83764      0.40237
-as.factor(LotShape)IR3      -21074.80675  11989.30415     -1.75780      0.07899
-as.factor(LotShape)Reg      -11065.07360   2101.24492     -5.26596      0.00000
-as.factor(Foundation)CBlock  21252.40678   3364.61019      6.31645      0.00000
-as.factor(Foundation)PConc   53311.16094   3397.37578     15.69186      0.00000
-as.factor(Foundation)Slab   -16867.20619   7985.51619     -2.11222      0.03484
-as.factor(Foundation)Stone   14561.54748  15119.91638      0.96307      0.33567
-as.factor(Foundation)Wood    -2008.81877  21261.19333     -0.09448      0.92474</code></pre>
+<pre><code>                (Intercept)                   GrLivArea 
+               3.354184e-11                0.000000e+00 
+                    LotArea                TotRmsAbvGrd 
+               0.000000e+00                7.382277e-10 
+     as.factor(LotShape)IR2      as.factor(LotShape)IR3 
+               4.023712e-01                7.899271e-02 
+     as.factor(LotShape)Reg as.factor(Foundation)CBlock 
+               1.604862e-07                3.552940e-10 
+ as.factor(Foundation)PConc   as.factor(Foundation)Slab 
+               0.000000e+00                3.483801e-02 
+ as.factor(Foundation)Stone   as.factor(Foundation)Wood 
+               3.356729e-01                9.247387e-01 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>qrs_summary[<span class="dv">76</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co">#tau: 0.75</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>qrs_summary[<span class="dv">76</span>][[<span class="dv">1</span>]]<span class="sc">$</span>coefficients[,<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[[1]]
-
-Call: rq(formula = SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + 
-    as.factor(LotShape) + as.factor(Foundation), tau = taus, 
-    data = df)
-
-tau: [1] 0.75
-
-Coefficients:
-                            Value        Std. Error   t value      Pr(&gt;|t|)    
-(Intercept)                  20216.61382   4907.47544      4.11955      0.00004
-GrLivArea                      102.16809      3.06453     33.33890      0.00000
-LotArea                          1.98556      0.09622     20.63605      0.00000
-TotRmsAbvGrd                 -3296.98802    942.99613     -3.49629      0.00049
-as.factor(LotShape)IR2         532.14098   5478.88276      0.09713      0.92264
-as.factor(LotShape)IR3      -30920.98346  10822.47093     -2.85711      0.00434
-as.factor(LotShape)Reg       -9234.62078   1896.74578     -4.86867      0.00000
-as.factor(Foundation)CBlock  17513.10496   3037.15674      5.76628      0.00000
-as.factor(Foundation)PConc   62442.29045   3066.73349     20.36117      0.00000
-as.factor(Foundation)Slab   -21750.93811   7208.34301     -3.01747      0.00259
-as.factor(Foundation)Stone   10874.35060  13648.40306      0.79675      0.42573
-as.factor(Foundation)Wood   -23402.17460  19191.99344     -1.21937      0.22290</code></pre>
+<pre><code>                (Intercept)                   GrLivArea 
+               4.010881e-05                0.000000e+00 
+                    LotArea                TotRmsAbvGrd 
+               0.000000e+00                4.860245e-04 
+     as.factor(LotShape)IR2      as.factor(LotShape)IR3 
+               9.226399e-01                4.336281e-03 
+     as.factor(LotShape)Reg as.factor(Foundation)CBlock 
+               1.246627e-06                9.890384e-09 
+ as.factor(Foundation)PConc   as.factor(Foundation)Slab 
+               0.000000e+00                2.593447e-03 
+ as.factor(Foundation)Stone   as.factor(Foundation)Wood 
+               4.257275e-01                2.229017e-01 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>qrs_summary[<span class="dv">91</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co">#tau: 0.9</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>qrs_summary[<span class="dv">91</span>][[<span class="dv">1</span>]]<span class="sc">$</span>coefficients[,<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[[1]]
-
-Call: rq(formula = SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + 
-    as.factor(LotShape) + as.factor(Foundation), tau = taus, 
-    data = df)
-
-tau: [1] 0.9
-
-Coefficients:
-                            Value        Std. Error   t value      Pr(&gt;|t|)    
-(Intercept)                  12828.54575   7945.83405      1.61450      0.10664
-GrLivArea                      122.35645      4.96187     24.65934      0.00000
-LotArea                          3.20480      0.15579     20.57135      0.00000
-TotRmsAbvGrd                 -5722.68136   1526.83204     -3.74808      0.00019
-as.factor(LotShape)IR2       -7348.43491   8871.01600     -0.82836      0.40760
-as.factor(LotShape)IR3      -33498.31739  17522.97265     -1.91168      0.05611
-as.factor(LotShape)Reg       -5890.42705   3071.07543     -1.91803      0.05530
-as.factor(Foundation)CBlock  14295.60618   4917.54747      2.90706      0.00370
-as.factor(Foundation)PConc   85822.78104   4965.43604     17.28404      0.00000
-as.factor(Foundation)Slab   -13083.82686  11671.23464     -1.12103      0.26246
-as.factor(Foundation)Stone   -2166.19118  22098.52031     -0.09802      0.92193
-as.factor(Foundation)Wood   -53100.42094  31074.30628     -1.70882      0.08770</code></pre>
+<pre><code>                (Intercept)                   GrLivArea 
+               0.1066369761                0.0000000000 
+                    LotArea                TotRmsAbvGrd 
+               0.0000000000                0.0001852047 
+     as.factor(LotShape)IR2      as.factor(LotShape)IR3 
+               0.4076006055                0.0561144483 
+     as.factor(LotShape)Reg as.factor(Foundation)CBlock 
+               0.0553031924                0.0037039701 
+ as.factor(Foundation)PConc   as.factor(Foundation)Slab 
+               0.0000000000                0.2624601457 
+ as.factor(Foundation)Stone   as.factor(Foundation)Wood 
+               0.9219265934                0.0876984418 </code></pre>
 </div>
 </div>
 <p>Alpha=0.05</p>
