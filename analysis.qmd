@@ -3,56 +3,26 @@
 In this analysis we aim to show that QR can achieve similar--- if not better--- performance to OLS across various metrics. OLS and QR are very different modeling techniques, and, as such, it is difficult to compare them. However, given that OLS estimates the mean value of the response variable for a given input vector and QR estimates the nth quantile of the response variable for a given input vector, the 50th quantile QR (QR50)--- which corresponds to the median--- can be used as a comparison to OLS as both the median and mean are measures of centrality. The limitation of this analysis is that the data set does not meet the assumptions of OLS. Specifically, the data is heavily skewed and the conditional distributions are also skewed, meaning median of the conditional distribution is a better proxy for the centrality of the distribution. The power of QR is that it is able to produce similar results to OLS regression without having to meet the strict assumptions of OLS. Regardless of the fact the OLS regressions are statistically invalid, it is still going to minimizee the square deviations of the residuals from the regression curve, which often results much higher scores across popular metrics than other modeling techniques, and will thus serve as a proper benchmark to test the mettle of QR in a data set that is beyond the capabilities of OLS regression.
 
 ```{r, echo=FALSE, include=FALSE}
-# installing/loading the package:
-# if(!require(installr)) {
-#   install.packages("installr"); 
-#   require(installr)
-# } #load / install+load installr
-# # using the package:
-# updateR()
-
-# install.packages('cowplot')
-# install.packages("quantreg")
-library("quantreg")
-#library(sjPlot)
-library(haven)
-library(gridExtra)
-library(tidyverse)
+library(quantreg)
+# library(tidyverse)
 library(Metrics)
 require(gridExtra)
-library(cowplot)
 library(ggplot2)
-#library(equatiomatic)
-#library(fastDummies)
-#library(pscl)
-
-#library(gsheet)
-#library(brant)
-#library(MASS)
-#library(lmtest)
-#library(reshape2)
-
-#library(nnet)
-#library(AER)
-#library(boot)
-
-#library(asaur)
-
 ```
 
 ## Visualization
 
+Using [@tidyverse] for distinct values
 ```{r, 'Getting Data housing'}
 df <- read.csv("TrainData.csv") |>
-  na.omit() |>
-  distinct()
-
+  na.omit()
 ```
 
 ### Visualizing the Data
 
 There are many different kinds of predictor variables in this data set. For instance, there are continuous variables such as GrLivArea, counting variables such as YearBuilt, and categorical variables such as HouseStyle. In all of these cases, we can see that the data is not normally distributed, including the response variable, SalePrice. The relationships between the variables and their distributions are illustrated in a joint plot below.
 
+using [@gridExtra] and [@ggplot2]
 ```{r 'Visualizing data'}
 suppressWarnings({
 
@@ -99,9 +69,6 @@ df |> ggplot(aes(y = SalePrice, x = LotArea)) +
 QR and OLS...
 
 ```{r, 'Visualizing housing cont'}
-# df |> ggplot(aes(y = SalePrice, x = GrLivArea)) +
-#   geom_boxplot()
-
 df |> ggplot(aes(y = SalePrice, x = GrLivArea)) +
   geom_point(size = 0.9) +
   stat_smooth(method = lm, color = "black") +
@@ -123,6 +90,7 @@ QR and OLS...
 
 ### QR model
 
+using [@quantreg]
 ```{r 'QR model creation'}
 qr50 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.5)
 qr50_summary = summary(qr50)
@@ -132,8 +100,8 @@ qr50_summary = summary(qr50)
 #Generate all QR models 
 taus <- seq(from=0, to=1, by=.01)
 qrs = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=taus)
-
 ```
+
 ```{r}
 num_of_rows <- nrow(qrs$coefficients)
 par(mfrow = c(2, 2))
@@ -176,6 +144,7 @@ ols_summary
 
 ### Mean absolute error
 
+using [@Metrics]
 ```{r 'Mean absolute error'}
 olsMae = mae(predict(ols), df$SalePrice)
 olsMae
@@ -223,6 +192,7 @@ Quantile regression for tau = 0.1 is a lot better than OLS in accuracy for predi
 
 ### Root mean squared error
 
+using [@Metrics]
 ```{r 'Root mean squared error'}
 olsRmse = rmse(predict(ols), df$SalePrice)
 olsRmse
@@ -302,14 +272,14 @@ anova_50_lotShape <- anova(qr50, qr50_r_lotShape)
 anova_50_lotShape
 
 ## Suddenly started showing the same error
-# qr90              = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.90)
-# qr90_r_foundation = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape), tau=0.90)
-# anova_90_foundation <- anova(qr90, qr90_r_foundation)
-# anova_90_foundation
+qr90 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.90)
+qr90_r_foundation = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape), tau=0.90)
+anova_90_foundation <- anova(qr90, qr90_r_foundation)
+anova_90_foundation
 
-# qr90_r_lotshape = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(Foundation), tau=0.90)
-# anova_90_lotshape <- anova(qr90, qr90_r_lotshape)
-# anova_90_lotshape
+qr90_r_lotshape = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(Foundation), tau=0.90)
+anova_90_lotshape <- anova(qr90, qr90_r_lotshape)
+anova_90_lotshape
 
 ## q75 and q10 gives errors
 ```
