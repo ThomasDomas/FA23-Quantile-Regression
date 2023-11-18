@@ -4,7 +4,6 @@ In this analysis we aim to show that QR can achieve similar--- if not better--- 
 
 ```{r, echo=FALSE, include=FALSE}
 library(quantreg)
-# library(tidyverse)
 library(Metrics)
 require(gridExtra)
 library(ggplot2)
@@ -12,8 +11,7 @@ library(ggplot2)
 
 ## Visualization
 
-Using [@tidyverse] for distinct values
-```{r, 'Getting Data housing'}
+```{r, 'Getting Data housing', echo=FALSE}
 df <- read.csv("TrainData.csv") |>
   na.omit()
 ```
@@ -51,7 +49,7 @@ Thus, the data fails to meet the assumptions of OLS, requiring the usage of a mo
 
 ### Visualizing quantile regression vs OLS
 
-QR and OLS...
+#### Difference between the 50th quantile and mean.
 
 ```{r, 'Visualizing housing'}
 
@@ -66,7 +64,9 @@ df |> ggplot(aes(y = SalePrice, x = LotArea)) +
   theme_bw()
 ```
 
-QR and OLS...
+As demonstrated in the graph, The slope of OLS is slightly lower than the slope of 50th quantile. That is probably due to the 3 points which look like outliers on the far right below the OLS slope. They heavily affect the value of the OLS but the Quantile regression is unaffected by it due to the mathematical property of the median.
+
+#### Viewing the different quantiles of Quantile regression.
 
 ```{r, 'Visualizing housing cont'}
 df |> ggplot(aes(y = SalePrice, x = GrLivArea)) +
@@ -153,10 +153,8 @@ Qr50Mae
 ```
 
 OLS MAE value: `r format(round(olsMae, digits=2), scientific=F)`.
-
 And QR 50th MAE value: `r format(round(Qr50Mae, digits=2), scientific=F)`.
-
-QR for 50th quantile has a lower MAE therefore it is has more accurate predictions.
+QR for 50th quantile has a lower MAE therefore it is has more accurate predictions but they are almost the same.
 
 ```{r 'MAE for different quantiles'}
 fullDataLength = length(df$SalePrice)
@@ -169,8 +167,10 @@ length(Q90SalePrice$SalePrice)
 
 qr90_p = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.90)
 
-mae(predict(ols, newdata=Q90SalePrice), Q90SalePrice$SalePrice)
-mae(predict(qr90_p, newdata=Q90SalePrice), Q90SalePrice$SalePrice)
+ols_q90_mae <- mae(predict(ols, newdata=Q90SalePrice), Q90SalePrice$SalePrice)
+ols_q90_mae
+q90_mae <- mae(predict(qr90_p, newdata=Q90SalePrice), Q90SalePrice$SalePrice)
+q90_mae
 
 ###########
 sorted_df_asc <- df[order(df$SalePrice),]
@@ -180,14 +180,16 @@ length(Q10SalePrice$SalePrice)
 
 qr10_p = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.10)
 
-mae(predict(ols, newdata=Q10SalePrice), Q10SalePrice$SalePrice)
-mae(predict(qr10_p, newdata=Q10SalePrice), Q10SalePrice$SalePrice)
+ols_q10_mae <- mae(predict(ols, newdata=Q10SalePrice), Q10SalePrice$SalePrice)
+ols_q10_mae
+q10_mae <- mae(predict(qr10_p, newdata=Q10SalePrice), Q10SalePrice$SalePrice)
+q10_mae
 
 ```
 
-Quantile regression for tau = 0.9 is a lot better than OLS in accuracy for predicting the 90th quantile
-
-Quantile regression for tau = 0.1 is a lot better than OLS in accuracy for predicting the 10th quantile
+When comparing Quantile regression for tau = 0.90 with OLS while predicting the top 10% of data when sorted by sales amount. The OLS model had MAE value of `r format(round(ols_q90_mae, digits=2), scientific=F)`, while QR had MAE value of `r format(round(q90_mae, digits=2), scientific=F)`.
+And when comparing Quantile regression for tau = 0.10 with OLS while predicting the bottom 10% of data when sorted by sales amount. The OLS model had MAE value of `r format(round(ols_q10_mae, digits=2), scientific=F)`, while QR had MAE value of `r format(round(q10_mae, digits=2), scientific=F)`.
+So QR has better MAE than OLS when predicting data that is far off the mean. That is a big advantage of QR as it has the flexibility to provide models for a specific set of the data.
 
 
 ### Root mean squared error
@@ -201,10 +203,24 @@ Qr50Rmse
 ```
 
 OLS RMSE value: `r format(round(olsRmse, digits=2), scientific=F)`.
-
 And QR 50th RMSE value: `r format(round(Qr50Rmse, digits=2), scientific=F)`.
+Since OLS' goal is to minimize RMSE, as expected it has a better (lower) value. But QR has a very similar value which shows how well QR model can keep up even if it is not focusing on optimizing RMSE.
 
-Since OLS algorithm's goal is to minimize RMSE, as expected it has a better (lower) value. But QR has a very similar value which shows how well QR model can keep up even if it is not focusing on optimizing RMSE.
+```{r 'Root mean squared error for specific quantiles'}
+ols_q90_rmse <- rmse(predict(ols, newdata=Q90SalePrice), Q90SalePrice$SalePrice)
+ols_q90_rmse
+q90_rmse <- rmse(predict(qr90_p, newdata=Q90SalePrice), Q90SalePrice$SalePrice)
+q90_rmse
+
+ols_q10_rmse <- rmse(predict(ols, newdata=Q10SalePrice), Q10SalePrice$SalePrice)
+ols_q10_rmse
+q10_rmse <- rmse(predict(qr10_p, newdata=Q10SalePrice), Q10SalePrice$SalePrice)
+q10_rmse
+```
+
+When comparing Quantile regression for tau = 0.90 with OLS while predicting the top 10% of data when sorted by sales amount. The OLS model had RMSE value of `r format(round(ols_q90_rmse, digits=2), scientific=F)`, while QR had RMSE value of `r format(round(q90_rmse, digits=2), scientific=F)`.
+And when comparing Quantile regression for tau = 0.10 with OLS while predicting the bottom 10% of data when sorted by sales amount. The OLS model had RMSE value of `r format(round(ols_q10_rmse, digits=2), scientific=F)`, while QR had RMSE value of `r format(round(q10_rmse, digits=2), scientific=F)`.
+So QR also has better RMSE than OLS when predicting data that is far off the mean, even though OLS is supposed to minimize RMSE value.
 
 ### Variance of error
 
