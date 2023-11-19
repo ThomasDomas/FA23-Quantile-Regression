@@ -17,7 +17,7 @@ library(tinytex)
 
 ## Regression
 
-A regression consists of the mean function and the variance function [1]
+Regression is a modeling technique that helps to understand the relationship between one or more dependent variables and an independent variable. Regression consists of the mean function and the variance function [1]
 
 $$
 E(Y|X=x)=\beta_0 + \beta_1X \\
@@ -29,7 +29,7 @@ y_i = \hat{y} + \epsilon_i
 $$
 where $y_i$ is the actual response variable, $\hat{y}$ is the estimate, and $\epsilon$, the error term, represents the difference between $\hat{y}$ and $y_i$.
 
-Regression can use different criterions. These criterions will yield different betas which will have different behaviors. 
+Regression can use different criterion. The criterion will yield different betas which will have different behaviors. 
 
 ## Ordinary least squares
 

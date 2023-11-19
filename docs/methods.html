@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.353">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -4470,8 +4470,7 @@ vertical-align: -.125em;
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
+    "search-submit-button-title": "Submit"
   }
 }</script>
 
@@ -4600,7 +4599,7 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
       <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./methods.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Methods</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -4710,14 +4709,14 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 </div>
 <section id="regression" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="regression"><span class="header-section-number">3.1</span> Regression</h2>
-<p>A regression consists of the mean function and the variance function [1]</p>
+<p>Regression is a modeling technique that helps to understand the relationship between one or more dependent variables and an independent variable. Regression consists of the mean function and the variance function [1]</p>
 <p><span class="math display">\[
 E(Y|X=x)=\beta_0 + \beta_1X \\
 Var(Y|X=x) = \sigma^2 \\
 \]</span> Here X is a matrix of observations, and the <span class="math inline">\(\beta\)</span>s attempt to estimate the observed outcomes <span class="math inline">\(y_i\)</span>. However, the estimates are rarely perfect, so an error, also called a residual, term must be introduced. <span class="math display">\[
 y_i = \hat{y} + \epsilon_i
 \]</span> where <span class="math inline">\(y_i\)</span> is the actual response variable, <span class="math inline">\(\hat{y}\)</span> is the estimate, and <span class="math inline">\(\epsilon\)</span>, the error term, represents the difference between <span class="math inline">\(\hat{y}\)</span> and <span class="math inline">\(y_i\)</span>.</p>
-<p>Regression can use different criterions. These criterions will yield different betas which will have different behaviors.</p>
+<p>Regression can use different criterion. The criterion will yield different betas which will have different behaviors.</p>
 </section>
 <section id="ordinary-least-squares" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="ordinary-least-squares"><span class="header-section-number">3.2</span> Ordinary least squares</h2>
