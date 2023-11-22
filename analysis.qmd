@@ -84,7 +84,7 @@ df |> ggplot(aes(y = SalePrice, x = GrLivArea)) +
   theme_bw()
 ```
 
-QR and OLS...
+In this graph, when plotting sales price against ground living area, Quantile regression 50th quantile and OLS look very similar in slope and y-intercept. However, when viewing the greater picture, Quantile regression actually offers a special regression line calculation for every partition of data as determined by tau value. So for the 75th quantile line, this slope would be the best to describe the prices for houses with ground living area larger than 75% of the data. While the 25th quantile line would be the best at describing houses with ground living areas less than 75% of the dataset.
 
 ## Model creation
 
@@ -288,14 +288,14 @@ anova_50_lotShape <- anova(qr50, qr50_r_lotShape)
 anova_50_lotShape
 
 ## Suddenly started showing the same error
-qr90 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.90)
-qr90_r_foundation = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape), tau=0.90)
-anova_90_foundation <- anova(qr90, qr90_r_foundation)
-anova_90_foundation
+# qr90 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.90)
+# qr90_r_foundation = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape), tau=0.90)
+# anova_90_foundation <- anova(qr90, qr90_r_foundation)
+# anova_90_foundation
 
-qr90_r_lotshape = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(Foundation), tau=0.90)
-anova_90_lotshape <- anova(qr90, qr90_r_lotshape)
-anova_90_lotshape
+# qr90_r_lotshape = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(Foundation), tau=0.90)
+# anova_90_lotshape <- anova(qr90, qr90_r_lotshape)
+# anova_90_lotshape
 
 ## q75 and q10 gives errors
 ```
