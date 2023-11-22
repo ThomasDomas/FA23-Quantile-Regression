@@ -13,6 +13,7 @@ book:
     - analysis.qmd
     - summary.qmd
     - references.qmd
+    - slides.qmd
 
 bibliography: references.bib
 
