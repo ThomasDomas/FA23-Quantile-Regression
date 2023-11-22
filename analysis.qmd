@@ -165,12 +165,15 @@ sorted_df_desc <- df[order(-df$SalePrice),]
 Q90SalePrice <- sorted_df_desc[0:count10per, ] # data greater than 90% of data
 length(Q90SalePrice$SalePrice)
 
-qr90_p = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.90)
+qr90_m = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.90)
 
-ols_q90_mae <- mae(predict(ols, newdata=Q90SalePrice), Q90SalePrice$SalePrice)
+ols_q90_predictions <- predict(ols, newdata=Q90SalePrice)
+ols_q90_mae <- mae(ols_q90_predictions, Q90SalePrice$SalePrice)
 ols_q90_mae
-q90_mae <- mae(predict(qr90_p, newdata=Q90SalePrice), Q90SalePrice$SalePrice)
-q90_mae
+
+qr90_q90_predictions <- predict(qr90_m, newdata=Q90SalePrice)
+qr90_q90_mae <- mae(qr90_q90_predictions, Q90SalePrice$SalePrice)
+qr90_q90_mae
 
 ###########
 sorted_df_asc <- df[order(df$SalePrice),]
@@ -178,17 +181,20 @@ length(sorted_df_asc$SalePrice)
 Q10SalePrice <- sorted_df_asc[0:count10per, ] # data lower than 90% of data
 length(Q10SalePrice$SalePrice)
 
-qr10_p = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.10)
+qr10_m = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.10)
 
-ols_q10_mae <- mae(predict(ols, newdata=Q10SalePrice), Q10SalePrice$SalePrice)
+ols_q10_predictions <- predict(ols, newdata=Q10SalePrice)
+ols_q10_mae <- mae(ols_q10_predictions, Q10SalePrice$SalePrice)
 ols_q10_mae
-q10_mae <- mae(predict(qr10_p, newdata=Q10SalePrice), Q10SalePrice$SalePrice)
-q10_mae
+
+qr10_q10_predictions <- predict(qr10_m, newdata=Q10SalePrice)
+qr10_q10_mae <- mae(qr10_q10_predictions, Q10SalePrice$SalePrice)
+qr10_q10_mae
 
 ```
 
-When comparing Quantile regression for tau = 0.90 with OLS while predicting the top 10% of data when sorted by sales amount. The OLS model had MAE value of `r format(round(ols_q90_mae, digits=2), scientific=F)`, while QR had MAE value of `r format(round(q90_mae, digits=2), scientific=F)`.
-And when comparing Quantile regression for tau = 0.10 with OLS while predicting the bottom 10% of data when sorted by sales amount. The OLS model had MAE value of `r format(round(ols_q10_mae, digits=2), scientific=F)`, while QR had MAE value of `r format(round(q10_mae, digits=2), scientific=F)`.
+When comparing Quantile regression for tau = 0.90 with OLS while predicting the top 10% of data when sorted by sales amount. The OLS model had MAE value of `r format(round(ols_q90_mae, digits=2), scientific=F)`, while QR had MAE value of `r format(round(qr90_q90_mae, digits=2), scientific=F)`.
+And when comparing Quantile regression for tau = 0.10 with OLS while predicting the bottom 10% of data when sorted by sales amount. The OLS model had MAE value of `r format(round(ols_q10_mae, digits=2), scientific=F)`, while QR had MAE value of `r format(round(qr10_q10_mae, digits=2), scientific=F)`.
 So QR has better MAE than OLS when predicting data that is far off the mean. That is a big advantage of QR as it has the flexibility to provide models for a specific set of the data.
 
 
@@ -207,19 +213,21 @@ And QR 50th RMSE value: `r format(round(Qr50Rmse, digits=2), scientific=F)`.
 Since OLS' goal is to minimize RMSE, as expected it has a better (lower) value. But QR has a very similar value which shows how well QR model can keep up even if it is not focusing on optimizing RMSE.
 
 ```{r 'Root mean squared error for specific quantiles'}
-ols_q90_rmse <- rmse(predict(ols, newdata=Q90SalePrice), Q90SalePrice$SalePrice)
+ols_q90_rmse <- rmse(ols_q90_predictions, Q90SalePrice$SalePrice)
 ols_q90_rmse
-q90_rmse <- rmse(predict(qr90_p, newdata=Q90SalePrice), Q90SalePrice$SalePrice)
-q90_rmse
 
-ols_q10_rmse <- rmse(predict(ols, newdata=Q10SalePrice), Q10SalePrice$SalePrice)
+qr90_q90_rmse <- rmse(qr90_q90_predictions, Q90SalePrice$SalePrice)
+qr90_q90_rmse
+
+ols_q10_rmse <- rmse(ols_q10_predictions, Q10SalePrice$SalePrice)
 ols_q10_rmse
-q10_rmse <- rmse(predict(qr10_p, newdata=Q10SalePrice), Q10SalePrice$SalePrice)
-q10_rmse
+
+qr10_q10_rmse <- rmse(qr10_q10_predictions, Q10SalePrice$SalePrice)
+qr10_q10_rmse
 ```
 
-When comparing Quantile regression for tau = 0.90 with OLS while predicting the top 10% of data when sorted by sales amount. The OLS model had RMSE value of `r format(round(ols_q90_rmse, digits=2), scientific=F)`, while QR had RMSE value of `r format(round(q90_rmse, digits=2), scientific=F)`.
-And when comparing Quantile regression for tau = 0.10 with OLS while predicting the bottom 10% of data when sorted by sales amount. The OLS model had RMSE value of `r format(round(ols_q10_rmse, digits=2), scientific=F)`, while QR had RMSE value of `r format(round(q10_rmse, digits=2), scientific=F)`.
+When comparing Quantile regression for tau = 0.90 with OLS while predicting the top 10% of data when sorted by sales amount. The OLS model had RMSE value of `r format(round(ols_q90_rmse, digits=2), scientific=F)`, while qr90_QR had RMSE value of `r format(round(qr90_q90_rmse, digits=2), scientific=F)`.
+And when comparing Quantile regression for tau = 0.10 with OLS while predicting the bottom 10% of data when sorted by sales amount. The OLS model had RMSE value of `r format(round(ols_q10_rmse, digits=2), scientific=F)`, while QR had RMSE value of `r format(round(qr10_q10_rmse, digits=2), scientific=F)`.
 So QR also has better RMSE than OLS when predicting data that is far off the mean, even though OLS is supposed to minimize RMSE value.
 
 ### Variance of error
@@ -238,43 +246,160 @@ Both have the same variance of error.
 ### Min/max error
 
 ```{r 'Min/Max Error'}
+ols_r <- ols_summary$residuals
 # Min OLS error
-format(round(min(ols_summary$residuals), digits=0), scientific=F)
+format(round(min(ols_r), digits=0), scientific=F)
 # Absolute min OLS error
-format(round(min(abs(ols_summary$residuals)), digits=0), scientific=F)
+format(round(min(abs(ols_r)), digits=0), scientific=F)
 # Max OLS error
-format(round(max(ols_summary$residuals), digits=0), scientific=F)
+format(round(max(ols_r), digits=0), scientific=F)
 # Absolute max OLS error
-format(round(max(abs(ols_summary$residuals)), digits=0), scientific=F)
+format(round(max(abs(ols_r)), digits=0), scientific=F)
+# Avg QR OLS error
+format(round(mean(abs(ols_r)), digits=0), scientific=F)
+
 # Min QR 50th error
-format(round(min(qr50_summary$residuals), digits=0), scientific=F)
+qr50_r <- qr50_summary$residuals
+format(round(min(qr50_r), digits=0), scientific=F)
 # Absolute min QR 50th error
-format(round(min(abs(qr50_summary$residuals)), digits=0), scientific=F)
+format(round(min(abs(qr50_r)), digits=0), scientific=F)
 # Max QR 50th error
-format(round(max(qr50_summary$residuals), digits=0), scientific=F)
+format(round(max(qr50_r), digits=0), scientific=F)
 # Absolute max QR 50th error
-format(round(max(abs(qr50_summary$residuals)), digits=0), scientific=F)
+format(round(max(abs(qr50_r)), digits=0), scientific=F)
+# Avg QR 50th error
+format(round(mean(abs(qr50_r)), digits=0), scientific=F)
 ```
 
 #### OLS
 
-Min OLS error: `r format(round(min(ols_summary$residuals), digits=0), scientific=F)`.
+Min OLS error: `r format(round(min(ols_r), digits=0), scientific=F)`.
 
-Absolute min OLS error: `r format(round(min(abs(ols_summary$residuals)), digits=0), scientific=F)`.
+Absolute min OLS error: `r format(round(min(abs(ols_r)), digits=0), scientific=F)`.
 
-Max OLS error: `r format(round(max(ols_summary$residuals), digits=0), scientific=F)`.
+Max OLS error: `r format(round(max(ols_r), digits=0), scientific=F)`.
 
-Absolute max OLS error: `r format(round(max(abs(ols_summary$residuals)), digits=0), scientific=F)`.
+Absolute max OLS error: `r format(round(max(abs(ols_r)), digits=0), scientific=F)`.
+
+mean OLS error: `r format(round(mean(abs(ols_r)), digits=0), scientific=F)`.
 
 #### QR
+##### QR tau = 0.5
 
-Min QR 50th error: `r format(round(min(qr50_summary$residuals), digits=0), scientific=F)`.
+Min QR 50th error: `r format(round(min(qr50_r), digits=0), scientific=F)`.
 
-Absolute min QR 50th error: `r format(round(min(abs(qr50_summary$residuals)), digits=0), scientific=F)`.
+Absolute min QR 50th error: `r format(round(min(abs(qr50_r)), digits=0), scientific=F)`.
 
-Max QR 50th error: `r format(round(max(qr50_summary$residuals), digits=0), scientific=F)`.
+Max QR 50th error: `r format(round(max(qr50_r), digits=0), scientific=F)`.
 
-Absolute max QR 50th error: `r format(round(max(abs(qr50_summary$residuals)), digits=0), scientific=F)`.
+Absolute max QR 50th error: `r format(round(max(abs(qr50_r)), digits=0), scientific=F)`.
+
+mean QR 50th error: `r format(round(mean(abs(qr50_r)), digits=0), scientific=F)`.
+
+##### QR tau = 0.9
+
+```{r 'Min/Max Error for tau = 0.9'}
+ols_q90_r <- Q90SalePrice$SalePrice - ols_q90_predictions
+# Avg OLS error
+ols_q90_r_abs_avg <- format(round(mean(abs(ols_q90_r)), digits=0), scientific=F)
+ols_q90_r_abs_avg
+# Min OLS error
+ols_q90_r_min <- format(round(min(ols_q90_r), digits=0), scientific=F)
+ols_q90_r_min
+# Absolute min OLS error
+ols_q90_r_min_abs <- format(round(min(abs(ols_q90_r)), digits=0), scientific=F)
+ols_q90_r_min_abs
+# Max OLS error
+ols_q90_r_max <- format(round(max(ols_q90_r), digits=0), scientific=F)
+ols_q90_r_max
+# Absolute max OLS error
+ols_q90_r_max_abs <- format(round(max(abs(ols_q90_r)), digits=0), scientific=F)
+ols_q90_r_max_abs
+
+### QR for tau = 0.9
+qr90_q90_r <- Q90SalePrice$SalePrice - qr90_q90_predictions
+# Avg QR 90th error
+qr90_q90_r_abs_avg <- format(round(mean(abs(qr90_q90_r)), digits=0), scientific=F)
+qr90_q90_r_abs_avg
+# Min QR 90th error
+qr90_q90_r_min <- format(round(min(qr90_q90_r), digits=0), scientific=F)
+qr90_q90_r_min
+# Absolute min QR 90th error
+qr90_q90_r_min_abs <- format(round(min(abs(qr90_q90_r)), digits=0), scientific=F)
+qr90_q90_r_min_abs
+# Max QR 90th error
+qr90_q90_r_max <- format(round(max(qr90_q90_r), digits=0), scientific=F)
+qr90_q90_r_max
+# Absolute max QR 90th error
+qr90_q90_r_max_abs <- format(round(max(abs(qr90_q90_r)), digits=0), scientific=F)
+qr90_q90_r_max_abs
+
+ols_q90_r_max_abs < qr90_q90_r_max_abs
+```
+
+When predicting the 90th quantile:
+
+The average error for OLS predictions is: `r ols_q90_r_abs_avg`, while the average error for QR with tau = 0.9 predictions is: `r qr90_q90_r_abs_avg`.
+
+The minimum error for OLS predictions is: `r ols_q90_r_min`, while the minimum error for QR with tau = 0.9 predictions is: `r qr90_q90_r_min`.
+
+The absolute minimum error for OLS predictions is: `r ols_q90_r_min_abs`, while the absolute minimum error for QR with tau = 0.9 predictions is: `r qr90_q90_r_min_abs`.
+
+The maximum error for OLS predictions is: `r ols_q90_r_max`, while the maximum error for QR with tau = 0.9 predictions is: `r qr90_q90_r_max`.
+
+The absolute maximum error for OLS predictions is: `r ols_q90_r_max_abs`, while the absolute maximum error for QR with tau = 0.9 predictions is: `r qr90_q90_r_max_abs`.
+
+##### QR tau = 0.1
+
+```{r 'Min/Max Error for tau = 0.1'}
+ols_q10_r <- ols_q10_predictions - Q10SalePrice$SalePrice
+# Avg OLS error
+ols_q10_r_abs_avg <- format(round(mean(abs(ols_q10_r)), digits=0), scientific=F)
+ols_q10_r_abs_avg
+# Min OLS error
+ols_q10_r_min <- format(round(min(ols_q10_r), digits=0), scientific=F)
+ols_q10_r_min
+# Absolute min OLS error
+ols_q10_r_min_abs <- format(round(min(abs(ols_q10_r)), digits=0), scientific=F)
+ols_q10_r_min_abs
+# Max OLS error
+ols_q10_r_max <- format(round(max(ols_q10_r), digits=0), scientific=F)
+ols_q10_r_max
+# Absolute max OLS error
+ols_q10_r_max_abs <- format(round(max(abs(ols_q10_r)), digits=0), scientific=F)
+ols_q10_r_max_abs
+
+length(Q10SalePrice$SalePrice)
+length(df$SalePrice)
+qr10_q10_r <- resid(qr10_m, newdata=Q10SalePrice)
+# Avg QR 10th error
+qr10_q10_r_abs_avg <- format(round(mean(abs(qr10_q10_r)), digits=0), scientific=F)
+qr10_q10_r_abs_avg
+# Min QR 10th error
+qr10_q10_r_min <- format(round(min(qr10_q10_r), digits=0), scientific=F)
+qr10_q10_r_min
+# Absolute min QR 10th error
+qr10_q10_r_min_abs <- format(round(min(abs(qr10_q10_r)), digits=0), scientific=F)
+qr10_q10_r_min_abs
+# Max QR 10th error
+qr10_q10_r_max <- format(round(max(qr10_q10_r), digits=0), scientific=F)
+qr10_q10_r_max
+# Absolute max QR 10th error
+qr10_q10_r_max_abs <- format(round(max(abs(qr10_q10_r)), digits=0), scientific=F)
+qr10_q10_r_max_abs
+```
+
+When predicting the 10th quantile:
+
+The average error for OLS predictions is: `r ols_q10_r_abs_avg`, while the average error for QR with tau = 0.1 predictions is: `r qr10_q10_r_abs_avg`.
+
+The minimum error for OLS predictions is: `r ols_q10_r_min`, while the minimum error for QR with tau = 0.1 predictions is: `r qr10_q10_r_min`.
+
+The absolute minimum error for OLS predictions is: `r ols_q10_r_min_abs`, while the absolute minimum error for QR with tau = 0.1 predictions is: `r qr10_q10_r_min_abs`.
+
+The maximum error for OLS predictions is: `r ols_q10_r_max`, while the maximum error for QR with tau = 0.1 predictions is: `r qr10_q10_r_max`.
+
+The absolute maximum error for OLS predictions is: `r ols_q10_r_max_abs`, while the absolute maximum error for QR with tau = 0.1 predictions is: `r qr10_q10_r_max_abs`.
 
 ## Tests for significant variables
 
