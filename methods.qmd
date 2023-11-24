@@ -4,12 +4,9 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r}
+```{r 'Importing packages'}
 library(ggplot2)
-#install.packages("lme4")
 library(lme4)
-#install.packages("DHARMa")
-# library(DHARMa)
 library(quantreg)
 library(dplyr)
 library(ggplot2)
@@ -18,17 +15,64 @@ library(tinytex)
 
 # Methods
 
+<<<<<<< HEAD
 ## Ordinary least squares
 
 Ordinary least squares (OLS) is a type of method for estimating the conditional betas in a linear equation. The betas are chosen based on the following minimization problem:
 $$
 \hat{\boldsymbol{\beta}}=\underset{\boldsymbol{\beta}} argmin \space E[(Y - x_i^T\beta)^2]
+=======
+## Regression
+
+Regression is a modeling technique that helps to understand the relationship between one or more dependent variables and an independent variable. Regression consists of the mean function and the variance function [1]
+
+$$
+E(Y|X=x)=\beta_0 + \beta_1X \\
+Var(Y|X=x) = \sigma^2 \\
+$$
+Here X is a matrix of observations, and the $\beta$s attempt to estimate the observed outcomes $y_i$. However, the estimates are rarely perfect, so an error, also called a residual, term must be introduced. 
+$$
+y_i = \hat{y} + \epsilon_i
+$$
+where $y_i$ is the actual response variable, $\hat{y}$ is the estimate, and $\epsilon$, the error term, represents the difference between $\hat{y}$ and $y_i$.
+
+Regression can use different criterion. The criterion will yield different betas which will have different behaviors. 
+
+## Ordinary least squares
+
+Ordinary least squares model, or OLS, is one of many ways of placing a regression line through points. It does this by minimizing the sum of squared residuals:
+
+$$
+argmin\sum_i^n \epsilon_i^2 = \sum_i^n (y_i - \hat{y}_i)^2
+>>>>>>> 773f3e565704efbe3eaacd51d534f7135c187440
 $$
 where Y is the response, $x_i^T$ is the design matrix, and $\Beta$ is a list of unknown variables. The solution to this minimization problem is going to be when $x_i^T\beta$ equals the mean of observations. 
 
+<<<<<<< HEAD
 ## Proof that mean minimizes sum of squares
+=======
 
-Assume, without loss of generality, that Y is a continuous random variable. The expected value of the absolute sum of deviations from a given center c can be split into the following two terms:
+The least squares estimates in this case are given by simple formulas
+
+$$
+\widehat{\beta} =\frac{\sum_{i=1}^n\left(x_i-\bar{x}\right)\left(y_i-\bar{y}\right)}{\sum_{i=1}^n\left(x_i-\bar{x}\right)^2}
+$$
+
+$$
+\widehat{\alpha} =\bar{y}-\widehat{\beta} \bar{x}
+$$
+The beta estimate will be the mean of the all the points. 
+
+Another common but less known way of 
+## Quantile Regression
+Quantile regression is another regression technique, except it minimizes the sum of the absolute residuals:
+$$argmin \space E(|y-\hat{y}|)$$
+The beta estimate will be the median of all of the points.
+
+## Proof the median minimizes the sum of absolute residuals
+>>>>>>> 773f3e565704efbe3eaacd51d534f7135c187440
+
+Assume, without loss of generality, that Y is a continuous random variable. The expected value of the absolute sum of deviations from a given center c can be split into the following two terms [2]:
 
 $$
 E|Y - c| = \int_{y\in R}|y-c|f(y)dy \\
@@ -76,9 +120,9 @@ Using the CDF definition and the notion of reciprocals, the previous equation si
 
 Thus the minimization to a weighted least absolute deviation loss function is the value that gives the theta\^{th} quantile.
 
-# Generalization least absolute deviations
+## Generalization least absolute deviations
 
-The solution of the minimization problem formulated in Equation (1.2) is thus the median. The above solution does not change by multiplying the two components of $E|Y-c|$ by a constant $\theta$ and $(1-\theta)$, respectively. This allows us to formulate the same problem for the generic quantile $\theta$. Namely, using the same strategy for Equation (1.5), we obtain:
+The solution of the minimization problem above is thus the median. The above solution does not change by multiplying the two components of $E|Y-c|$ by a constant $\theta$ and $(1-\theta)$, respectively. This allows us to formulate the same problem for the generic quantile $\theta$ sing the same strategy used above:
 
 $$
 \frac{\partial}{\partial c} E\left[\rho_\theta(Y-c)\right]=\frac{\partial}{\partial c}\left\{(1-\theta) \int_{-\infty}^c|y-c| f(y) d y+\theta \int_c^{+\infty}|y-c| f(y) d y\right\} .
@@ -175,38 +219,11 @@ When we input 0.1 for the 10th percentile, we get approximately 90% of the point
 
 Thus, we can see that QR is not online a robust \## Evaluation metrics
 
-### Mean absolute error
+## Summary of OLS and QR
+OLS minimizes the sum of squared residuals, and QR minimizes the sum of absolute valued residuals. This leads to differing results when placing the regression line. OLS will place the line between the arithmetic mean of all the points, but QR will place its regression line through the median of all of the points. In other words, given an input of the 50th quantile, QR regression will place the regression line in such a way that half of the points will be above the regression line and half will be below the regression line. In general, given an input of the $\theta^{th}$ quantile, QR will place a regression line so that $\theta$ percentage of points will be below the regression line. This allows QR has some interesting benefits.
+Although OLS is generally better for normally distributed data, QR performs relatively well with normally distributed data as well. However, one of the biggest charms of QR is that it can be used on non-normally distributed data. Since QR allows statisticians to look at the behavior across the entire distribution, rather than just fixating on the mean. With QR, one can see at what intervals the model breaks down or excels. 
 
-The mean absolute error (MAE) is the average magnitude of the errors of the values predicted by the regression and the actual observed values for the response variable. Because it is a simple average, all errors have the same weight, there are no penalties for different magnitude deviations \[2\]. MAE assumes that the errors are normally distributed, if the error distribution was non-normal, the average may not be a good measure of centrality and can paint a false picture of the goodness-of-fit of the regression curve. MAE also assumes that the errors are unbiased. While the average magnitude of the errors is expected to be non-zero (unless the regression is a perfect fit) the average of the residuals, i.e., the deviation of the predicted value from the actual value, considering underestimation and overestimation. This means on average the regression curve does not over or underestimate.
+# Citations
+[1]“Applied Linear Regression - ProQuest,” www.proquest.com. https://www.proquest.com/legacydocview/EBC/7103845?accountid=10920. (accessed Nov. 12, 2023).
 
-$$
-\text { MAE }=\frac{1}{n}\sum_{i=1}^n\left|y_i-\hat{y}_i\right|=\frac{1}{n}\sum_{i=1}^n\left|e_i\right|
-$$
-
-### Root mean squared error
-
-It calculates the differences between the predictions and the actual observations (residuals) and then gets their quadratic mean for each. This type of error gives a larger penalty for larger errors \[2\]. This error also assumes that the errors are unbiased and that they follow a normal distribution. This gives a picture of the size of residuals in comparison to the regression line.
-
-$$
-\operatorname{RMSE}=\sqrt{\operatorname{MSE}}=\sqrt{\frac{1}{n}\sum_{i=1}^n (y_i-\hat{y}_i)^2}=\sqrt{\frac{1}{n}\sum_{i=1}^n e_i^2}
-$$
-
-### Variance of error
-
-It is a measure of how spread all the errors are from the mean of all errors.
-
-$$
-\operatorname{Var}(e)=\frac{1}{n}\sum_{i=1}^n(e_i-\bar{e})^2
-$$
-
-### Min/max error
-
-A measure of the maximum residual for a prediction and the minimum residual.
-
-$$
-f: X \rightarrow \mathbb{R} \text {, if }(\forall e \in X_{error}) f\left(e_i\right) \geq f(e)
-$$
-
-$$
-f: X \rightarrow \mathbb{R} \text {, if }(\forall e \in X_{error}) f\left(e_i\right) \leq f(e)
-$$
+[2]"Quantile Regression : Theory and Applications" Davino, Cristina., et al. Quantile Regression : Theory and Applications, John Wiley & Sons, Incorporated, 2013. ProQuest Ebook Central, https://www.proquest.com/legacydocview/EBC/1489927?accountid=1092 . (accessed Nov. 12, 2023)

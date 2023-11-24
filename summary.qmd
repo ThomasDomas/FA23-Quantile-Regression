@@ -1,7 +1,8 @@
 # Summary
 
-In summary, this book has no content whatsoever.
+1. Quantile regression offers the ability to customize regression line according to the value that we're predicting to get a more accurate result. (ex: Above 70% we use tau = 70).
 
-```{r}
-1 + 1
-```
+2. Quantile regression's special lines with tau better representing the data we are predicting. And it performs better than just using OLS model on the whole data
+3. Quantile regression re-evaluates significant variables at every tau, so for example significant variables at tau = 0.1 would probably be different from significant variables at tau = 0.9
+4. Quantile regression performs better the more data we have
+5. Quantile regression needs large computation power for calculating all possible tau values
