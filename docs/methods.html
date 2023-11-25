@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -4625,7 +4625,7 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Index</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -4658,6 +4658,12 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
  <span class="menu-text">References</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./slides.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">slides</span></span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -4668,14 +4674,13 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#regression" id="toc-regression" class="nav-link active" data-scroll-target="#regression"><span class="header-section-number">3.1</span> Regression</a></li>
-  <li><a href="#ordinary-least-squares" id="toc-ordinary-least-squares" class="nav-link" data-scroll-target="#ordinary-least-squares"><span class="header-section-number">3.2</span> Ordinary least squares</a></li>
-  <li><a href="#proof-the-median-minimizes-the-sum-of-absolute-residuals" id="toc-proof-the-median-minimizes-the-sum-of-absolute-residuals" class="nav-link" data-scroll-target="#proof-the-median-minimizes-the-sum-of-absolute-residuals"><span class="header-section-number">3.3</span> Proof the median minimizes the sum of absolute residuals</a></li>
-  <li><a href="#generalization-least-absolute-deviations" id="toc-generalization-least-absolute-deviations" class="nav-link" data-scroll-target="#generalization-least-absolute-deviations"><span class="header-section-number">3.4</span> Generalization least absolute deviations</a>
+  <li><a href="#ordinary-least-squares" id="toc-ordinary-least-squares" class="nav-link active" data-scroll-target="#ordinary-least-squares"><span class="header-section-number">3.1</span> Ordinary least squares</a></li>
+  <li><a href="#proof-the-median-minimizes-the-sum-of-absolute-residuals" id="toc-proof-the-median-minimizes-the-sum-of-absolute-residuals" class="nav-link" data-scroll-target="#proof-the-median-minimizes-the-sum-of-absolute-residuals"><span class="header-section-number">3.2</span> Proof the median minimizes the sum of absolute residuals</a></li>
+  <li><a href="#generalization-least-absolute-deviations" id="toc-generalization-least-absolute-deviations" class="nav-link" data-scroll-target="#generalization-least-absolute-deviations"><span class="header-section-number">3.3</span> Generalization least absolute deviations</a>
   <ul class="collapse">
-  <li><a href="#graphic" id="toc-graphic" class="nav-link" data-scroll-target="#graphic"><span class="header-section-number">3.4.1</span> Graphic</a></li>
+  <li><a href="#graphic" id="toc-graphic" class="nav-link" data-scroll-target="#graphic"><span class="header-section-number">3.3.1</span> Graphic</a></li>
   </ul></li>
-  <li><a href="#summary-of-ols-and-qr" id="toc-summary-of-ols-and-qr" class="nav-link" data-scroll-target="#summary-of-ols-and-qr"><span class="header-section-number">3.5</span> Summary of OLS and QR</a></li>
+  <li><a href="#summary-of-ols-and-qr" id="toc-summary-of-ols-and-qr" class="nav-link" data-scroll-target="#summary-of-ols-and-qr"><span class="header-section-number">3.4</span> Summary of OLS and QR</a></li>
   <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations"><span class="header-section-number">4</span> Citations</a></li>
   </ul>
 </nav>
@@ -4708,21 +4713,8 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tinytex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<<<<<<< HEAD
-<section id="methods" class="level1">
-<h1>Methods</h1>
-<section id="ordinary-least-squares" class="level2">
-<h2 class="anchored" data-anchor-id="ordinary-least-squares">Ordinary least squares</h2>
-<p>Ordinary least squares (OLS) is a type of method for estimating the conditional betas in a linear equation. The betas are chosen based on the following minimization problem: <span class="math display">\[
-\hat{\boldsymbol{\beta}}=\underset{\boldsymbol{\beta}} argmin \space E[(Y - x_i^T\beta)^2]
-\]</span> where Y is the response, <span class="math inline">\(x_i^T\)</span> is the design matrix, and <span class="math inline">\(\Beta\)</span> is a list of unknown variables. The solution to this minimization problem is going to be when <span class="math inline">\(x_i^T\beta\)</span> equals the mean of observations.</p>
-</section>
-<section id="proof-that-mean-minimizes-sum-of-squares" class="level2">
-<h2 class="anchored" data-anchor-id="proof-that-mean-minimizes-sum-of-squares">Proof that mean minimizes sum of squares</h2>
-<p>Assume, without loss of generality, that Y is a continuous random variable. The expected value of the absolute sum of deviations from a given center c can be split into the following two terms:</p>
-=======
-<section id="regression" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="regression"><span class="header-section-number">3.1</span> Regression</h2>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD ## Ordinary least squares</p>
+<p>Ordinary least squares (OLS) is a type of method for estimating the conditional betas in a linear equation. The betas are chosen based on the following minimization problem: $$ = argmin E[(Y - x_i<sup>T)</sup>2] ======= ## Regression</p>
 <p>Regression is a modeling technique that helps to understand the relationship between one or more dependent variables and an independent variable. Regression consists of the mean function and the variance function [1]</p>
 <p><span class="math display">\[
 E(Y|X=x)=\beta_0 + \beta_1X \\
@@ -4731,13 +4723,14 @@ Var(Y|X=x) = \sigma^2 \\
 y_i = \hat{y} + \epsilon_i
 \]</span> where <span class="math inline">\(y_i\)</span> is the actual response variable, <span class="math inline">\(\hat{y}\)</span> is the estimate, and <span class="math inline">\(\epsilon\)</span>, the error term, represents the difference between <span class="math inline">\(\hat{y}\)</span> and <span class="math inline">\(y_i\)</span>.</p>
 <p>Regression can use different criterion. The criterion will yield different betas which will have different behaviors.</p>
-</section>
-<section id="ordinary-least-squares" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="ordinary-least-squares"><span class="header-section-number">3.2</span> Ordinary least squares</h2>
+<section id="ordinary-least-squares" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="ordinary-least-squares"><span class="header-section-number">3.1</span> Ordinary least squares</h2>
 <p>Ordinary least squares model, or OLS, is one of many ways of placing a regression line through points. It does this by minimizing the sum of squared residuals:</p>
 <p><span class="math display">\[
 argmin\sum_i^n \epsilon_i^2 = \sum_i^n (y_i - \hat{y}_i)^2
-\]</span></p>
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; 773f3e565704efbe3eaacd51d534f7135c187440
+\]</span> where Y is the response, <span class="math inline">\(x_i^T\)</span> is the design matrix, and <span class="math inline">\(\Beta\)</span> is a list of unknown variables. The solution to this minimization problem is going to be when <span class="math inline">\(x_i^T\beta\)</span> equals the mean of observations.</p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD ## Proof that mean minimizes sum of squares =======</p>
 <p>The least squares estimates in this case are given by simple formulas</p>
 <p><span class="math display">\[
 \widehat{\beta} =\frac{\sum_{i=1}^n\left(x_i-\bar{x}\right)\left(y_i-\bar{y}\right)}{\sum_{i=1}^n\left(x_i-\bar{x}\right)^2}
@@ -4747,10 +4740,24 @@ argmin\sum_i^n \epsilon_i^2 = \sum_i^n (y_i - \hat{y}_i)^2
 \]</span> The beta estimate will be the mean of the all the points.</p>
 <p>Another common but less known way of ## Quantile Regression Quantile regression is another regression technique, except it minimizes the sum of the absolute residuals: <span class="math display">\[argmin \space E(|y-\hat{y}|)\]</span> The beta estimate will be the median of all of the points.</p>
 </section>
-<section id="proof-the-median-minimizes-the-sum-of-absolute-residuals" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="proof-the-median-minimizes-the-sum-of-absolute-residuals"><span class="header-section-number">3.3</span> Proof the median minimizes the sum of absolute residuals</h2>
+<section id="proof-the-median-minimizes-the-sum-of-absolute-residuals" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="proof-the-median-minimizes-the-sum-of-absolute-residuals"><span class="header-section-number">3.2</span> Proof the median minimizes the sum of absolute residuals</h2>
+<blockquote class="blockquote">
+<blockquote class="blockquote">
+<blockquote class="blockquote">
+<blockquote class="blockquote">
+<blockquote class="blockquote">
+<blockquote class="blockquote">
+<blockquote class="blockquote">
+<p>773f3e565704efbe3eaacd51d534f7135c187440</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <p>Assume, without loss of generality, that Y is a continuous random variable. The expected value of the absolute sum of deviations from a given center c can be split into the following two terms [2]:</p>
->>>>>>> 773f3e565704efbe3eaacd51d534f7135c187440
 <p><span class="math display">\[
 E|Y - c| = \int_{y\in R}|y-c|f(y)dy \\
 =\int_{y &lt; c} |y-c|f(y)dy + \int_{y&gt;c}|y-c|f(y)dy  \\
@@ -4786,16 +4793,9 @@ E|Y - c| = \int_{y\in R}|y-c|f(y)dy \\
 <p>Using the CDF definition and the notion of reciprocals, the previous equation simplifies to: <span class="math inline">\(F(c)-[1-F(c)] = 0\)</span> and thus <span class="math inline">\(2F(c)-1=0\)</span> <span class="math inline">\(\longrightarrow\)</span> <span class="math inline">\(F(c)=\frac{1}{2}\)</span> <span class="math inline">\(\longrightarrow\)</span> c=Me.</p>
 <p>Thus the minimization to a weighted least absolute deviation loss function is the value that gives the theta^{th} quantile.</p>
 </section>
-<<<<<<< HEAD
-</section>
-<section id="generalization-least-absolute-deviations" class="level1">
-<h1>Generalization least absolute deviations</h1>
-<p>The solution of the minimization problem formulated in Equation (1.2) is thus the median. The above solution does not change by multiplying the two components of <span class="math inline">\(E|Y-c|\)</span> by a constant <span class="math inline">\(\theta\)</span> and <span class="math inline">\((1-\theta)\)</span>, respectively. This allows us to formulate the same problem for the generic quantile <span class="math inline">\(\theta\)</span>. Namely, using the same strategy for Equation (1.5), we obtain:</p>
-=======
-<section id="generalization-least-absolute-deviations" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="generalization-least-absolute-deviations"><span class="header-section-number">3.4</span> Generalization least absolute deviations</h2>
+<section id="generalization-least-absolute-deviations" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="generalization-least-absolute-deviations"><span class="header-section-number">3.3</span> Generalization least absolute deviations</h2>
 <p>The solution of the minimization problem above is thus the median. The above solution does not change by multiplying the two components of <span class="math inline">\(E|Y-c|\)</span> by a constant <span class="math inline">\(\theta\)</span> and <span class="math inline">\((1-\theta)\)</span>, respectively. This allows us to formulate the same problem for the generic quantile <span class="math inline">\(\theta\)</span> sing the same strategy used above:</p>
->>>>>>> 773f3e565704efbe3eaacd51d534f7135c187440
 <p><span class="math display">\[
 \frac{\partial}{\partial c} E\left[\rho_\theta(Y-c)\right]=\frac{\partial}{\partial c}\left\{(1-\theta) \int_{-\infty}^c|y-c| f(y) d y+\theta \int_c^{+\infty}|y-c| f(y) d y\right\} .
 \]</span></p>
@@ -4826,8 +4826,8 @@ q_\theta=\underset{c}{\operatorname{argmin}} E\left[\rho_\theta(Y-c)\right]
 &amp; =[(1-\theta) I(y \leq 0)+\theta I(y&gt;0)]|y| .
 \end{aligned}
 \]</span></p>
-<section id="graphic" class="level3" data-number="3.4.1">
-<h3 data-number="3.4.1" class="anchored" data-anchor-id="graphic"><span class="header-section-number">3.4.1</span> Graphic</h3>
+<section id="graphic" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="graphic"><span class="header-section-number">3.3.1</span> Graphic</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(cars)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -4894,8 +4894,8 @@ q_\theta=\underset{c}{\operatorname{argmin}} E\left[\rho_\theta(Y-c)\right]
 <p>Thus, we can see that QR is not online a robust ## Evaluation metrics</p>
 </section>
 </section>
-<section id="summary-of-ols-and-qr" class="level2" data-number="3.5">
-<h2 data-number="3.5" class="anchored" data-anchor-id="summary-of-ols-and-qr"><span class="header-section-number">3.5</span> Summary of OLS and QR</h2>
+<section id="summary-of-ols-and-qr" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="summary-of-ols-and-qr"><span class="header-section-number">3.4</span> Summary of OLS and QR</h2>
 <p>OLS minimizes the sum of squared residuals, and QR minimizes the sum of absolute valued residuals. This leads to differing results when placing the regression line. OLS will place the line between the arithmetic mean of all the points, but QR will place its regression line through the median of all of the points. In other words, given an input of the 50th quantile, QR regression will place the regression line in such a way that half of the points will be above the regression line and half will be below the regression line. In general, given an input of the <span class="math inline">\(\theta^{th}\)</span> quantile, QR will place a regression line so that <span class="math inline">\(\theta\)</span> percentage of points will be below the regression line. This allows QR has some interesting benefits. Although OLS is generally better for normally distributed data, QR performs relatively well with normally distributed data as well. However, one of the biggest charms of QR is that it can be used on non-normally distributed data. Since QR allows statisticians to look at the behavior across the entire distribution, rather than just fixating on the mean. With QR, one can see at what intervals the model breaks down or excels.</p>
 </section>
 <section id="citations" class="level1" data-number="4">

@@ -21,6 +21,7 @@ df <- read.csv("TrainData.csv") |>
 There are many different kinds of predictor variables in this data set. For instance, there are continuous variables such as GrLivArea, counting variables such as YearBuilt, and categorical variables such as HouseStyle. In all of these cases, we can see that the data is not normally distributed, including the response variable, SalePrice. The relationships between the variables and their distributions are illustrated in a joint plot below.
 
 using [@gridExtra] and [@ggplot2]
+
 ```{r 'Visualizing data'}
 suppressWarnings({
 
@@ -91,6 +92,7 @@ In this graph, when plotting sales price against ground living area, Quantile re
 ### QR model
 
 using [@quantreg]
+
 ```{r 'QR model creation'}
 qr50 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.5)
 qr50_summary = summary(qr50)
@@ -123,13 +125,13 @@ plot(qrs$coefficients[11, ], xlab="Quantiles", ylab="Foundation-Wood")
 
 ```
 
-## Interpretation of betas 
+## Interpretation of betas
 
-Of all the house shapes, irregular house shape 1, IR1, seems to have the most least negative impact. Except near the highest quantiles, the impact of IR2 on the price of houses was about 5000 dollars less than that of IR1. Furthermore, there was very little difference between IR3 and IR1. IR3 only made a difference near the lower quantiles where it added between 40-60k in price. 
+Of all the house shapes, irregular house shape 1, IR1, seems to have the most least negative impact. Except near the highest quantiles, the impact of IR2 on the price of houses was about 5000 dollars less than that of IR1. Furthermore, there was very little difference between IR3 and IR1. IR3 only made a difference near the lower quantiles where it added between 40-60k in price.
 
-The foundation variables also had some interesting behavior. Stone had a parabolic shape across the quantiles. Relative to brick, it's effect on price was very high at the lower quantiles, hit it's lowest point at the 60th quantile, and then began to increase after the 60th quantile. Furthermore, relative to brick, wood foundations had an almost stepwise pattern. About every 20 quantiles, the price would jump upward and then decrease. This is perhaps due to the widely varying conditions that a wood foundation can come in. Lastly, relative to brick, concrete slab was the only beta foundation that consistently increased across all of the quantiles. It starts off at 40k near the lower end of the quantiles and increases to 120k near the upper end of the quantiles. 
+The foundation variables also had some interesting behavior. Stone had a parabolic shape across the quantiles. Relative to brick, it's effect on price was very high at the lower quantiles, hit it's lowest point at the 60th quantile, and then began to increase after the 60th quantile. Furthermore, relative to brick, wood foundations had an almost stepwise pattern. About every 20 quantiles, the price would jump upward and then decrease. This is perhaps due to the widely varying conditions that a wood foundation can come in. Lastly, relative to brick, concrete slab was the only beta foundation that consistently increased across all of the quantiles. It starts off at 40k near the lower end of the quantiles and increases to 120k near the upper end of the quantiles.
 
-Although lot shape and foundation had strange patterns, lot area and total rms above ground had a relatively expected pattern. They both increased positively and in a linear pattern across all the quantiles. Lot area started at around a 40 dollars at the lower quantiles and maxed out at around 120 at the upper quantiles. Furthermore RMS started at a dollar at the lower ends and maxed out at about 3 near the 90th quantile. 
+Although lot shape and foundation had strange patterns, lot area and total rms above ground had a relatively expected pattern. They both increased positively and in a linear pattern across all the quantiles. Lot area started at around a 40 dollars at the lower quantiles and maxed out at around 120 at the upper quantiles. Furthermore RMS started at a dollar at the lower ends and maxed out at about 3 near the 90th quantile.
 
 ### OLS model
 
@@ -145,6 +147,7 @@ ols_summary
 ### Mean absolute error
 
 using [@Metrics]
+
 ```{r 'Mean absolute error'}
 olsMae = mae(predict(ols), df$SalePrice)
 olsMae
@@ -152,9 +155,7 @@ Qr50Mae = mae(predict(qr50), df$SalePrice)
 Qr50Mae
 ```
 
-OLS MAE value: `r format(round(olsMae, digits=2), scientific=F)`.
-And QR 50th MAE value: `r format(round(Qr50Mae, digits=2), scientific=F)`.
-QR for 50th quantile has a lower MAE therefore it is has more accurate predictions but they are almost the same.
+OLS MAE value: `r format(round(olsMae, digits=2), scientific=F)`. And QR 50th MAE value: `r format(round(Qr50Mae, digits=2), scientific=F)`. QR for 50th quantile has a lower MAE therefore it is has more accurate predictions but they are almost the same.
 
 ```{r 'MAE for different quantiles'}
 fullDataLength = length(df$SalePrice)
@@ -193,14 +194,12 @@ qr10_q10_mae
 
 ```
 
-When comparing Quantile regression for tau = 0.90 with OLS while predicting the top 10% of data when sorted by sales amount. The OLS model had MAE value of `r format(round(ols_q90_mae, digits=2), scientific=F)`, while QR had MAE value of `r format(round(qr90_q90_mae, digits=2), scientific=F)`.
-And when comparing Quantile regression for tau = 0.10 with OLS while predicting the bottom 10% of data when sorted by sales amount. The OLS model had MAE value of `r format(round(ols_q10_mae, digits=2), scientific=F)`, while QR had MAE value of `r format(round(qr10_q10_mae, digits=2), scientific=F)`.
-So QR has better MAE than OLS when predicting data that is far off the mean. That is a big advantage of QR as it has the flexibility to provide models for a specific set of the data.
-
+When comparing Quantile regression for tau = 0.90 with OLS while predicting the top 10% of data when sorted by sales amount. The OLS model had MAE value of `r format(round(ols_q90_mae, digits=2), scientific=F)`, while QR had MAE value of `r format(round(qr90_q90_mae, digits=2), scientific=F)`. And when comparing Quantile regression for tau = 0.10 with OLS while predicting the bottom 10% of data when sorted by sales amount. The OLS model had MAE value of `r format(round(ols_q10_mae, digits=2), scientific=F)`, while QR had MAE value of `r format(round(qr10_q10_mae, digits=2), scientific=F)`. So QR has better MAE than OLS when predicting data that is far off the mean. That is a big advantage of QR as it has the flexibility to provide models for a specific set of the data.
 
 ### Root mean squared error
 
 using [@Metrics]
+
 ```{r 'Root mean squared error'}
 olsRmse = rmse(predict(ols), df$SalePrice)
 olsRmse
@@ -208,9 +207,7 @@ Qr50Rmse = rmse(predict(qr50), df$SalePrice)
 Qr50Rmse
 ```
 
-OLS RMSE value: `r format(round(olsRmse, digits=2), scientific=F)`.
-And QR 50th RMSE value: `r format(round(Qr50Rmse, digits=2), scientific=F)`.
-Since OLS' goal is to minimize RMSE, as expected it has a better (lower) value. But QR has a very similar value which shows how well QR model can keep up even if it is not focusing on optimizing RMSE.
+OLS RMSE value: `r format(round(olsRmse, digits=2), scientific=F)`. And QR 50th RMSE value: `r format(round(Qr50Rmse, digits=2), scientific=F)`. Since OLS' goal is to minimize RMSE, as expected it has a better (lower) value. But QR has a very similar value which shows how well QR model can keep up even if it is not focusing on optimizing RMSE.
 
 ```{r 'Root mean squared error for specific quantiles'}
 ols_q90_rmse <- rmse(ols_q90_predictions, Q90SalePrice$SalePrice)
@@ -226,9 +223,7 @@ qr10_q10_rmse <- rmse(qr10_q10_predictions, Q10SalePrice$SalePrice)
 qr10_q10_rmse
 ```
 
-When comparing Quantile regression for tau = 0.90 with OLS while predicting the top 10% of data when sorted by sales amount. The OLS model had RMSE value of `r format(round(ols_q90_rmse, digits=2), scientific=F)`, while qr90_QR had RMSE value of `r format(round(qr90_q90_rmse, digits=2), scientific=F)`.
-And when comparing Quantile regression for tau = 0.10 with OLS while predicting the bottom 10% of data when sorted by sales amount. The OLS model had RMSE value of `r format(round(ols_q10_rmse, digits=2), scientific=F)`, while QR had RMSE value of `r format(round(qr10_q10_rmse, digits=2), scientific=F)`.
-So QR also has better RMSE than OLS when predicting data that is far off the mean, even though OLS is supposed to minimize RMSE value.
+When comparing Quantile regression for tau = 0.90 with OLS while predicting the top 10% of data when sorted by sales amount. The OLS model had RMSE value of `r format(round(ols_q90_rmse, digits=2), scientific=F)`, while qr90_QR had RMSE value of `r format(round(qr90_q90_rmse, digits=2), scientific=F)`. And when comparing Quantile regression for tau = 0.10 with OLS while predicting the bottom 10% of data when sorted by sales amount. The OLS model had RMSE value of `r format(round(ols_q10_rmse, digits=2), scientific=F)`, while QR had RMSE value of `r format(round(qr10_q10_rmse, digits=2), scientific=F)`. So QR also has better RMSE than OLS when predicting data that is far off the mean, even though OLS is supposed to minimize RMSE value.
 
 ### Variance of error
 
@@ -284,6 +279,7 @@ Absolute max OLS error: `r format(round(max(abs(ols_r)), digits=0), scientific=F
 mean OLS error: `r format(round(mean(abs(ols_r)), digits=0), scientific=F)`.
 
 #### QR
+
 ##### QR tau = 0.5
 
 Min QR 50th error: `r format(round(min(qr50_r), digits=0), scientific=F)`.
@@ -454,3 +450,13 @@ For Q50: GrLivArea, LotArea and TotRmsAbvGrd are all significant
 For Q75: GrLivArea, LotArea and TotRmsAbvGrd are all significant
 
 For Q90: GrLivArea, LotArea and TotRmsAbvGrd are all significant
+
+#GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation)
+
+| Quantile |    GrLivArea | TotRmsAbvGrd |LotArea     |LotShape_IR2      |LotShape_IR3|
+|---------|:--------------|-------------:|:----------:|:----------------:|              
+| 10      | Significant   |Not Significant|Significant|Not Significant   |
+| 25      | Significant   |Significant   |Significant |Not Significant   |
+| 50      | Significant   |Significant   |Significant |Not Significant   |
+| 75      | Significant   |Significant   |Significant |                  |
+| 90      | Significant   |Significant   |Significant |                  |
