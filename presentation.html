@@ -10,8 +10,8 @@
 <link href="presentation_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.3.433">
 
-  <meta name="author" content="Noureldin Kamel, Thomas Domas, and Jorge Galdos">
-  <title>Quantile Regression</title>
+  <meta name="author" content="Jorge Galdos, Noureldin Kamel, and Thomas Domas">
+  <title>Quantile regression</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,12 +325,12 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Quantile Regression</h1>
+  <h1 class="title">Quantile regression</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Noureldin Kamel, Thomas Domas, and Jorge Galdos 
+Jorge Galdos, Noureldin Kamel, and Thomas Domas 
 </div>
 </div>
 </div>
@@ -418,16 +418,167 @@ argmin\sum_i^n \epsilon_i^2 = argmin\sum_i^n (y_i - \hat{y}_i)^2
 F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarrow c=q_\theta
 \]</span></p>
 </section></section>
+<section>
 <section id="data" class="title-slide slide level1 center">
 <h1>Data</h1>
-
+<p>using <span class="citation" data-cites="gridExtra">@gridExtra</span> and <span class="citation" data-cites="ggplot2">@ggplot2</span></p>
 </section>
+<section id="data-used" class="slide level2">
+<h2>1. data used</h2>
+<p>We modeled Sale price of houses vs their House area, number of rooms above ground, lot area, foundation type and lotshape.</p>
+</section>
+<section id="visualizations" class="slide level2">
+<h2>2. Visualizations</h2>
 
+<img data-src="presentation_files/figure-revealjs/Visualizing%20data-1.png" width="960" class="r-stretch"></section></section>
+<section>
 <section id="analysis" class="title-slide slide level1 center">
 <h1>Analysis</h1>
 
 </section>
+<section id="analysis-1" class="slide level2">
+<h2>1. Analysis</h2>
+<p>In this section we compared the results of OLS model with the results of quantile regression models</p>
+</section>
+<section id="visualizing-models" class="slide level2">
+<h2>2. Visualizing models</h2>
 
+<img data-src="presentation_files/figure-revealjs/Visualizing%20housing%20cont-1.png" width="960" class="r-stretch"></section>
+<section id="qr-significance" class="slide level2">
+<h2>3.1 QR significance</h2>
+<p>Alpha=0.01</p>
+<div class="r-fit-text">
+<table>
+<colgroup>
+<col style="width: 12%">
+<col style="width: 24%">
+<col style="width: 19%">
+<col style="width: 24%">
+<col style="width: 19%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Quantile</th>
+<th style="text-align: right;">foundation p-value</th>
+<th style="text-align: right;">significant?</th>
+<th style="text-align: right;">lot shape p-value</th>
+<th style="text-align: right;">significant?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">TRUE</td>
+<td style="text-align: right;">5.7287508^{-14}</td>
+<td style="text-align: right;">TRUE</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">TRUE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">TRUE</td>
+<td style="text-align: right;">2.0759255^{-7}</td>
+<td style="text-align: right;">TRUE</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.80</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">TRUE</td>
+<td style="text-align: right;">0.0036757</td>
+<td style="text-align: right;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">1.0735857^{-13}</td>
+<td style="text-align: right;">TRUE</td>
+<td style="text-align: right;">0.2224687</td>
+<td style="text-align: right;">FALSE</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="qr-significance-1" class="slide level2">
+<h2>3.2 QR significance</h2>
+<div class="r-fit-text">
+<table style="width:100%;">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 18%">
+<col style="width: 12%">
+<col style="width: 13%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Quantile</th>
+<th style="text-align: right;">GrLivArea p-value</th>
+<th style="text-align: right;">significant?</th>
+<th style="text-align: right;">TotRmsAbvGrd p-value</th>
+<th style="text-align: right;">significant?</th>
+<th style="text-align: right;">LotArea p-value</th>
+<th style="text-align: right;">significant?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">TRUE</td>
+<td style="text-align: right;">0.0496147</td>
+<td style="text-align: right;">FALSE</td>
+<td style="text-align: right;">0.0094621</td>
+<td style="text-align: right;">TRUE</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">TRUE</td>
+<td style="text-align: right;">8.3392633^{-8}</td>
+<td style="text-align: right;">TRUE</td>
+<td style="text-align: right;">8.8418162^{-13}</td>
+<td style="text-align: right;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">TRUE</td>
+<td style="text-align: right;">7.382277^{-10}</td>
+<td style="text-align: right;">TRUE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">TRUE</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">TRUE</td>
+<td style="text-align: right;">4.8602452^{-4}</td>
+<td style="text-align: right;">TRUE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">TRUE</td>
+<td style="text-align: right;">1.8520468^{-4}</td>
+<td style="text-align: right;">TRUE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">TRUE</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section></section>
 <section id="summary" class="title-slide slide level1 center">
 <h1>Summary</h1>
 <div class="footer footer-default">
@@ -645,6 +796,44 @@ F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarro
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

@@ -468,6 +468,7 @@ lotshape_95_p <- getPvalue(qr95, qr95_no_lot)
 lotshape_95_p
 ## q75, q10 and q90 gives singularity errors
 ```
+
 Alpha=0.01
 
 |Quantile   |foundation p-value   | significant?    | lot shape p-value   | significant?    |
