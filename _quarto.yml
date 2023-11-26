@@ -20,6 +20,8 @@ format:
   html:
     self-contained: true
     theme: cosmo
+    code-fold: true
+    code-summary: "Show the code"
   pdf:
     documentclass: scrreprt
 execute:

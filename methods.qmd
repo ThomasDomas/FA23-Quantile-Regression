@@ -15,13 +15,6 @@ library(tinytex)
 
 # Methods
 
-<<<<<<< HEAD
-## Ordinary least squares
-
-Ordinary least squares (OLS) is a type of method for estimating the conditional betas in a linear equation. The betas are chosen based on the following minimization problem:
-$$
-\hat{\boldsymbol{\beta}}=\underset{\boldsymbol{\beta}} argmin \space E[(Y - x_i^T\beta)^2]
-=======
 ## Regression
 
 Regression is a modeling technique that helps to understand the relationship between one or more dependent variables and an independent variable. Regression consists of the mean function and the variance function [1]
@@ -44,13 +37,9 @@ Ordinary least squares model, or OLS, is one of many ways of placing a regressio
 
 $$
 argmin\sum_i^n \epsilon_i^2 = \sum_i^n (y_i - \hat{y}_i)^2
->>>>>>> 773f3e565704efbe3eaacd51d534f7135c187440
 $$
 where Y is the response, $x_i^T$ is the design matrix, and $\Beta$ is a list of unknown variables. The solution to this minimization problem is going to be when $x_i^T\beta$ equals the mean of observations. 
 
-<<<<<<< HEAD
-## Proof that mean minimizes sum of squares
-=======
 
 The least squares estimates in this case are given by simple formulas
 
@@ -70,7 +59,6 @@ $$argmin \space E(|y-\hat{y}|)$$
 The beta estimate will be the median of all of the points.
 
 ## Proof the median minimizes the sum of absolute residuals
->>>>>>> 773f3e565704efbe3eaacd51d534f7135c187440
 
 Assume, without loss of generality, that Y is a continuous random variable. The expected value of the absolute sum of deviations from a given center c can be split into the following two terms [2]:
 
