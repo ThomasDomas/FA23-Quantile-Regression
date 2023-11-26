@@ -1,0 +1,82 @@
+---
+title: "Quantile Regression"
+author: "Noureldin Kamel, Thomas Domas, and Jorge Galdos"
+format:
+  revealjs:
+    theme: dark
+    footer: "Quantile Regression - Advanced Statistical Modeling Fall"
+---
+
+# Introduction
+
+## 1. Mathematical Properties
+
+-   Quantile regression (QR) model specification as compared to ordinary least squares
+-   Generalization to QR specification from median regression
+-   Illustration of QR behavior for different parameters
+
+## 2. Real-World Benefits
+
+-   Comparison of QR to OLS performance using home price data
+-   Measuring performance in extreme subsets of the data
+-   Testing OLS and QR model assumptions on data
+
+## 3. Significance Analysis and Model Interpretation
+
+-   Significance across different quantiles
+-   QR model interpretation
+
+# Methods
+
+## Ordinary Least Squares Specification
+
+-   The OLS model is specified by minimizing the sum of squared residuals: $$
+    argmin\sum_i^n \epsilon_i^2 = argmin\sum_i^n (y_i - \hat{y}_i)^2
+    $$
+-   The sum of squared residuals are theoretically minimized by the conditional mean of of $y$ given the predictors $X$
+
+## Median Regression {.smaller}
+
+::: columns
+::: {.column width="60%"}
+-   Median regression minimizes the sum of **absolute** residuals:
+
+    $$argmin \space E(|y-\hat{y}|)$$
+
+-   The expected value of the absolute sum of deviations from a given center c can be split into the following two terms \[2\]:
+
+    $$E|Y - c| = \int_{y\in R}|y-c|f(y)dy \\
+    =\int_{y < c} |y-c|f(y)dy + \int_{y>c}|y-c|f(y)dy  \\
+    =\int_{y<c}(c-y)f(y)dy + \int_{y>c}(y-c)f(y)dy \\$$
+:::
+
+::: {.column width="40%"}
+-   Differentiating $E|y-c|$ with respect to $c$ leads to the solution of the minimum:
+
+$$
+\frac{\partial}{\partial c}E|y-c|=0
+$$
+
+-   After differentiating the integrals on the left we will arrive at the conclusion that $c$ is the **median**.
+:::
+:::
+
+## Generalization to Quantile Regression {.smaller}
+
+-   To generalize the previous in order to estimate **conditional quantiles**, weights must be introduced:
+
+$$
+\frac{\partial}{\partial c} E\left[\rho_\theta(Y-c)\right]=\frac{\partial}{\partial c}\left\{(1-\theta) \int_{-\infty}^c|y-c| f(y) d y+\theta \int_c^{+\infty}|y-c| f(y) d y\right\}
+$$
+
+-   The solution to the minimization problem is the $\theta$th quantile, $q_\theta$:
+
+$$
+F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarrow c=q_\theta
+$$
+
+# Data
+
+# Analysis
+
+# Summary
