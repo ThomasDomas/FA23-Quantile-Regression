@@ -159,15 +159,6 @@ The foundation variables also had some interesting behavior. Stone had a parabol
 
 Although lot shape and foundation had strange patterns, lot area and total rms above ground had a relatively expected pattern. They both increased positively and in a linear pattern across all the quantiles. Lot area started at around a 40 dollars at the lower quantiles and maxed out at around 120 at the upper quantiles. Furthermore RMS started at a dollar at the lower ends and maxed out at about 3 near the 90th quantile.
 
-### OLS model
-
-```{r 'OLS model creation', warning=FALSE}
-
-ols = lm(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation))
-ols_summary = summary(ols)
-ols_summary
-```
-
 ## Model evaluation
 
 ### Mean absolute error
