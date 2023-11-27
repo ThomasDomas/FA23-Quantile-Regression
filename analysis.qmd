@@ -9,7 +9,7 @@ require(gridExtra)
 library(ggplot2)
 #install.packages("jtools")
 library(jtools)
-install.packages("huxtable")
+#install.packages("huxtable")
 library(huxtable)
 ```
 
