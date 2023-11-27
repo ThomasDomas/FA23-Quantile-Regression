@@ -1,0 +1,35 @@
+```{r 'QR model creation', warning=FALSE}
+qr50 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.5)
+qr50_summary = summary(qr50)
+```
+
+
+```{r, results='hide', echo=FALSE, message=FALSE, warning=FALSE}
+#Generate all QR models 
+taus <- seq(from=0, to=1, by=.01)
+qrs = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=taus)
+taus <- seq(from=0, to=1, by=.1)
+qrs = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=taus)
+plot_summs(qr50)
+```
+
+```{r, warning=FALSE}
+num_of_rows <- nrow(qrs$coefficients)
+par(mfrow = c(2, 2))
+plot.new()
+mtext("Beta change per quantile level", side = 3, line = - 2, outer = TRUE)
+plot(qrs$coefficients[1, ], xlab="Quantiles", ylab="Y-Intercepts")
+plot(qrs$coefficients[2, ], xlab="Quantiles", ylab="Lot-Area")
+plot(qrs$coefficients[3, ], xlab="Quantiles", ylab="TotRmsAbvGrd")
+plot(qrs$coefficients[4, ], xlab="Quantiles", ylab="LotShape-IR2")
+mtext("Beta change per quantile level", side = 3, line = - 2, outer = TRUE)
+plot(qrs$coefficients[5, ], xlab="Quantiles", ylab="LotShape-IR3")
+plot(qrs$coefficients[6, ], xlab="Quantiles", ylab="LotShape-Reg")
+plot(qrs$coefficients[7, ], xlab="Quantiles", ylab="Foundation-CBlock")
+plot(qrs$coefficients[8, ], xlab="Quantiles", ylab="Foundation-PConc")
+mtext("Beta change per quantile level", side = 3, line = - 2, outer = TRUE)
+plot(qrs$coefficients[9, ], xlab="Quantiles", ylab="Foundation-Slab")
+plot(qrs$coefficients[10, ], xlab="Quantiles", ylab="Foundation-Stone")
+plot(qrs$coefficients[11, ], xlab="Quantiles", ylab="Foundation-Wood")
+
+```
