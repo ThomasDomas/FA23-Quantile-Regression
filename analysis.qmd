@@ -99,7 +99,7 @@ In this graph, when plotting sales price against ground living area, Quantile re
 
 using [@quantreg]
 
-```{r 'QR model creation', warning=FALSE}
+```{r 'QR model creation', results='hide', echo=FALSE, message=FALSE, warning=FALSE}
 qr50 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.5)
 qr50_summary = summary(qr50)
 ```
@@ -110,7 +110,7 @@ taus <- seq(from=0, to=1, by=.01)
 qrs = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=taus)
 taus <- seq(from=0, to=1, by=.1)
 qrs = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=taus)
-plot_summs(qr50)
+#plot_summs(qr50)
 ```
 
 ```{r, warning=FALSE}
@@ -254,7 +254,7 @@ When comparing Quantile regression for tau = 0.90 with OLS while predicting the 
 
 ```{r 'Variance of error', warning=FALSE}
 ols_summary$df[2]
-qr50_summary$rdf
+#qr50_summary$rdf
 ```
 
 The variance of error for OLS: `r format(ols_summary$df[2], scientific=F)`.
