@@ -143,7 +143,9 @@ qr30 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(Lo
 qr50 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=.5)
 qr70 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=.7)
 qr90 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=.9)
-plot_summs(qr10, qr30, qr50, qr70, qr90, se="iid", ci=.95) #, qr50, qr70, qr90)
+plot_summs(qr10, qr30, qr50, qr70, qr90, se="iid", ci=.95, omit.coefs = c("(Intercept)", "as.factor(LotShape)IR2", "as.factor(LotShape)IR3", "as.factor(LotShape)Reg", "as.factor(Foundation)CBlock", "as.factor(Foundation)PConc", "as.factor(Foundation)Slab", "as.factor(Foundation)Stone", "as.factor(Foundation)Wood", "TotRmsAbvGrd")) #, qr50, qr70, qr90)
+plot_summs(qr10, qr30, qr50, qr70, qr90, se="iid", ci=.95, omit.coefs = c("(Intercept)", "as.factor(LotShape)IR2", "as.factor(LotShape)IR3", "as.factor(LotShape)Reg", "as.factor(Foundation)CBlock", "as.factor(Foundation)PConc", "as.factor(Foundation)Slab", "as.factor(Foundation)Stone", "as.factor(Foundation)Wood", "GrLivArea", "LotArea")) #, qr50, qr70, qr90)
+plot_summs(qr10, qr30, qr50, qr70, qr90, se="iid", ci=.95, omit.coefs = c("(Intercept)", "GrLivArea", "LotArea", "TotRmsAbvGrd")) 
 export_summs(qr10, qr30, qr50, qr70, qr90, se="iid")
 ```
                    ──────────────────────────────────────────────────────────────────────────────────────────────────────────
