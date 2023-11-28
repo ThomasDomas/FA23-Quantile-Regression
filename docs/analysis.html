@@ -5163,55 +5163,28 @@ vertical-align: -.125em;
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>olsRmse <span class="ot">=</span> <span class="fu">rmse</span>(<span class="fu">predict</span>(ols), df<span class="sc">$</span>SalePrice)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>olsRmse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># OLS RMSE when predicting all the quantiles</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>olsRmse <span class="ot">=</span> <span class="fu">rmse</span>(<span class="fu">predict</span>(ols), df<span class="sc">$</span>SalePrice)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># QR-tau=0.5 RMSE when predicting all the quantiles</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>Qr50Rmse <span class="ot">=</span> <span class="fu">rmse</span>(<span class="fu">predict</span>(qr50), df<span class="sc">$</span>SalePrice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 48209.34</code></pre>
-</div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>Qr50Rmse <span class="ot">=</span> <span class="fu">rmse</span>(<span class="fu">predict</span>(qr50), df<span class="sc">$</span>SalePrice)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>Qr50Rmse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 49434.81</code></pre>
-</div>
 </div>
 <p>OLS RMSE value: 48209.34. And QR 50th RMSE value: 49434.81. Since OLS’ goal is to minimize RMSE, as expected it has a better (lower) value. But QR has a very similar value which shows how well QR model can keep up even if it is not focusing on optimizing RMSE.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ols_q90_rmse <span class="ot">&lt;-</span> <span class="fu">rmse</span>(ols_q90_predictions, Q90SalePrice<span class="sc">$</span>SalePrice)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>ols_q90_rmse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># OLS RMSE when predicting the top 10% priced houses</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>ols_q90_rmse <span class="ot">&lt;-</span> <span class="fu">rmse</span>(ols_q90_predictions, Q90SalePrice<span class="sc">$</span>SalePrice)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># QR-tau=0.9 RMSE when predicting the top 10% priced houses</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>qr90_q90_rmse <span class="ot">&lt;-</span> <span class="fu">rmse</span>(qr90_q90_predictions, Q90SalePrice<span class="sc">$</span>SalePrice)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># OLS RMSE when predicting the bottom 10% priced houses</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>ols_q10_rmse <span class="ot">&lt;-</span> <span class="fu">rmse</span>(ols_q10_predictions, Q10SalePrice<span class="sc">$</span>SalePrice)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co"># QR-tau=0.1 RMSE when predicting the bottom 10% priced houses</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>qr10_q10_rmse <span class="ot">&lt;-</span> <span class="fu">rmse</span>(qr10_q10_predictions, Q10SalePrice<span class="sc">$</span>SalePrice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 103618.2</code></pre>
-</div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>qr90_q90_rmse <span class="ot">&lt;-</span> <span class="fu">rmse</span>(qr90_q90_predictions, Q90SalePrice<span class="sc">$</span>SalePrice)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>qr90_q90_rmse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 82789.4</code></pre>
-</div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>ols_q10_rmse <span class="ot">&lt;-</span> <span class="fu">rmse</span>(ols_q10_predictions, Q10SalePrice<span class="sc">$</span>SalePrice)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>ols_q10_rmse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 42084.84</code></pre>
-</div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>qr10_q10_rmse <span class="ot">&lt;-</span> <span class="fu">rmse</span>(qr10_q10_predictions, Q10SalePrice<span class="sc">$</span>SalePrice)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>qr10_q10_rmse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 24207.71</code></pre>
-</div>
 </div>
 <p>When comparing Quantile regression for tau = 0.90 with OLS while predicting the top 10% of data when sorted by sales amount. The OLS model had RMSE value of 103618.1, while qr90_QR had RMSE value of 82789.4. And when comparing Quantile regression for tau = 0.10 with OLS while predicting the bottom 10% of data when sorted by sales amount. The OLS model had RMSE value of 42084.84, while QR had RMSE value of 24207.71. So QR also has better RMSE than OLS when predicting data that is far off the mean, even though OLS is supposed to minimize RMSE value.</p>
 </section>
@@ -5220,14 +5193,14 @@ vertical-align: -.125em;
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>ols_summary<span class="sc">$</span>df[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ols_summary<span class="sc">$</span>df[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1448</code></pre>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">#qr50_summary$rdf</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">#qr50_summary$rdf</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>The variance of error for OLS: 1448.</p>
@@ -5239,29 +5212,33 @@ vertical-align: -.125em;
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>ols_r <span class="ot">&lt;-</span> ols_summary<span class="sc">$</span>residuals</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Min OLS error</span></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>ols_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(ols_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min OLS error</span></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>ols_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(ols_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Max OLS error</span></span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>ols_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(ols_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max OLS error</span></span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>ols_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(ols_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg QR OLS error</span></span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>ols_r_mean_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(ols_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Min QR 50th error</span></span>
-<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>qr50_r <span class="ot">&lt;-</span> qr50_summary<span class="sc">$</span>residuals</span>
-<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>qr50_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(qr50_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min QR 50th error</span></span>
-<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>qr50_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(qr50_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Max QR 50th error</span></span>
-<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>qr50_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(qr50_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max QR 50th error</span></span>
-<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>qr50_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(qr50_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg QR 50th error</span></span>
-<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>qr50_r_mean_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(qr50_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># When predicting the whole data</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>ols_r <span class="ot">&lt;-</span> ols_summary<span class="sc">$</span>residuals</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Min OLS error</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>ols_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(ols_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min OLS error</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>ols_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(ols_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Max OLS error</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>ols_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(ols_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max OLS error</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>ols_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(ols_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg QR OLS error</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>ols_r_mean_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(ols_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Min QR 50th error</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>qr50_r <span class="ot">&lt;-</span> qr50_summary<span class="sc">$</span>residuals</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>qr50_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(qr50_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min QR 50th error</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>qr50_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(qr50_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Max QR 50th error</span></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>qr50_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(qr50_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max QR 50th error</span></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>qr50_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(qr50_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg QR 50th error</span></span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>qr50_r_mean_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(qr50_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <section id="ols" class="level4" data-number="4.4.4.1">
@@ -5287,30 +5264,34 @@ vertical-align: -.125em;
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>ols_q90_r <span class="ot">&lt;-</span> Q90SalePrice<span class="sc">$</span>SalePrice <span class="sc">-</span> ols_q90_predictions</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg OLS error</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>ols_q90_r_abs_avg <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(ols_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Min OLS error</span></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>ols_q90_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(ols_q90_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min OLS error</span></span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>ols_q90_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(ols_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Max OLS error</span></span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>ols_q90_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(ols_q90_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max OLS error</span></span>
-<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>ols_q90_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(ols_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a><span class="do">### QR for tau = 0.9</span></span>
-<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>qr90_q90_r <span class="ot">&lt;-</span> Q90SalePrice<span class="sc">$</span>SalePrice <span class="sc">-</span> qr90_q90_predictions</span>
-<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg QR 90th error</span></span>
-<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>qr90_q90_r_abs_avg <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(qr90_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Min QR 90th error</span></span>
-<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>qr90_q90_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(qr90_q90_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min QR 90th error</span></span>
-<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>qr90_q90_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(qr90_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Max QR 90th error</span></span>
-<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>qr90_q90_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(qr90_q90_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max QR 90th error</span></span>
-<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>qr90_q90_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(qr90_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># When predicting the top 10% of data (90th quantile)</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>ols_q90_r <span class="ot">&lt;-</span> (ols_q90_predictions <span class="sc">-</span> Q90SalePrice<span class="sc">$</span>SalePrice) <span class="sc">*</span> <span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg OLS error</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>ols_q90_r_abs_avg <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(ols_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Min OLS error</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>ols_q90_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(ols_q90_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min OLS error</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>ols_q90_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(ols_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Max OLS error</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>ols_q90_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(ols_q90_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max OLS error</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>ols_q90_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(ols_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="do">### QR for tau = 0.9</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>qr90_q90_r <span class="ot">&lt;-</span> (qr90_q90_predictions <span class="sc">-</span> Q90SalePrice<span class="sc">$</span>SalePrice) <span class="sc">*</span> <span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg QR 90th error</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>qr90_q90_r_abs_avg <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(qr90_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Min QR 90th error</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>qr90_q90_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(qr90_q90_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min QR 90th error</span></span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>qr90_q90_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(qr90_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Max QR 90th error</span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>qr90_q90_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(qr90_q90_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max QR 90th error</span></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>qr90_q90_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(qr90_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>When predicting the 90th quantile:</p>
@@ -5325,29 +5306,33 @@ vertical-align: -.125em;
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>ols_q10_r <span class="ot">&lt;-</span> Q10SalePrice<span class="sc">$</span>SalePrice <span class="sc">-</span> ols_q10_predictions</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg OLS error</span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>ols_q10_r_abs_avg <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(ols_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Min OLS error</span></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>ols_q10_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(ols_q10_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min OLS error</span></span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>ols_q10_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(ols_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Max OLS error</span></span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>ols_q10_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(ols_q10_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max OLS error</span></span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>ols_q10_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(ols_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>qr10_q10_r <span class="ot">&lt;-</span> Q10SalePrice<span class="sc">$</span>SalePrice <span class="sc">-</span> qr10_q10_predictions</span>
-<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg QR 10th error</span></span>
-<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>qr10_q10_r_abs_avg <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(qr10_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Min QR 10th error</span></span>
-<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>qr10_q10_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(qr10_q10_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min QR 10th error</span></span>
-<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>qr10_q10_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(qr10_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Max QR 10th error</span></span>
-<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>qr10_q10_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(qr10_q10_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max QR 10th error</span></span>
-<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>qr10_q10_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(qr10_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># When predicting the top 10% of data (90th quantile)</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>ols_q10_r <span class="ot">&lt;-</span> (ols_q10_predictions <span class="sc">-</span> Q10SalePrice<span class="sc">$</span>SalePrice) <span class="sc">*</span> <span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg OLS error</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>ols_q10_r_abs_avg <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(ols_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Min OLS error</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>ols_q10_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(ols_q10_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min OLS error</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>ols_q10_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(ols_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Max OLS error</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>ols_q10_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(ols_q10_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max OLS error</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>ols_q10_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(ols_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>qr10_q10_r <span class="ot">&lt;-</span> (qr10_q10_predictions <span class="sc">-</span> Q10SalePrice<span class="sc">$</span>SalePrice) <span class="sc">*</span> <span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg QR 10th error</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>qr10_q10_r_abs_avg <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(qr10_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Min QR 10th error</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>qr10_q10_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(qr10_q10_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min QR 10th error</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>qr10_q10_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(qr10_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Max QR 10th error</span></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>qr10_q10_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(qr10_q10_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max QR 10th error</span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>qr10_q10_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(qr10_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>When predicting the 10th quantile:</p>
@@ -5438,13 +5423,13 @@ vertical-align: -.125em;
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>getQrModel <span class="ot">&lt;-</span> <span class="cf">function</span>(data1, tau1, equation) {</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rq</span>(<span class="at">data=</span>data1, equation, <span class="at">tau=</span>tau1)</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>getPvalue <span class="ot">&lt;-</span> <span class="cf">function</span>(model1, model2) {</span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anova</span>(model1, model2)[<span class="st">"table"</span>]<span class="sc">$</span>table<span class="sc">$</span><span class="st">`</span><span class="at">pvalue</span><span class="st">`</span></span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>getQrModel <span class="ot">&lt;-</span> <span class="cf">function</span>(data1, tau1, equation) {</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rq</span>(<span class="at">data=</span>data1, equation, <span class="at">tau=</span>tau1)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>getPvalue <span class="ot">&lt;-</span> <span class="cf">function</span>(model1, model2) {</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anova</span>(model1, model2)[<span class="st">"table"</span>]<span class="sc">$</span>table<span class="sc">$</span><span class="st">`</span><span class="at">pvalue</span><span class="st">`</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <section id="calculations" class="level3" data-number="4.5.1">
@@ -5452,53 +5437,53 @@ vertical-align: -.125em;
 <div class="cell" data-warnings="false">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>eq_full <span class="ot">&lt;-</span> SalePrice <span class="sc">~</span> GrLivArea <span class="sc">+</span> LotArea <span class="sc">+</span> TotRmsAbvGrd <span class="sc">+</span> <span class="fu">as.factor</span>(LotShape) <span class="sc">+</span> <span class="fu">as.factor</span>(Foundation)</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>eq_no_foundation <span class="ot">&lt;-</span> SalePrice <span class="sc">~</span> GrLivArea <span class="sc">+</span> LotArea <span class="sc">+</span> TotRmsAbvGrd <span class="sc">+</span> <span class="fu">as.factor</span>(LotShape)</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>eq_no_lotshape <span class="ot">&lt;-</span> SalePrice <span class="sc">~</span> GrLivArea <span class="sc">+</span> LotArea <span class="sc">+</span> TotRmsAbvGrd <span class="sc">+</span> <span class="fu">as.factor</span>(Foundation)</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>qr15 <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.15</span>, eq_full)</span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>qr15_no_f <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.15</span>, eq_no_foundation)</span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>qr15_no_lot <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.15</span>, eq_no_lotshape)</span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>foundation_15_p <span class="ot">&lt;-</span> <span class="fu">getPvalue</span>(qr15, qr15_no_f)</span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>lotshape_15_p <span class="ot">&lt;-</span> <span class="fu">getPvalue</span>(qr15, qr15_no_lot)</span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>qr25 <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.25</span>, eq_full)</span>
-<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>qr25_no_f <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.25</span>, eq_no_foundation)</span>
-<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>qr25_no_lot <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.25</span>, eq_no_lotshape)</span>
-<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>foundation_25_p <span class="ot">&lt;-</span> <span class="fu">getPvalue</span>(qr25, qr25_no_f)</span>
-<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>lotshape_25_p <span class="ot">&lt;-</span> <span class="fu">getPvalue</span>(qr25, qr25_no_lot)</span>
-<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>qr50 <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.50</span>, eq_full)</span>
-<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>qr50_no_f <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.50</span>, eq_no_foundation)</span>
-<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a>qr50_no_lot <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.50</span>, eq_no_lotshape)</span>
-<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>foundation_50_p <span class="ot">&lt;-</span> <span class="fu">getPvalue</span>(qr50, qr50_no_f)</span>
-<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a>lotshape_50_p <span class="ot">&lt;-</span> <span class="fu">getPvalue</span>(qr50, qr50_no_lot)</span>
-<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a>qr80 <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.80</span>, eq_full)</span>
-<span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a>qr80_no_f <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.80</span>, eq_no_foundation)</span>
-<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a>qr80_no_lot <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.80</span>, eq_no_lotshape)</span>
-<span id="cb36-33"><a href="#cb36-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-34"><a href="#cb36-34" aria-hidden="true" tabindex="-1"></a>foundation_80_p <span class="ot">&lt;-</span> <span class="fu">getPvalue</span>(qr80, qr80_no_f)</span>
-<span id="cb36-35"><a href="#cb36-35" aria-hidden="true" tabindex="-1"></a>lotshape_80_p <span class="ot">&lt;-</span> <span class="fu">getPvalue</span>(qr80, qr80_no_lot)</span>
-<span id="cb36-36"><a href="#cb36-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-37"><a href="#cb36-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-38"><a href="#cb36-38" aria-hidden="true" tabindex="-1"></a>qr95 <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.95</span>, eq_full)</span>
-<span id="cb36-39"><a href="#cb36-39" aria-hidden="true" tabindex="-1"></a>qr95_no_f <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.95</span>, eq_no_foundation)</span>
-<span id="cb36-40"><a href="#cb36-40" aria-hidden="true" tabindex="-1"></a>qr95_no_lot <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.95</span>, eq_no_lotshape)</span>
-<span id="cb36-41"><a href="#cb36-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-42"><a href="#cb36-42" aria-hidden="true" tabindex="-1"></a>foundation_95_p <span class="ot">&lt;-</span> <span class="fu">getPvalue</span>(qr95, qr95_no_f)</span>
-<span id="cb36-43"><a href="#cb36-43" aria-hidden="true" tabindex="-1"></a>lotshape_95_p <span class="ot">&lt;-</span> <span class="fu">getPvalue</span>(qr95, qr95_no_lot)</span>
-<span id="cb36-44"><a href="#cb36-44" aria-hidden="true" tabindex="-1"></a><span class="do">## q75, q10 and q90 gives singularity errors</span></span>
-<span id="cb36-45"><a href="#cb36-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-46"><a href="#cb36-46" aria-hidden="true" tabindex="-1"></a>anova_ols_foundation <span class="ot">&lt;-</span> <span class="fu">anova</span>(ols, <span class="fu">lm</span>(<span class="at">data=</span>df, eq_no_foundation))</span>
-<span id="cb36-47"><a href="#cb36-47" aria-hidden="true" tabindex="-1"></a>anova_ols_lotshape <span class="ot">&lt;-</span> <span class="fu">anova</span>(ols, <span class="fu">lm</span>(<span class="at">data=</span>df, eq_no_lotshape))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>eq_full <span class="ot">&lt;-</span> SalePrice <span class="sc">~</span> GrLivArea <span class="sc">+</span> LotArea <span class="sc">+</span> TotRmsAbvGrd <span class="sc">+</span> <span class="fu">as.factor</span>(LotShape) <span class="sc">+</span> <span class="fu">as.factor</span>(Foundation)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>eq_no_foundation <span class="ot">&lt;-</span> SalePrice <span class="sc">~</span> GrLivArea <span class="sc">+</span> LotArea <span class="sc">+</span> TotRmsAbvGrd <span class="sc">+</span> <span class="fu">as.factor</span>(LotShape)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>eq_no_lotshape <span class="ot">&lt;-</span> SalePrice <span class="sc">~</span> GrLivArea <span class="sc">+</span> LotArea <span class="sc">+</span> TotRmsAbvGrd <span class="sc">+</span> <span class="fu">as.factor</span>(Foundation)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>qr15 <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.15</span>, eq_full)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>qr15_no_f <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.15</span>, eq_no_foundation)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>qr15_no_lot <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.15</span>, eq_no_lotshape)</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>foundation_15_p <span class="ot">&lt;-</span> <span class="fu">getPvalue</span>(qr15, qr15_no_f)</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>lotshape_15_p <span class="ot">&lt;-</span> <span class="fu">getPvalue</span>(qr15, qr15_no_lot)</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>qr25 <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.25</span>, eq_full)</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>qr25_no_f <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.25</span>, eq_no_foundation)</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>qr25_no_lot <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.25</span>, eq_no_lotshape)</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>foundation_25_p <span class="ot">&lt;-</span> <span class="fu">getPvalue</span>(qr25, qr25_no_f)</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>lotshape_25_p <span class="ot">&lt;-</span> <span class="fu">getPvalue</span>(qr25, qr25_no_lot)</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>qr50 <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.50</span>, eq_full)</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>qr50_no_f <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.50</span>, eq_no_foundation)</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>qr50_no_lot <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.50</span>, eq_no_lotshape)</span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>foundation_50_p <span class="ot">&lt;-</span> <span class="fu">getPvalue</span>(qr50, qr50_no_f)</span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>lotshape_50_p <span class="ot">&lt;-</span> <span class="fu">getPvalue</span>(qr50, qr50_no_lot)</span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>qr80 <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.80</span>, eq_full)</span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>qr80_no_f <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.80</span>, eq_no_foundation)</span>
+<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>qr80_no_lot <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.80</span>, eq_no_lotshape)</span>
+<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a>foundation_80_p <span class="ot">&lt;-</span> <span class="fu">getPvalue</span>(qr80, qr80_no_f)</span>
+<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a>lotshape_80_p <span class="ot">&lt;-</span> <span class="fu">getPvalue</span>(qr80, qr80_no_lot)</span>
+<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a>qr95 <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.95</span>, eq_full)</span>
+<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a>qr95_no_f <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.95</span>, eq_no_foundation)</span>
+<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a>qr95_no_lot <span class="ot">&lt;-</span> <span class="fu">getQrModel</span>(df, <span class="fl">0.95</span>, eq_no_lotshape)</span>
+<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a>foundation_95_p <span class="ot">&lt;-</span> <span class="fu">getPvalue</span>(qr95, qr95_no_f)</span>
+<span id="cb26-43"><a href="#cb26-43" aria-hidden="true" tabindex="-1"></a>lotshape_95_p <span class="ot">&lt;-</span> <span class="fu">getPvalue</span>(qr95, qr95_no_lot)</span>
+<span id="cb26-44"><a href="#cb26-44" aria-hidden="true" tabindex="-1"></a><span class="do">## q75, q10 and q90 gives singularity errors</span></span>
+<span id="cb26-45"><a href="#cb26-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-46"><a href="#cb26-46" aria-hidden="true" tabindex="-1"></a>anova_ols_foundation <span class="ot">&lt;-</span> <span class="fu">anova</span>(ols, <span class="fu">lm</span>(<span class="at">data=</span>df, eq_no_foundation))</span>
+<span id="cb26-47"><a href="#cb26-47" aria-hidden="true" tabindex="-1"></a>anova_ols_lotshape <span class="ot">&lt;-</span> <span class="fu">anova</span>(ols, <span class="fu">lm</span>(<span class="at">data=</span>df, eq_no_lotshape))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Alpha=0.01</p>
@@ -5567,19 +5552,19 @@ vertical-align: -.125em;
 <div class="cell" data-warning="false">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>qrs_summary <span class="ot">&lt;-</span> <span class="fu">summary</span>(qrs, <span class="at">se =</span> <span class="st">"iid"</span>)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co">#tau: 0.1</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>q10_sig <span class="ot">&lt;-</span> qrs_summary[<span class="dv">11</span>][[<span class="dv">1</span>]]<span class="sc">$</span>coefficients[,<span class="dv">4</span>][<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co">#tau: 0.25</span></span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>q25_sig <span class="ot">&lt;-</span> qrs_summary[<span class="dv">26</span>][[<span class="dv">1</span>]]<span class="sc">$</span>coefficients[,<span class="dv">4</span>][<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="co">#tau: 0.5</span></span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>q50_sig <span class="ot">&lt;-</span> qrs_summary[<span class="dv">51</span>][[<span class="dv">1</span>]]<span class="sc">$</span>coefficients[,<span class="dv">4</span>][<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="co">#tau: 0.75</span></span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>q75_sig <span class="ot">&lt;-</span> qrs_summary[<span class="dv">76</span>][[<span class="dv">1</span>]]<span class="sc">$</span>coefficients[,<span class="dv">4</span>][<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a><span class="co">#tau: 0.9</span></span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>q90_sig <span class="ot">&lt;-</span> qrs_summary[<span class="dv">91</span>][[<span class="dv">1</span>]]<span class="sc">$</span>coefficients[,<span class="dv">4</span>][<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a><span class="co">#ols significance</span></span>
-<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>ols_pvalues <span class="ot">&lt;-</span> ols_summary<span class="sc">$</span>coefficients[,<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>qrs_summary <span class="ot">&lt;-</span> <span class="fu">summary</span>(qrs, <span class="at">se =</span> <span class="st">"iid"</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co">#tau: 0.1</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>q10_sig <span class="ot">&lt;-</span> qrs_summary[<span class="dv">11</span>][[<span class="dv">1</span>]]<span class="sc">$</span>coefficients[,<span class="dv">4</span>][<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co">#tau: 0.25</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>q25_sig <span class="ot">&lt;-</span> qrs_summary[<span class="dv">26</span>][[<span class="dv">1</span>]]<span class="sc">$</span>coefficients[,<span class="dv">4</span>][<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co">#tau: 0.5</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>q50_sig <span class="ot">&lt;-</span> qrs_summary[<span class="dv">51</span>][[<span class="dv">1</span>]]<span class="sc">$</span>coefficients[,<span class="dv">4</span>][<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co">#tau: 0.75</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>q75_sig <span class="ot">&lt;-</span> qrs_summary[<span class="dv">76</span>][[<span class="dv">1</span>]]<span class="sc">$</span>coefficients[,<span class="dv">4</span>][<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="co">#tau: 0.9</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>q90_sig <span class="ot">&lt;-</span> qrs_summary[<span class="dv">91</span>][[<span class="dv">1</span>]]<span class="sc">$</span>coefficients[,<span class="dv">4</span>][<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="co">#ols significance</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>ols_pvalues <span class="ot">&lt;-</span> ols_summary<span class="sc">$</span>coefficients[,<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <table class="table">

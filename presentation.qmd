@@ -79,7 +79,6 @@ $$
 
 # Data
 
-
 ```{r, echo=FALSE, include=FALSE}
 library(quantreg)
 library(Metrics)
@@ -92,15 +91,16 @@ df <- read.csv("TrainData.csv") |>
 
 ## 1. data used
 
-We used a dataset of houses that had several houses, their prices and thier different features. The variable we are predicting are the prices of the houses
+-   We used a dataset of houses that had several houses, their prices and thier different features. The variable we are predicting are the prices of the houses
 
-After cleaning the data, we ended up with `r length(df$SalePrice)` entries.
+-   After cleaning the data, we ended up with `r length(df$SalePrice)` entries.
 
-The columns we used in our study were: above ground living area, Total number of rooms, Area of lot which were continuous variables. And we used foundation type and lot shape as our categorical variables.
+-   The columns we used in our study were: above ground living area, Total number of rooms, Area of lot which were continuous variables. And we used foundation type and lot shape as our categorical variables.
 
 ## 2. Visualizations
 
 Using gridExtra by @gridExtra and ggplot2 by @ggplot2
+
 ```{r 'Visualizing data', warning=FALSE}
 suppressWarnings({
 
@@ -125,7 +125,6 @@ grid.arrange(p1, p3, p4, p5, p7, p8, nrow = 2)
 
 })
 ```
-
 
 # Analysis
 
@@ -277,31 +276,32 @@ qr10_q10_r_min_abs <- format(round(min(abs(qr10_q10_r)), digits=0), scientific=F
 qr10_q10_r_max <- format(round(max(qr10_q10_r), digits=0), scientific=F)
 # Absolute max QR 10th error
 qr10_q10_r_max_abs <- format(round(max(abs(qr10_q10_r)), digits=0), scientific=F)
+
+# function to make text bold
+emphSmaller <- function(s, c) {
+  ifelse(abs(as.numeric(s)) <= abs(as.numeric(c)), paste("<u>", s, "</u>", sep=""), paste(s, sep=""))
+}
 ```
 
 ## Min/Max Errors table
 
-[//]: # (Mention that OLS mostly outperforms QR in Min max region due to OLS tending to outliers better than QR and that is because QR utilizes the median)
-
 ::: r-fit-text
 For testing with the whole data
 
-|Model|Data|Mean|Min|Abs Min|Max|Abs Max|
-|----:|---:|---:|---:|---:|---:|---:|
-|OLS|All|`r ols_r_mean_abs`|`r ols_r_min`|`r ols_r_min_abs`|`r ols_r_max`|`r ols_r_max_abs`|
-|QR-tau=0.5|All|`r qr50_r_mean_abs`|`r qr50_r_min`|`r qr50_r_min_abs`|`r qr50_r_max`|`r qr50_r_max_abs`|
+|      Model | Data |                Mean |            Min |            Abs Min |            Max |            Abs Max |
+|----------:|----------:|----------:|----------:|----------:|----------:|----------:|
+|        OLS |  All |  `r ols_r_mean_abs` |  `r ols_r_min` |  `r ols_r_min_abs` |  `r ols_r_max` |  `r ols_r_max_abs` |
+| QR-tau=0.5 |  All | `r emphSmaller(qr50_r_mean_abs, ols_r_mean_abs)` | `r emphSmaller(qr50_r_min, ols_r_min)` | `r emphSmaller(qr50_r_min_abs, ols_r_min_abs)` | `r emphSmaller(qr50_r_max, ols_r_max)` | `r emphSmaller(qr50_r_max_abs, ols_r_max_abs)` |
 
 For testing with focused data
 
-|Model|Data|Mean|Min|Abs Min|Max|Abs Max|
-|----:|---:|---:|---:|---:|---:|---:|
-|OLS|10th Quantile|`r ols_q10_r_abs_avg`|`r ols_q10_r_min`|`r ols_q10_r_min_abs`|`r ols_q10_r_max`|`r ols_q10_r_max_abs`|
-|QR-tau=0.1|10th Quantile|`r qr10_q10_r_abs_avg`|`r qr10_q10_r_min`|`r qr10_q10_r_min_abs`|`r qr10_q10_r_max`|`r qr10_q10_r_max_abs`|
-|OLS|90th Quantile|`r ols_q90_r_abs_avg`|`r ols_q90_r_min`|`r ols_q90_r_min_abs`|`r ols_q90_r_max`|`r ols_q90_r_max_abs`|
-|QR-tau=0.9|90th Quantile|`r qr90_q90_r_abs_avg`|`r qr90_q90_r_min`|`r qr90_q90_r_min_abs`|`r qr90_q90_r_max`|`r qr90_q90_r_max_abs`|
+|      Model |          Data |                   Mean |                Min |                Abs Min |                Max |                Abs Max |
+|----------:|----------:|----------:|----------:|----------:|----------:|----------:|
+|        OLS | 10th Quantile |  `r ols_q10_r_abs_avg` |  `r ols_q10_r_min` |  `r ols_q10_r_min_abs` |  `r ols_q10_r_max` |  `r ols_q10_r_max_abs` |
+| QR-tau=0.1 | 10th Quantile | `r emphSmaller(qr10_q10_r_abs_avg, ols_q10_r_abs_avg)` | `r emphSmaller(qr10_q10_r_min, ols_q10_r_min)` | `r emphSmaller(qr10_q10_r_min_abs, ols_q10_r_min_abs)` | `r emphSmaller(qr10_q10_r_max, ols_q10_r_max)` | `r emphSmaller(qr10_q10_r_max_abs, ols_q10_r_max_abs)` |
+|        OLS | 90th Quantile |  `r ols_q90_r_abs_avg` |  `r ols_q90_r_min` |  `r ols_q90_r_min_abs` |  `r ols_q90_r_max` |  `r ols_q90_r_max_abs` |
+| QR-tau=0.9 | 90th Quantile | `r emphSmaller(qr90_q90_r_abs_avg, ols_q90_r_abs_avg)` | `r emphSmaller(qr90_q90_r_min, ols_q90_r_min)` | `r emphSmaller(qr90_q90_r_min_abs, ols_q90_r_min_abs)` | `r emphSmaller(qr90_q90_r_max, ols_q90_r_max)` | `r emphSmaller(qr90_q90_r_max_abs, ols_q90_r_max_abs)` |
 :::
-
-[//]: # (QR-better: Mean errors, Abs min errors)
 
 ```{r, warnings=FALSE, include=FALSE}
 getQrModel <- function(data1, tau1, equation) {
@@ -313,7 +313,12 @@ getPvalue <- function(model1, model2) {
 }
 
 formatNumber <- function(x) {
-  format(round(x, digits=2), scientific=F)
+  format(round(x, digits=2), scientific=TRUE)
+}
+
+emphSignificant <- function(n) {
+  n <- format(n, scientific=T)
+  ifelse(as.numeric(n) < 0.01, paste(n, "**", sep=""), paste("<u>", n, "</u>", sep=""))
 }
 
 eq_full <- SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation)
@@ -326,9 +331,7 @@ qr15_no_f <- getQrModel(df, 0.15, eq_no_foundation)
 qr15_no_lot <- getQrModel(df, 0.15, eq_no_lotshape)
 
 foundation_15_p <- getPvalue(qr15, qr15_no_f)
-foundation_15_p
 lotshape_15_p <- getPvalue(qr15, qr15_no_lot)
-lotshape_15_p
 
 
 qr25 <- getQrModel(df, 0.25, eq_full)
@@ -336,9 +339,7 @@ qr25_no_f <- getQrModel(df, 0.25, eq_no_foundation)
 qr25_no_lot <- getQrModel(df, 0.25, eq_no_lotshape)
 
 foundation_25_p <- getPvalue(qr25, qr25_no_f)
-foundation_25_p
 lotshape_25_p <- getPvalue(qr25, qr25_no_lot)
-lotshape_25_p
 
 
 qr50 <- getQrModel(df, 0.50, eq_full)
@@ -346,9 +347,7 @@ qr50_no_f <- getQrModel(df, 0.50, eq_no_foundation)
 qr50_no_lot <- getQrModel(df, 0.50, eq_no_lotshape)
 
 foundation_50_p <- getPvalue(qr50, qr50_no_f)
-foundation_50_p
 lotshape_50_p <- getPvalue(qr50, qr50_no_lot)
-lotshape_50_p
 
 
 qr80 <- getQrModel(df, 0.80, eq_full)
@@ -356,9 +355,7 @@ qr80_no_f <- getQrModel(df, 0.80, eq_no_foundation)
 qr80_no_lot <- getQrModel(df, 0.80, eq_no_lotshape)
 
 foundation_80_p <- getPvalue(qr80, qr80_no_f)
-foundation_80_p
 lotshape_80_p <- getPvalue(qr80, qr80_no_lot)
-lotshape_80_p
 
 
 qr95 <- getQrModel(df, 0.95, eq_full)
@@ -366,9 +363,7 @@ qr95_no_f <- getQrModel(df, 0.95, eq_no_foundation)
 qr95_no_lot <- getQrModel(df, 0.95, eq_no_lotshape)
 
 foundation_95_p <- getPvalue(qr95, qr95_no_f)
-foundation_95_p
 lotshape_95_p <- getPvalue(qr95, qr95_no_lot)
-lotshape_95_p
 
 anova_ols_foundation <- anova(ols, lm(data=df, eq_no_foundation))
 anova_ols_lotshape <- anova(ols, lm(data=df, eq_no_lotshape))
@@ -376,19 +371,18 @@ anova_ols_lotshape <- anova(ols, lm(data=df, eq_no_lotshape))
 
 ## 3.1 Significance of categorical variables
 
-Alpha=0.01
 
 ::: r-fit-text
-|Quantile   |foundation p-value   | significant?    | lot shape p-value   | significant?    |
-|----------:|--------------------:|----------------:|--------------------:|----------------:|
-|QR-tau=0.15|`r foundation_15_p`  |`r foundation_15_p<0.01`|`r lotshape_15_p`  |`r lotshape_15_p<0.01`|
-|QR-tau=0.25|`r foundation_25_p`  |`r foundation_25_p<0.01`|`r lotshape_25_p`  |`r lotshape_25_p<0.01`|
-|QR-tau=0.50|`r foundation_50_p`  |`r foundation_50_p<0.01`|`r lotshape_50_p`  |`r lotshape_50_p<0.01`|
-|QR-tau=0.80|`r foundation_80_p`  |`r foundation_80_p<0.01`|`r lotshape_80_p`  |`r lotshape_80_p<0.01`|
-|QR-tau=0.95|`r foundation_95_p`  |`r foundation_95_p<0.01`|`r lotshape_95_p`  |`r lotshape_95_p<0.01`|
-|OLS        |`r anova_ols_foundation[2,][6][[1]]`|`r anova_ols_foundation[2,][6][[1]]<0.01`|`r anova_ols_lotshape[2,][6][[1]]`|`r anova_ols_lotshape[2,][6][[1]]<0.01`| 
+Alpha=0.01
 
-[//]: # (Mention that )
+|    Quantile |   foundation p-value |    lot shape p-value |
+|--------------:|--------------:|--------------:|--------------:|--------------:|
+| QR-tau=0.15 |  `r emphSignificant(foundation_15_p)` |  `r emphSignificant(lotshape_15_p)` |
+| QR-tau=0.25 |  `r emphSignificant(foundation_25_p)` |  `r emphSignificant(lotshape_25_p)` |
+| QR-tau=0.50 |  `r emphSignificant(foundation_50_p)` |  `r emphSignificant(lotshape_50_p)` |
+| QR-tau=0.80 |  `r emphSignificant(foundation_80_p)` |  `r emphSignificant(lotshape_80_p)` |
+| QR-tau=0.95 |  `r emphSignificant(foundation_95_p)` |  `r emphSignificant(lotshape_95_p)` |
+|         OLS | `r emphSignificant(anova_ols_foundation[2,][6][[1]])` | `r emphSignificant(anova_ols_lotshape[2,][6][[1]])` |
 :::
 
 ```{r, Warning=FALSE, include=FALSE}
@@ -409,17 +403,17 @@ ols_pvalues <- ols_summary$coefficients[,4]
 
 ## 3.2 Significance of continuous variables
 
+::: r-fit-text
 Alpha=0.01
 
-::: r-fit-text
-|Model   |GrLivArea p-value| significant?    | TotRmsAbvGrd p-value| significant?  | LotArea p-value| significant?   |
-|---------------:|----------------:|----------------:|--------------------:|--------------:|---------------:|------------------:|
-|QR-tau=0.15       |`r q10_sig[2]`  |`r q10_sig[2]<0.01`|`r q10_sig[4]`  |`r q10_sig[4]<0.01`|`r q10_sig[3]`  |`r q10_sig[3]<0.01`|
-|QR-tau=0.25       |`r q25_sig[2]`  |`r q25_sig[2]<0.01`|`r q25_sig[4]`  |`r q25_sig[4]<0.01`|`r q25_sig[3]`  |`r q25_sig[3]<0.01`|
-|QR-tau=0.50       |`r q50_sig[2]`  |`r q50_sig[2]<0.01`|`r q50_sig[4]`  |`r q50_sig[4]<0.01`|`r q50_sig[3]`  |`r q50_sig[3]<0.01`|
-|QR-tau=0.75       |`r q75_sig[2]`  |`r q75_sig[2]<0.01`|`r q75_sig[4]`  |`r q75_sig[4]<0.01`|`r q75_sig[3]`  |`r q75_sig[3]<0.01`|
-|QR-tau=0.90       |`r q90_sig[2]`  |`r q90_sig[2]<0.01`|`r q90_sig[4]`  |`r q90_sig[4]<0.01`|`r q90_sig[3]`  |`r q90_sig[3]<0.01`|
-|OLS        |`r ols_pvalues["GrLivArea"]`  |`r ols_pvalues["GrLivArea"]<0.01`|`r ols_pvalues["TotRmsAbvGrd"]`  |`r ols_pvalues["TotRmsAbvGrd"]<0.01`|`r ols_pvalues["LotArea"]`  |`r ols_pvalues["LotArea"]<0.01`|
+|       Model |            GrLivArea p-value |              TotRmsAbvGrd p-value |                 LotArea p-value |
+|----------:|----------:|----------:|----------:|----------:|----------:|----------:|
+| QR-tau=0.15 |               `r emphSignificant(q10_sig[2])` |                  `r emphSignificant(q10_sig[4])` |             `r emphSignificant(q10_sig[3])` |
+| QR-tau=0.25 |               `r emphSignificant(q25_sig[2])` |                  `r emphSignificant(q25_sig[4])` |             `r emphSignificant(q25_sig[3])` |
+| QR-tau=0.50 |               `r emphSignificant(q50_sig[2])` |                  `r emphSignificant(q50_sig[4])` |             `r emphSignificant(q50_sig[3])` |
+| QR-tau=0.75 |               `r emphSignificant(q75_sig[2])` |                  `r emphSignificant(q75_sig[4])` |             `r emphSignificant(q75_sig[3])` |
+| QR-tau=0.90 |               `r emphSignificant(q90_sig[2])` |                  `r emphSignificant(q90_sig[4])` |             `r emphSignificant(q90_sig[3])` |
+|         OLS | `r emphSignificant(ols_pvalues["GrLivArea"])` | `r emphSignificant(ols_pvalues["TotRmsAbvGrd"])` | `r emphSignificant(ols_pvalues["LotArea"])` |
 :::
 
 ```{r 'Mean absolute error', warning=FALSE, include=FALSE}
@@ -452,34 +446,34 @@ qr10_q10_rmse
 
 ## Errors for whole data testing
 
-|Model|Data|RMSE|MAE|
-|---:|---:|---:|---:|
-|OLS:|All|`r format(round(olsRmse, digits=2), scientific=F)`|`r format(round(olsMae, digits=2), scientific=F)`|
-|QR-tau=0.5:|All|`r format(round(Qr50Rmse, digits=2), scientific=F)`|`r format(round(Qr50Mae, digits=2), scientific=F)`|
+
+|       Model | Data |                                                RMSE |                                                MAE |
+|-----------------:|-----------------:|-----------------:|-----------------:|
+|        OLS: |  All |  `r format(round(olsRmse, digits=2), scientific=F)` |  `r format(round(olsMae, digits=2), scientific=F)` |
+| QR-tau=0.5: |  All | `r format(round(Qr50Rmse, digits=2), scientific=F)` | `r format(round(Qr50Mae, digits=2), scientific=F)` |
 
 ## Errors for focused data testing
 
+<!-- 
+Most people when buying a house they will be looking at a specific price range
+-->
+
+::: r-fit-text
+
 For houses ***above*** 90% of others
 
-|Model|Data|RMSE|MAE|
-|---:|---:|---:|---:|
-|OLS:|90th-Quantile|`r format(round(ols_q90_rmse, digits=2), scientific=F)`|`r format(round(ols_q90_mae, digits=2), scientific=F)`|
-|QR-tau=0.9:|90th-Quantile|`r format(round(qr90_q90_rmse, digits=2), scientific=F)`|`r format(round(qr90_q90_mae, digits=2), scientific=F)`|
-
+|       Model |          Data |                                                     RMSE |                                                     MAE |
+|-----------------:|-----------------:|-----------------:|-----------------:|
+|        OLS: | 90th-Quantile |  `r format(round(ols_q90_rmse, digits=2), scientific=F)` |  `r format(round(ols_q90_mae, digits=2), scientific=F)` |
+| QR-tau=0.9: | 90th-Quantile | `r format(round(qr90_q90_rmse, digits=2), scientific=F)` | `r format(round(qr90_q90_mae, digits=2), scientific=F)` |
 
 For houses ***below*** 90% of others
 
-|Model|Data|RMSE|MAE|
-|---:|---:|---:|---:|
-|OLS:|10th-Quantile|`r format(round(ols_q10_rmse, digits=2), scientific=F)`|`r format(round(ols_q10_mae, digits=2), scientific=F)`|
-|QR-tau=0.1:|10th-Quantile|`r format(round(qr10_q10_rmse, digits=2), scientific=F)`|`r format(round(qr10_q10_mae, digits=2), scientific=F)`|
-
-## Packages used
-**quantreg** by @quantreg
-
-**Metrics** by @Metrics
-
-**ggplot** by @ggplot2
+|       Model |          Data |                                                     RMSE |                                                     MAE |
+|-----------------:|-----------------:|-----------------:|-----------------:|
+|        OLS: | 10th-Quantile |  `r format(round(ols_q10_rmse, digits=2), scientific=F)` |  `r format(round(ols_q10_mae, digits=2), scientific=F)` |
+| QR-tau=0.1: | 10th-Quantile | `r format(round(qr10_q10_rmse, digits=2), scientific=F)` | `r format(round(qr10_q10_mae, digits=2), scientific=F)` |
+:::
 
 # Summary
 

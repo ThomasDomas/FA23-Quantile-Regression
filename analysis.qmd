@@ -216,26 +216,26 @@ When comparing Quantile regression for tau = 0.90 with OLS while predicting the 
 using [@Metrics]
 
 ```{r 'Root mean squared error', warning=FALSE}
+# OLS RMSE when predicting all the quantiles
 olsRmse = rmse(predict(ols), df$SalePrice)
-olsRmse
+# QR-tau=0.5 RMSE when predicting all the quantiles
 Qr50Rmse = rmse(predict(qr50), df$SalePrice)
-Qr50Rmse
 ```
 
 OLS RMSE value: `r format(round(olsRmse, digits=2), scientific=F)`. And QR 50th RMSE value: `r format(round(Qr50Rmse, digits=2), scientific=F)`. Since OLS' goal is to minimize RMSE, as expected it has a better (lower) value. But QR has a very similar value which shows how well QR model can keep up even if it is not focusing on optimizing RMSE.
 
 ```{r 'Root mean squared error for specific quantiles', warning=FALSE}
+# OLS RMSE when predicting the top 10% priced houses
 ols_q90_rmse <- rmse(ols_q90_predictions, Q90SalePrice$SalePrice)
-ols_q90_rmse
 
+# QR-tau=0.9 RMSE when predicting the top 10% priced houses
 qr90_q90_rmse <- rmse(qr90_q90_predictions, Q90SalePrice$SalePrice)
-qr90_q90_rmse
 
+# OLS RMSE when predicting the bottom 10% priced houses
 ols_q10_rmse <- rmse(ols_q10_predictions, Q10SalePrice$SalePrice)
-ols_q10_rmse
 
+# QR-tau=0.1 RMSE when predicting the bottom 10% priced houses
 qr10_q10_rmse <- rmse(qr10_q10_predictions, Q10SalePrice$SalePrice)
-qr10_q10_rmse
 ```
 
 When comparing Quantile regression for tau = 0.90 with OLS while predicting the top 10% of data when sorted by sales amount. The OLS model had RMSE value of `r format(round(ols_q90_rmse, digits=2), scientific=F)`, while qr90_QR had RMSE value of `r format(round(qr90_q90_rmse, digits=2), scientific=F)`. And when comparing Quantile regression for tau = 0.10 with OLS while predicting the bottom 10% of data when sorted by sales amount. The OLS model had RMSE value of `r format(round(ols_q10_rmse, digits=2), scientific=F)`, while QR had RMSE value of `r format(round(qr10_q10_rmse, digits=2), scientific=F)`. So QR also has better RMSE than OLS when predicting data that is far off the mean, even though OLS is supposed to minimize RMSE value.
@@ -256,6 +256,10 @@ Both have the same variance of error.
 ### Min/max error
 
 ```{r 'Min/Max Error', warning=FALSE}
+## 
+# When predicting the whole data
+##
+
 ols_r <- ols_summary$residuals
 # Min OLS error
 ols_r_min <- format(round(min(ols_r), digits=0), scientific=F)
@@ -311,7 +315,11 @@ mean QR 50th error: `r format(round(mean(abs(qr50_r)), digits=0), scientific=F)`
 ##### QR tau = 0.9
 
 ```{r 'Min/Max Error for tau = 0.9', warning=FALSE}
-ols_q90_r <- Q90SalePrice$SalePrice - ols_q90_predictions
+## 
+# When predicting the top 10% of data (90th quantile)
+##
+
+ols_q90_r <- (ols_q90_predictions - Q90SalePrice$SalePrice) * -1
 # Avg OLS error
 ols_q90_r_abs_avg <- format(round(mean(abs(ols_q90_r)), digits=0), scientific=F)
 # Min OLS error
@@ -324,7 +332,7 @@ ols_q90_r_max <- format(round(max(ols_q90_r), digits=0), scientific=F)
 ols_q90_r_max_abs <- format(round(max(abs(ols_q90_r)), digits=0), scientific=F)
 
 ### QR for tau = 0.9
-qr90_q90_r <- Q90SalePrice$SalePrice - qr90_q90_predictions
+qr90_q90_r <- (qr90_q90_predictions - Q90SalePrice$SalePrice) * -1
 # Avg QR 90th error
 qr90_q90_r_abs_avg <- format(round(mean(abs(qr90_q90_r)), digits=0), scientific=F)
 # Min QR 90th error
@@ -352,7 +360,11 @@ The absolute maximum error for OLS predictions is: `r ols_q90_r_max_abs`, while 
 ##### QR tau = 0.1
 
 ```{r 'Min/Max Error for tau = 0.1', warning=FALSE}
-ols_q10_r <- Q10SalePrice$SalePrice - ols_q10_predictions
+## 
+# When predicting the top 10% of data (90th quantile)
+##
+
+ols_q10_r <- (ols_q10_predictions - Q10SalePrice$SalePrice) * -1
 # Avg OLS error
 ols_q10_r_abs_avg <- format(round(mean(abs(ols_q10_r)), digits=0), scientific=F)
 # Min OLS error
@@ -364,7 +376,7 @@ ols_q10_r_max <- format(round(max(ols_q10_r), digits=0), scientific=F)
 # Absolute max OLS error
 ols_q10_r_max_abs <- format(round(max(abs(ols_q10_r)), digits=0), scientific=F)
 
-qr10_q10_r <- Q10SalePrice$SalePrice - qr10_q10_predictions
+qr10_q10_r <- (qr10_q10_predictions - Q10SalePrice$SalePrice) * -1
 # Avg QR 10th error
 qr10_q10_r_abs_avg <- format(round(mean(abs(qr10_q10_r)), digits=0), scientific=F)
 # Min QR 10th error
