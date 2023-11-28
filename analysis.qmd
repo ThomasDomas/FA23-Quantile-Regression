@@ -109,28 +109,28 @@ qr50_summary = summary(qr50)
 taus <- seq(from=0, to=1, by=.01)
 qrs = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=taus)
 taus <- seq(from=0, to=1, by=.1)
-qrs = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=taus)
+qrs_10 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=taus)
 #plot_summs(qr50)
 ```
 
 ```{r, warning=FALSE}
-num_of_rows <- nrow(qrs$coefficients)
+num_of_rows <- nrow(qrs_10$coefficients)
 par(mfrow = c(2, 2))
 plot.new()
 mtext("Beta change per quantile level", side = 3, line = - 2, outer = TRUE)
-plot(qrs$coefficients[1, ], xlab="Quantiles", ylab="Y-Intercepts")
-plot(qrs$coefficients[2, ], xlab="Quantiles", ylab="Lot-Area")
-plot(qrs$coefficients[3, ], xlab="Quantiles", ylab="TotRmsAbvGrd")
-plot(qrs$coefficients[4, ], xlab="Quantiles", ylab="LotShape-IR2")
+plot(qrs_10$coefficients[1, ], xlab="Quantiles", ylab="Y-Intercepts")
+plot(qrs_10$coefficients[2, ], xlab="Quantiles", ylab="Lot-Area")
+plot(qrs_10$coefficients[3, ], xlab="Quantiles", ylab="TotRmsAbvGrd")
+plot(qrs_10$coefficients[4, ], xlab="Quantiles", ylab="LotShape-IR2")
 mtext("Beta change per quantile level", side = 3, line = - 2, outer = TRUE)
-plot(qrs$coefficients[5, ], xlab="Quantiles", ylab="LotShape-IR3")
-plot(qrs$coefficients[6, ], xlab="Quantiles", ylab="LotShape-Reg")
-plot(qrs$coefficients[7, ], xlab="Quantiles", ylab="Foundation-CBlock")
-plot(qrs$coefficients[8, ], xlab="Quantiles", ylab="Foundation-PConc")
+plot(qrs_10$coefficients[5, ], xlab="Quantiles", ylab="LotShape-IR3")
+plot(qrs_10$coefficients[6, ], xlab="Quantiles", ylab="LotShape-Reg")
+plot(qrs_10$coefficients[7, ], xlab="Quantiles", ylab="Foundation-CBlock")
+plot(qrs_10$coefficients[8, ], xlab="Quantiles", ylab="Foundation-PConc")
 mtext("Beta change per quantile level", side = 3, line = - 2, outer = TRUE)
-plot(qrs$coefficients[9, ], xlab="Quantiles", ylab="Foundation-Slab")
-plot(qrs$coefficients[10, ], xlab="Quantiles", ylab="Foundation-Stone")
-plot(qrs$coefficients[11, ], xlab="Quantiles", ylab="Foundation-Wood")
+plot(qrs_10$coefficients[9, ], xlab="Quantiles", ylab="Foundation-Slab")
+plot(qrs_10$coefficients[10, ], xlab="Quantiles", ylab="Foundation-Stone")
+plot(qrs_10$coefficients[11, ], xlab="Quantiles", ylab="Foundation-Wood")
 
 ```
 
@@ -184,39 +184,29 @@ OLS MAE value: `r format(round(olsMae, digits=2), scientific=F)`. And QR 50th MA
 
 ```{r 'MAE for different quantiles', warning=FALSE}
 fullDataLength = length(df$SalePrice)
-fullDataLength
 count10per = fullDataLength / 10
-count10per
 sorted_df_desc <- df[order(-df$SalePrice),]
 Q90SalePrice <- sorted_df_desc[0:count10per, ] # data greater than 90% of data
-length(Q90SalePrice$SalePrice)
 
 qr90_m = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.90)
 
 ols_q90_predictions <- predict(ols, newdata=Q90SalePrice)
 ols_q90_mae <- mae(ols_q90_predictions, Q90SalePrice$SalePrice)
-ols_q90_mae
 
 qr90_q90_predictions <- predict(qr90_m, newdata=Q90SalePrice)
 qr90_q90_mae <- mae(qr90_q90_predictions, Q90SalePrice$SalePrice)
-qr90_q90_mae
 
 ###########
 sorted_df_asc <- df[order(df$SalePrice),]
-length(sorted_df_asc$SalePrice)
 Q10SalePrice <- sorted_df_asc[0:count10per, ] # data lower than 90% of data
-length(Q10SalePrice$SalePrice)
 
 qr10_m = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.10)
 
 ols_q10_predictions <- predict(ols, newdata=Q10SalePrice)
 ols_q10_mae <- mae(ols_q10_predictions, Q10SalePrice$SalePrice)
-ols_q10_mae
 
 qr10_q10_predictions <- predict(qr10_m, newdata=Q10SalePrice)
 qr10_q10_mae <- mae(qr10_q10_predictions, Q10SalePrice$SalePrice)
-qr10_q10_mae
-
 ```
 
 When comparing Quantile regression for tau = 0.90 with OLS while predicting the top 10% of data when sorted by sales amount. The OLS model had MAE value of `r format(round(ols_q90_mae, digits=2), scientific=F)`, while QR had MAE value of `r format(round(qr90_q90_mae, digits=2), scientific=F)`. And when comparing Quantile regression for tau = 0.10 with OLS while predicting the bottom 10% of data when sorted by sales amount. The OLS model had MAE value of `r format(round(ols_q10_mae, digits=2), scientific=F)`, while QR had MAE value of `r format(round(qr10_q10_mae, digits=2), scientific=F)`. So QR has better MAE than OLS when predicting data that is far off the mean. That is a big advantage of QR as it has the flexibility to provide models for a specific set of the data.
@@ -268,28 +258,29 @@ Both have the same variance of error.
 ```{r 'Min/Max Error', warning=FALSE}
 ols_r <- ols_summary$residuals
 # Min OLS error
-format(round(min(ols_r), digits=0), scientific=F)
+ols_r_min <- format(round(min(ols_r), digits=0), scientific=F)
 # Absolute min OLS error
-format(round(min(abs(ols_r)), digits=0), scientific=F)
+ols_r_min_abs <- format(round(min(abs(ols_r)), digits=0), scientific=F)
 # Max OLS error
-format(round(max(ols_r), digits=0), scientific=F)
+ols_r_max <- format(round(max(ols_r), digits=0), scientific=F)
 # Absolute max OLS error
-format(round(max(abs(ols_r)), digits=0), scientific=F)
+ols_r_max_abs <- format(round(max(abs(ols_r)), digits=0), scientific=F)
 # Avg QR OLS error
-format(round(mean(abs(ols_r)), digits=0), scientific=F)
+ols_r_mean_abs <- format(round(mean(abs(ols_r)), digits=0), scientific=F)
 
 # Min QR 50th error
 qr50_r <- qr50_summary$residuals
-format(round(min(qr50_r), digits=0), scientific=F)
+qr50_r_min <- format(round(min(qr50_r), digits=0), scientific=F)
 # Absolute min QR 50th error
-format(round(min(abs(qr50_r)), digits=0), scientific=F)
+qr50_r_min_abs <- format(round(min(abs(qr50_r)), digits=0), scientific=F)
 # Max QR 50th error
-format(round(max(qr50_r), digits=0), scientific=F)
+qr50_r_max <- format(round(max(qr50_r), digits=0), scientific=F)
 # Absolute max QR 50th error
-format(round(max(abs(qr50_r)), digits=0), scientific=F)
+qr50_r_max_abs <- format(round(max(abs(qr50_r)), digits=0), scientific=F)
 # Avg QR 50th error
-format(round(mean(abs(qr50_r)), digits=0), scientific=F)
+qr50_r_mean_abs <- format(round(mean(abs(qr50_r)), digits=0), scientific=F)
 ```
+
 
 #### OLS
 
@@ -323,39 +314,27 @@ mean QR 50th error: `r format(round(mean(abs(qr50_r)), digits=0), scientific=F)`
 ols_q90_r <- Q90SalePrice$SalePrice - ols_q90_predictions
 # Avg OLS error
 ols_q90_r_abs_avg <- format(round(mean(abs(ols_q90_r)), digits=0), scientific=F)
-ols_q90_r_abs_avg
 # Min OLS error
 ols_q90_r_min <- format(round(min(ols_q90_r), digits=0), scientific=F)
-ols_q90_r_min
 # Absolute min OLS error
 ols_q90_r_min_abs <- format(round(min(abs(ols_q90_r)), digits=0), scientific=F)
-ols_q90_r_min_abs
 # Max OLS error
 ols_q90_r_max <- format(round(max(ols_q90_r), digits=0), scientific=F)
-ols_q90_r_max
 # Absolute max OLS error
 ols_q90_r_max_abs <- format(round(max(abs(ols_q90_r)), digits=0), scientific=F)
-ols_q90_r_max_abs
 
 ### QR for tau = 0.9
 qr90_q90_r <- Q90SalePrice$SalePrice - qr90_q90_predictions
 # Avg QR 90th error
 qr90_q90_r_abs_avg <- format(round(mean(abs(qr90_q90_r)), digits=0), scientific=F)
-qr90_q90_r_abs_avg
 # Min QR 90th error
 qr90_q90_r_min <- format(round(min(qr90_q90_r), digits=0), scientific=F)
-qr90_q90_r_min
 # Absolute min QR 90th error
 qr90_q90_r_min_abs <- format(round(min(abs(qr90_q90_r)), digits=0), scientific=F)
-qr90_q90_r_min_abs
 # Max QR 90th error
 qr90_q90_r_max <- format(round(max(qr90_q90_r), digits=0), scientific=F)
-qr90_q90_r_max
 # Absolute max QR 90th error
 qr90_q90_r_max_abs <- format(round(max(abs(qr90_q90_r)), digits=0), scientific=F)
-qr90_q90_r_max_abs
-
-ols_q90_r_max_abs < qr90_q90_r_max_abs
 ```
 
 When predicting the 90th quantile:
@@ -373,41 +352,29 @@ The absolute maximum error for OLS predictions is: `r ols_q90_r_max_abs`, while 
 ##### QR tau = 0.1
 
 ```{r 'Min/Max Error for tau = 0.1', warning=FALSE}
-ols_q10_r <- ols_q10_predictions - Q10SalePrice$SalePrice
+ols_q10_r <- Q10SalePrice$SalePrice - ols_q10_predictions
 # Avg OLS error
 ols_q10_r_abs_avg <- format(round(mean(abs(ols_q10_r)), digits=0), scientific=F)
-ols_q10_r_abs_avg
 # Min OLS error
 ols_q10_r_min <- format(round(min(ols_q10_r), digits=0), scientific=F)
-ols_q10_r_min
 # Absolute min OLS error
 ols_q10_r_min_abs <- format(round(min(abs(ols_q10_r)), digits=0), scientific=F)
-ols_q10_r_min_abs
 # Max OLS error
 ols_q10_r_max <- format(round(max(ols_q10_r), digits=0), scientific=F)
-ols_q10_r_max
 # Absolute max OLS error
 ols_q10_r_max_abs <- format(round(max(abs(ols_q10_r)), digits=0), scientific=F)
-ols_q10_r_max_abs
 
-length(Q10SalePrice$SalePrice)
-length(df$SalePrice)
-qr10_q10_r <- resid(qr10_m, newdata=Q10SalePrice)
+qr10_q10_r <- Q10SalePrice$SalePrice - qr10_q10_predictions
 # Avg QR 10th error
 qr10_q10_r_abs_avg <- format(round(mean(abs(qr10_q10_r)), digits=0), scientific=F)
-qr10_q10_r_abs_avg
 # Min QR 10th error
 qr10_q10_r_min <- format(round(min(qr10_q10_r), digits=0), scientific=F)
-qr10_q10_r_min
 # Absolute min QR 10th error
 qr10_q10_r_min_abs <- format(round(min(abs(qr10_q10_r)), digits=0), scientific=F)
-qr10_q10_r_min_abs
 # Max QR 10th error
 qr10_q10_r_max <- format(round(max(qr10_q10_r), digits=0), scientific=F)
-qr10_q10_r_max
 # Absolute max QR 10th error
 qr10_q10_r_max_abs <- format(round(max(abs(qr10_q10_r)), digits=0), scientific=F)
-qr10_q10_r_max_abs
 ```
 
 When predicting the 10th quantile:
@@ -422,19 +389,33 @@ The maximum error for OLS predictions is: `r ols_q10_r_max`, while the maximum e
 
 The absolute maximum error for OLS predictions is: `r ols_q10_r_max_abs`, while the absolute maximum error for QR with tau = 0.1 predictions is: `r qr10_q10_r_max_abs`.
 
+#### Min/Max Summary table:
+
+|Model|Data|Mean|Min|Abs Min|Max|Abs Max|
+|----:|---:|---:|---:|---:|---:|---:|
+|OLS|All|`r ols_r_mean_abs`|`r ols_r_min`|`r ols_r_min_abs`|`r ols_r_max`|`r ols_r_max_abs`|
+|QR-tau=0.5|All|`r qr50_r_mean_abs`|`r qr50_r_min`|`r qr50_r_min_abs`|`r qr50_r_max`|`r qr50_r_max_abs`|
+|OLS|10th Quantile|`r ols_q10_r_abs_avg`|`r ols_q10_r_min`|`r ols_q10_r_min_abs`|`r ols_q10_r_max`|`r ols_q10_r_max_abs`|
+|QR-tau=0.1|10th Quantile|`r qr10_q10_r_abs_avg`|`r qr10_q10_r_min`|`r qr10_q10_r_min_abs`|`r qr10_q10_r_max`|`r qr10_q10_r_max_abs`|
+|OLS|90th Quantile|`r ols_q90_r_abs_avg`|`r ols_q90_r_min`|`r ols_q90_r_min_abs`|`r ols_q90_r_max`|`r ols_q90_r_max_abs`|
+|QR-tau=0.9|90th Quantile|`r qr90_q90_r_abs_avg`|`r qr90_q90_r_min`|`r qr90_q90_r_min_abs`|`r qr90_q90_r_max`|`r qr90_q90_r_max_abs`|
+
+
 ## Tests for significant variables
 
-### Common function to help in calculating p-values
+We used a common function to help in calculating p-values
+
 ```{r, warning=FALSE}
 getQrModel <- function(data1, tau1, equation) {
   rq(data=data1, equation, tau=tau1)
 }
 
 getPvalue <- function(model1, model2) {
-  anova(model1, model2)["table"]$table["pvalue"]
+  anova(model1, model2)["table"]$table$`pvalue`
 }
 ```
 
+### Calculations:
 ```{r, warnings=FALSE}
 eq_full <- SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation)
 eq_no_foundation <- SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape)
@@ -446,9 +427,7 @@ qr15_no_f <- getQrModel(df, 0.15, eq_no_foundation)
 qr15_no_lot <- getQrModel(df, 0.15, eq_no_lotshape)
 
 foundation_15_p <- getPvalue(qr15, qr15_no_f)
-foundation_15_p
 lotshape_15_p <- getPvalue(qr15, qr15_no_lot)
-lotshape_15_p
 
 
 qr25 <- getQrModel(df, 0.25, eq_full)
@@ -456,9 +435,7 @@ qr25_no_f <- getQrModel(df, 0.25, eq_no_foundation)
 qr25_no_lot <- getQrModel(df, 0.25, eq_no_lotshape)
 
 foundation_25_p <- getPvalue(qr25, qr25_no_f)
-foundation_25_p
 lotshape_25_p <- getPvalue(qr25, qr25_no_lot)
-lotshape_25_p
 
 
 qr50 <- getQrModel(df, 0.50, eq_full)
@@ -466,9 +443,7 @@ qr50_no_f <- getQrModel(df, 0.50, eq_no_foundation)
 qr50_no_lot <- getQrModel(df, 0.50, eq_no_lotshape)
 
 foundation_50_p <- getPvalue(qr50, qr50_no_f)
-foundation_50_p
 lotshape_50_p <- getPvalue(qr50, qr50_no_lot)
-lotshape_50_p
 
 
 qr80 <- getQrModel(df, 0.80, eq_full)
@@ -476,9 +451,7 @@ qr80_no_f <- getQrModel(df, 0.80, eq_no_foundation)
 qr80_no_lot <- getQrModel(df, 0.80, eq_no_lotshape)
 
 foundation_80_p <- getPvalue(qr80, qr80_no_f)
-foundation_80_p
 lotshape_80_p <- getPvalue(qr80, qr80_no_lot)
-lotshape_80_p
 
 
 qr95 <- getQrModel(df, 0.95, eq_full)
@@ -486,21 +459,23 @@ qr95_no_f <- getQrModel(df, 0.95, eq_no_foundation)
 qr95_no_lot <- getQrModel(df, 0.95, eq_no_lotshape)
 
 foundation_95_p <- getPvalue(qr95, qr95_no_f)
-foundation_95_p
 lotshape_95_p <- getPvalue(qr95, qr95_no_lot)
-lotshape_95_p
 ## q75, q10 and q90 gives singularity errors
+
+anova_ols_foundation <- anova(ols, lm(data=df, eq_no_foundation))
+anova_ols_lotshape <- anova(ols, lm(data=df, eq_no_lotshape))
 ```
 
 Alpha=0.01
 
 |Quantile   |foundation p-value   | significant?    | lot shape p-value   | significant?    |
 |----------:|--------------------:|----------------:|--------------------:|----------------:|
-|0.15       |`r foundation_15_p`  |`r foundation_15_p<0.01`|`r lotshape_15_p`  |`r lotshape_15_p<0.01`|
-|0.25       |`r foundation_25_p`  |`r foundation_25_p<0.01`|`r lotshape_25_p`  |`r lotshape_25_p<0.01`|
-|0.50       |`r foundation_50_p`  |`r foundation_50_p<0.01`|`r lotshape_50_p`  |`r lotshape_50_p<0.01`|
-|0.80       |`r foundation_80_p`  |`r foundation_80_p<0.01`|`r lotshape_80_p`  |`r lotshape_80_p<0.01`|
-|0.95       |`r foundation_95_p`  |`r foundation_95_p<0.01`|`r lotshape_95_p`  |`r lotshape_95_p<0.01`|
+|QR-tau=0.15       |`r foundation_15_p`  |`r foundation_15_p<0.01`|`r lotshape_15_p`  |`r lotshape_15_p<0.01`|
+|QR-tau=0.25       |`r foundation_25_p`  |`r foundation_25_p<0.01`|`r lotshape_25_p`  |`r lotshape_25_p<0.01`|
+|QR-tau=0.50       |`r foundation_50_p`  |`r foundation_50_p<0.01`|`r lotshape_50_p`  |`r lotshape_50_p<0.01`|
+|QR-tau=0.80       |`r foundation_80_p`  |`r foundation_80_p<0.01`|`r lotshape_80_p`  |`r lotshape_80_p<0.01`|
+|QR-tau=0.95       |`r foundation_95_p`  |`r foundation_95_p<0.01`|`r lotshape_95_p`  |`r lotshape_95_p<0.01`|
+|OLS            |`r anova_ols_foundation[2,][6][[1]]`|`r anova_ols_foundation[2,][6][[1]]<0.01`|`r anova_ols_lotshape[2,][6][[1]]`|`r anova_ols_lotshape[2,][6][[1]]<0.01`| 
 
 
 ```{r, Warning=FALSE}
@@ -515,16 +490,17 @@ q50_sig <- qrs_summary[51][[1]]$coefficients[,4][0:4]
 q75_sig <- qrs_summary[76][[1]]$coefficients[,4][0:4]
 #tau: 0.9
 q90_sig <- qrs_summary[91][[1]]$coefficients[,4][0:4]
+#ols significance
+ols_pvalues <- ols_summary$coefficients[,4]
 ```
 
-Alpha=0.01
-
-|Quantile   |GrLivArea p-value| significant?    | TotRmsAbvGrd p-value| significant?  | LotArea p-value| significant?   |
+|Model   |GrLivArea p-value| significant?    | TotRmsAbvGrd p-value| significant?  | LotArea p-value| significant?   |
 |----------:|----------------:|----------------:|--------------------:|--------------:|---------------:|------------------:|
-|0.15       |`r q10_sig[2]`  |`r q10_sig[2]<0.01`|`r q10_sig[4]`  |`r q10_sig[4]<0.01`|`r q10_sig[3]`  |`r q10_sig[3]<0.01`|
-|0.25       |`r q25_sig[2]`  |`r q25_sig[2]<0.01`|`r q25_sig[4]`  |`r q25_sig[4]<0.01`|`r q25_sig[3]`  |`r q25_sig[3]<0.01`|
-|0.50       |`r q50_sig[2]`  |`r q50_sig[2]<0.01`|`r q50_sig[4]`  |`r q50_sig[4]<0.01`|`r q50_sig[3]`  |`r q50_sig[3]<0.01`|
-|0.75       |`r q75_sig[2]`  |`r q75_sig[2]<0.01`|`r q75_sig[4]`  |`r q75_sig[4]<0.01`|`r q75_sig[3]`  |`r q75_sig[3]<0.01`|
-|0.90       |`r q90_sig[2]`  |`r q90_sig[2]<0.01`|`r q90_sig[4]`  |`r q90_sig[4]<0.01`|`r q90_sig[3]`  |`r q90_sig[3]<0.01`|
+|QR-tau=0.15       |`r q10_sig[2]`  |`r q10_sig[2]<0.01`|`r q10_sig[4]`  |`r q10_sig[4]<0.01`|`r q10_sig[3]`  |`r q10_sig[3]<0.01`|
+|QR-tau=0.25       |`r q25_sig[2]`  |`r q25_sig[2]<0.01`|`r q25_sig[4]`  |`r q25_sig[4]<0.01`|`r q25_sig[3]`  |`r q25_sig[3]<0.01`|
+|QR-tau=0.50       |`r q50_sig[2]`  |`r q50_sig[2]<0.01`|`r q50_sig[4]`  |`r q50_sig[4]<0.01`|`r q50_sig[3]`  |`r q50_sig[3]<0.01`|
+|QR-tau=0.75       |`r q75_sig[2]`  |`r q75_sig[2]<0.01`|`r q75_sig[4]`  |`r q75_sig[4]<0.01`|`r q75_sig[3]`  |`r q75_sig[3]<0.01`|
+|QR-tau=0.90       |`r q90_sig[2]`  |`r q90_sig[2]<0.01`|`r q90_sig[4]`  |`r q90_sig[4]<0.01`|`r q90_sig[3]`  |`r q90_sig[3]<0.01`|
+|OLS        |`r ols_pvalues["GrLivArea"]`  |`r ols_pvalues["GrLivArea"]<0.01`|`r ols_pvalues["TotRmsAbvGrd"]`  |`r ols_pvalues["TotRmsAbvGrd"]<0.01`|`r ols_pvalues["LotArea"]`  |`r ols_pvalues["LotArea"]<0.01`|
 
 As demonstrated in the previous 2 tables, p-value of each variable changes with the changing the quantile regressions' quantile. It can even switch from significant to non-significant. That is the case with lot shape in the 0.95th quantile. It was significant in all previous quantiles except in the 95th quantile. The same case is for number of the total rooms above ground. It was significant across all quantiles but is insignificant for the 90th quantile On the other hand OLS assumes that the significance is constant throughout the whole data set.

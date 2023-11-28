@@ -29,7 +29,26 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-  </style>
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
   <link rel="stylesheet" href="presentation_files/libs/revealjs/dist/theme/quarto.css">
   <link href="presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="presentation_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -421,14 +440,17 @@ F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarro
 <section>
 <section id="data" class="title-slide slide level1 center">
 <h1>Data</h1>
-<p>using <span class="citation" data-cites="gridExtra">@gridExtra</span> and <span class="citation" data-cites="ggplot2">@ggplot2</span></p>
+
 </section>
 <section id="data-used" class="slide level2">
 <h2>1. data used</h2>
-<p>We modeled Sale price of houses vs their House area, number of rooms above ground, lot area, foundation type and lotshape.</p>
+<p>We used a dataset of houses that had several houses, their prices and thier different features. The variable we are predicting are the prices of the houses</p>
+<p>After cleaning the data, we ended up with 1460 entries.</p>
+<p>The columns we used in our study were: above ground living area, Total number of rooms, Area of lot which were continuous variables. And we used foundation type and lot shape as our categorical variables.</p>
 </section>
 <section id="visualizations" class="slide level2">
 <h2>2. Visualizations</h2>
+<p>Using gridExtra by <span class="citation" data-cites="gridExtra">Auguie (<a href="#/references" role="doc-biblioref" onclick="">2017</a>)</span> and ggplot2 by <span class="citation" data-cites="ggplot2">Wickham (<a href="#/references" role="doc-biblioref" onclick="">2016</a>)</span></p>
 
 <img data-src="presentation_files/figure-revealjs/Visualizing%20data-1.png" width="960" class="r-stretch"></section></section>
 <section>
@@ -444,8 +466,99 @@ F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarro
 <h2>2. Visualizing models</h2>
 
 <img data-src="presentation_files/figure-revealjs/Visualizing%20housing%20cont-1.png" width="960" class="r-stretch"></section>
-<section id="qr-significance" class="slide level2">
-<h2>3.1 QR significance</h2>
+<section id="minmax-errors-table" class="slide level2">
+<h2>Min/Max Errors table</h2>
+<div class="r-fit-text">
+<p>For testing with the whole data</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Model</th>
+<th style="text-align: right;">Data</th>
+<th style="text-align: right;">Mean</th>
+<th style="text-align: right;">Min</th>
+<th style="text-align: right;">Abs Min</th>
+<th style="text-align: right;">Max</th>
+<th style="text-align: right;">Abs Max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">OLS</td>
+<td style="text-align: right;">All</td>
+<td style="text-align: right;">32187</td>
+<td style="text-align: right;">-422488</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">326538</td>
+<td style="text-align: right;">422488</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">QR-tau=0.5</td>
+<td style="text-align: right;">All</td>
+<td style="text-align: right;">31161</td>
+<td style="text-align: right;">-440106</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">351819</td>
+<td style="text-align: right;">440106</td>
+</tr>
+</tbody>
+</table>
+<p>For testing with focused data</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Model</th>
+<th style="text-align: right;">Data</th>
+<th style="text-align: right;">Mean</th>
+<th style="text-align: right;">Min</th>
+<th style="text-align: right;">Abs Min</th>
+<th style="text-align: right;">Max</th>
+<th style="text-align: right;">Abs Max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">OLS</td>
+<td style="text-align: right;">10th Quantile</td>
+<td style="text-align: right;">30663</td>
+<td style="text-align: right;">-138925</td>
+<td style="text-align: right;">576</td>
+<td style="text-align: right;">59177</td>
+<td style="text-align: right;">138925</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">QR-tau=0.1</td>
+<td style="text-align: right;">10th Quantile</td>
+<td style="text-align: right;">19343</td>
+<td style="text-align: right;">-58839</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">53225</td>
+<td style="text-align: right;">58839</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">OLS</td>
+<td style="text-align: right;">90th Quantile</td>
+<td style="text-align: right;">82879</td>
+<td style="text-align: right;">-43529</td>
+<td style="text-align: right;">1484</td>
+<td style="text-align: right;">326538</td>
+<td style="text-align: right;">326538</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">QR-tau=0.9</td>
+<td style="text-align: right;">90th Quantile</td>
+<td style="text-align: right;">55993</td>
+<td style="text-align: right;">-511780</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">245302</td>
+<td style="text-align: right;">511780</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="significance-of-categorical-variables" class="slide level2">
+<h2>3.1 Significance of categorical variables</h2>
 <p>Alpha=0.01</p>
 <div class="r-fit-text">
 <table>
@@ -467,60 +580,68 @@ F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarro
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">QR-tau=0.15</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">TRUE</td>
 <td style="text-align: right;">5.7287508^{-14}</td>
 <td style="text-align: right;">TRUE</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">QR-tau=0.25</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">TRUE</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">TRUE</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">QR-tau=0.50</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">TRUE</td>
 <td style="text-align: right;">2.0759255^{-7}</td>
 <td style="text-align: right;">TRUE</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.80</td>
+<td style="text-align: right;">QR-tau=0.80</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">TRUE</td>
 <td style="text-align: right;">0.0036757</td>
 <td style="text-align: right;">TRUE</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">QR-tau=0.95</td>
 <td style="text-align: right;">1.0735857^{-13}</td>
 <td style="text-align: right;">TRUE</td>
 <td style="text-align: right;">0.2224687</td>
 <td style="text-align: right;">FALSE</td>
 </tr>
+<tr class="even">
+<td style="text-align: right;">OLS</td>
+<td style="text-align: right;">1.9786551^{-71}</td>
+<td style="text-align: right;">TRUE</td>
+<td style="text-align: right;">1.4655394^{-8}</td>
+<td style="text-align: right;">TRUE</td>
+</tr>
 </tbody>
 </table>
 </div>
 </section>
-<section id="qr-significance-1" class="slide level2">
-<h2>3.2 QR significance</h2>
+<section id="significance-of-continuous-variables" class="slide level2">
+<h2>3.2 Significance of continuous variables</h2>
+<p>Alpha=0.01</p>
 <div class="r-fit-text">
-<table style="width:100%;">
+<table>
 <colgroup>
-<col style="width: 9%">
+<col style="width: 13%">
 <col style="width: 14%">
 <col style="width: 14%">
-<col style="width: 18%">
+<col style="width: 17%">
 <col style="width: 12%">
 <col style="width: 13%">
-<col style="width: 16%">
+<col style="width: 15%">
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: right;">Quantile</th>
+<th style="text-align: right;">Model</th>
 <th style="text-align: right;">GrLivArea p-value</th>
 <th style="text-align: right;">significant?</th>
 <th style="text-align: right;">TotRmsAbvGrd p-value</th>
@@ -531,7 +652,7 @@ F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarro
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">QR-tau=0.15</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">TRUE</td>
 <td style="text-align: right;">0.0496147</td>
@@ -540,7 +661,7 @@ F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarro
 <td style="text-align: right;">TRUE</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">QR-tau=0.25</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">TRUE</td>
 <td style="text-align: right;">8.3392633^{-8}</td>
@@ -549,7 +670,7 @@ F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarro
 <td style="text-align: right;">TRUE</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">QR-tau=0.50</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">TRUE</td>
 <td style="text-align: right;">7.382277^{-10}</td>
@@ -558,7 +679,7 @@ F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarro
 <td style="text-align: right;">TRUE</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">QR-tau=0.75</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">TRUE</td>
 <td style="text-align: right;">4.8602452^{-4}</td>
@@ -567,7 +688,7 @@ F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarro
 <td style="text-align: right;">TRUE</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">QR-tau=0.90</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">TRUE</td>
 <td style="text-align: right;">1.8520468^{-4}</td>
@@ -575,14 +696,128 @@ F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarro
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">TRUE</td>
 </tr>
+<tr class="even">
+<td style="text-align: right;">OLS</td>
+<td style="text-align: right;">2.366789^{-91}</td>
+<td style="text-align: right;">TRUE</td>
+<td style="text-align: right;">0.0020494</td>
+<td style="text-align: right;">TRUE</td>
+<td style="text-align: right;">1.642606^{-10}</td>
+<td style="text-align: right;">TRUE</td>
+</tr>
 </tbody>
 </table>
 </div>
+</section>
+<section id="errors-for-whole-data-testing" class="slide level2">
+<h2>Errors for whole data testing</h2>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Model</th>
+<th style="text-align: right;">Data</th>
+<th style="text-align: right;">RMSE</th>
+<th style="text-align: right;">MAE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">OLS:</td>
+<td style="text-align: right;">All</td>
+<td style="text-align: right;">48209.34</td>
+<td style="text-align: right;">32186.89</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">QR-tau=0.5:</td>
+<td style="text-align: right;">All</td>
+<td style="text-align: right;">49434.81</td>
+<td style="text-align: right;">31160.69</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="errors-for-focused-data-testing" class="slide level2">
+<h2>Errors for focused data testing</h2>
+<p>For houses <strong><em>above</em></strong> 90% of others</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Model</th>
+<th style="text-align: right;">Data</th>
+<th style="text-align: right;">RMSE</th>
+<th style="text-align: right;">MAE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">OLS:</td>
+<td style="text-align: right;">90th-Quantile</td>
+<td style="text-align: right;">103618.1</td>
+<td style="text-align: right;">82879.02</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">QR-tau=0.9:</td>
+<td style="text-align: right;">90th-Quantile</td>
+<td style="text-align: right;">82789.4</td>
+<td style="text-align: right;">55993.4</td>
+</tr>
+</tbody>
+</table>
+<p>For houses <strong><em>below</em></strong> 90% of others</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Model</th>
+<th style="text-align: right;">Data</th>
+<th style="text-align: right;">RMSE</th>
+<th style="text-align: right;">MAE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">OLS:</td>
+<td style="text-align: right;">10th-Quantile</td>
+<td style="text-align: right;">42084.84</td>
+<td style="text-align: right;">30663.33</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">QR-tau=0.1:</td>
+<td style="text-align: right;">10th-Quantile</td>
+<td style="text-align: right;">24207.71</td>
+<td style="text-align: right;">19342.85</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="packages-used" class="slide level2">
+<h2>Packages used</h2>
+<p><strong>quantreg</strong> by <span class="citation" data-cites="quantreg">Koenker (<a href="#/references" role="doc-biblioref" onclick="">2023</a>)</span></p>
+<p><strong>Metrics</strong> by <span class="citation" data-cites="Metrics">Hamner and Frasco (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span></p>
+<p><strong>ggplot</strong> by <span class="citation" data-cites="ggplot2">Wickham (<a href="#/references" role="doc-biblioref" onclick="">2016</a>)</span></p>
 </section></section>
 <section id="summary" class="title-slide slide level1 center">
 <h1>Summary</h1>
+
+</section>
+
+<section id="references" class="title-slide slide level1 smaller scrollable">
+<h1>References</h1>
 <div class="footer footer-default">
 <p>Quantile Regression - Advanced Statistical Modeling Fall</p>
+</div>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-gridExtra" class="csl-entry" role="listitem">
+Auguie, Baptiste. 2017. <em>gridExtra: Miscellaneous Functions for "Grid" Graphics</em>. <a href="https://CRAN.R-project.org/package=gridExtra">https://CRAN.R-project.org/package=gridExtra</a>.
+</div>
+<div id="ref-Metrics" class="csl-entry" role="listitem">
+Hamner, Ben, and Michael Frasco. 2018. <em>Metrics: Evaluation Metrics for Machine Learning</em>. <a href="https://CRAN.R-project.org/package=Metrics">https://CRAN.R-project.org/package=Metrics</a>.
+</div>
+<div id="ref-quantreg" class="csl-entry" role="listitem">
+Koenker, Roger. 2023. <em>Quantreg: Quantile Regression</em>. <a href="https://CRAN.R-project.org/package=quantreg">https://CRAN.R-project.org/package=quantreg</a>.
+</div>
+<div id="ref-ggplot2" class="csl-entry" role="listitem">
+Wickham, Hadley. 2016. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>.
+</div>
 </div>
 </section>
     </div>
