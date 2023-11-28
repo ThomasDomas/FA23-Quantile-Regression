@@ -4,7 +4,7 @@ author: "Jorge Galdos, Noureldin Kamel, and Thomas Domas"
 format:
   revealjs:
     theme: dark
-    footer: "Quantile Regression - Advanced Statistical Modeling Fall"
+    footer: "Quantile Regression - Advanced Statistical Modeling Fall 2023"
 
 bibliography: presentation-references.bib
 ---
@@ -17,16 +17,17 @@ bibliography: presentation-references.bib
 -   Generalization to QR specification from median regression
 -   Illustration of QR behavior for different parameters
 
-## 2. Real-World Benefits
+## 2. Significance Analysis and Model Interpretation
 
--   Comparison of QR to OLS performance using home price data
--   Measuring performance in extreme subsets of the data
--   Testing OLS and QR model assumptions on data
-
-## 3. Significance Analysis and Model Interpretation
-
--   Significance across different quantiles
 -   QR model interpretation
+-   Comparison of QR to OLS performance using home price data
+-   Significance across different quantiles
+
+## 3. Real-World Benefits
+
+-   OLS and QR model assumptions on data
+-   QR application to VaR models
+-   Hands-on problem using QR on data
 
 # Methods
 
@@ -84,12 +85,13 @@ library(quantreg)
 library(Metrics)
 require(gridExtra)
 library(ggplot2)
+library(dplyr)
 
 df <- read.csv("TrainData.csv") |>
   na.omit()
 ```
 
-## 1. data used
+## 1. Data Used
 
 -   We used a dataset of houses that had several houses, their prices and thier different features. The variable we are predicting are the prices of the houses
 
@@ -104,11 +106,11 @@ Using gridExtra by @gridExtra and ggplot2 by @ggplot2
 ```{r 'Visualizing data', warning=FALSE}
 suppressWarnings({
 
-p1 <- df |> ggplot(aes(x = GrLivArea)) + geom_histogram(binwidth = 100) + theme_bw() + theme(axis.text.y = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks.y = element_blank()) + ylab(NULL) + xlab("House Area (sq. ft.)") + scale_x_continuous(position = "top")
+p1 <- df |> ggplot(aes(x = GrLivArea)) + geom_histogram(binwidth = 100) + theme_bw() + theme(axis.text.y = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks.y = element_blank()) + ylab(NULL) + xlab("Gross Living Area (sq. ft.)") + scale_x_continuous(position = "top")
 
 # p2 <- df |> ggplot(aes(x = LotArea)) + geom_histogram(binwidth = 5) + theme_bw() + theme(axis.text.y = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks.y = element_blank()) + ylab(NULL) + xlab("Year Built") + scale_x_continuous(position = "top")
 
-p3 <- df |> ggplot(aes(x = Foundation)) + geom_histogram(stat="count") + theme_bw() + theme(axis.text.y = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks.y = element_blank()) + ylab(NULL) + xlab("Foundation type") + scale_x_discrete(position = "top")
+p3 <- df |> ggplot(aes(x = Foundation)) + geom_histogram(stat="count") + theme_bw() + theme(axis.text.y = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks.y = element_blank()) + ylab(NULL) + xlab("Foundation") + scale_x_discrete(position = "top")
 
 p4 <- ggplot() + theme_minimal()
 
@@ -145,8 +147,8 @@ df |> ggplot(aes(y = SalePrice, x = GrLivArea)) +
   geom_text(aes(x = 4150, y = 400000, label = "50th"), color="blue") + 
   geom_quantile(quantiles=0.75, color="green") + 
   geom_text(aes(x = 4000, y = 600000, label = "75th quantile"), color="green") + 
-  xlab("Sale price ($)") +
-  ylab("Above ground area (Square feet)") +
+  xlab("Sale Price ($)") +
+  ylab("Gross Living Area (sq. ft.)") +
   theme_bw()
 ```
 
@@ -288,18 +290,18 @@ emphSmaller <- function(s, c) {
 ::: r-fit-text
 For testing with the whole data
 
-|      Model | Data |                Mean |            Min |            Abs Min |            Max |            Abs Max |
+|      Model | Data |                                             Mean |                                    Min |                                        Abs Min |                                    Max |                                        Abs Max |
 |----------:|----------:|----------:|----------:|----------:|----------:|----------:|
-|        OLS |  All |  `r ols_r_mean_abs` |  `r ols_r_min` |  `r ols_r_min_abs` |  `r ols_r_max` |  `r ols_r_max_abs` |
+|        OLS |  All |                               `r ols_r_mean_abs` |                          `r ols_r_min` |                              `r ols_r_min_abs` |                          `r ols_r_max` |                              `r ols_r_max_abs` |
 | QR-tau=0.5 |  All | `r emphSmaller(qr50_r_mean_abs, ols_r_mean_abs)` | `r emphSmaller(qr50_r_min, ols_r_min)` | `r emphSmaller(qr50_r_min_abs, ols_r_min_abs)` | `r emphSmaller(qr50_r_max, ols_r_max)` | `r emphSmaller(qr50_r_max_abs, ols_r_max_abs)` |
 
 For testing with focused data
 
-|      Model |          Data |                   Mean |                Min |                Abs Min |                Max |                Abs Max |
+|      Model |          Data |                                                   Mean |                                            Min |                                                Abs Min |                                            Max |                                                Abs Max |
 |----------:|----------:|----------:|----------:|----------:|----------:|----------:|
-|        OLS | 10th Quantile |  `r ols_q10_r_abs_avg` |  `r ols_q10_r_min` |  `r ols_q10_r_min_abs` |  `r ols_q10_r_max` |  `r ols_q10_r_max_abs` |
+|        OLS | 10th Quantile |                                  `r ols_q10_r_abs_avg` |                              `r ols_q10_r_min` |                                  `r ols_q10_r_min_abs` |                              `r ols_q10_r_max` |                                  `r ols_q10_r_max_abs` |
 | QR-tau=0.1 | 10th Quantile | `r emphSmaller(qr10_q10_r_abs_avg, ols_q10_r_abs_avg)` | `r emphSmaller(qr10_q10_r_min, ols_q10_r_min)` | `r emphSmaller(qr10_q10_r_min_abs, ols_q10_r_min_abs)` | `r emphSmaller(qr10_q10_r_max, ols_q10_r_max)` | `r emphSmaller(qr10_q10_r_max_abs, ols_q10_r_max_abs)` |
-|        OLS | 90th Quantile |  `r ols_q90_r_abs_avg` |  `r ols_q90_r_min` |  `r ols_q90_r_min_abs` |  `r ols_q90_r_max` |  `r ols_q90_r_max_abs` |
+|        OLS | 90th Quantile |                                  `r ols_q90_r_abs_avg` |                              `r ols_q90_r_min` |                                  `r ols_q90_r_min_abs` |                              `r ols_q90_r_max` |                                  `r ols_q90_r_max_abs` |
 | QR-tau=0.9 | 90th Quantile | `r emphSmaller(qr90_q90_r_abs_avg, ols_q90_r_abs_avg)` | `r emphSmaller(qr90_q90_r_min, ols_q90_r_min)` | `r emphSmaller(qr90_q90_r_min_abs, ols_q90_r_min_abs)` | `r emphSmaller(qr90_q90_r_max, ols_q90_r_max)` | `r emphSmaller(qr90_q90_r_max_abs, ols_q90_r_max_abs)` |
 :::
 
@@ -371,18 +373,17 @@ anova_ols_lotshape <- anova(ols, lm(data=df, eq_no_lotshape))
 
 ## 3.1 Significance of categorical variables
 
-
 ::: r-fit-text
 Alpha=0.01
 
-|    Quantile |   foundation p-value |    lot shape p-value |
+|    Quantile |                                    foundation p-value |                                   lot shape p-value |     |     |
 |--------------:|--------------:|--------------:|--------------:|--------------:|
-| QR-tau=0.15 |  `r emphSignificant(foundation_15_p)` |  `r emphSignificant(lotshape_15_p)` |
-| QR-tau=0.25 |  `r emphSignificant(foundation_25_p)` |  `r emphSignificant(lotshape_25_p)` |
-| QR-tau=0.50 |  `r emphSignificant(foundation_50_p)` |  `r emphSignificant(lotshape_50_p)` |
-| QR-tau=0.80 |  `r emphSignificant(foundation_80_p)` |  `r emphSignificant(lotshape_80_p)` |
-| QR-tau=0.95 |  `r emphSignificant(foundation_95_p)` |  `r emphSignificant(lotshape_95_p)` |
-|         OLS | `r emphSignificant(anova_ols_foundation[2,][6][[1]])` | `r emphSignificant(anova_ols_lotshape[2,][6][[1]])` |
+| QR-tau=0.15 |                  `r emphSignificant(foundation_15_p)` |                  `r emphSignificant(lotshape_15_p)` |     |     |
+| QR-tau=0.25 |                  `r emphSignificant(foundation_25_p)` |                  `r emphSignificant(lotshape_25_p)` |     |     |
+| QR-tau=0.50 |                  `r emphSignificant(foundation_50_p)` |                  `r emphSignificant(lotshape_50_p)` |     |     |
+| QR-tau=0.80 |                  `r emphSignificant(foundation_80_p)` |                  `r emphSignificant(lotshape_80_p)` |     |     |
+| QR-tau=0.95 |                  `r emphSignificant(foundation_95_p)` |                  `r emphSignificant(lotshape_95_p)` |     |     |
+|         OLS | `r emphSignificant(anova_ols_foundation[2,][6][[1]])` | `r emphSignificant(anova_ols_lotshape[2,][6][[1]])` |     |     |
 :::
 
 ```{r, Warning=FALSE, include=FALSE}
@@ -406,14 +407,14 @@ ols_pvalues <- ols_summary$coefficients[,4]
 ::: r-fit-text
 Alpha=0.01
 
-|       Model |            GrLivArea p-value |              TotRmsAbvGrd p-value |                 LotArea p-value |
+|       Model |                             GrLivArea p-value |                             TotRmsAbvGrd p-value |                             LotArea p-value |     |     |     |
 |----------:|----------:|----------:|----------:|----------:|----------:|----------:|
-| QR-tau=0.15 |               `r emphSignificant(q10_sig[2])` |                  `r emphSignificant(q10_sig[4])` |             `r emphSignificant(q10_sig[3])` |
-| QR-tau=0.25 |               `r emphSignificant(q25_sig[2])` |                  `r emphSignificant(q25_sig[4])` |             `r emphSignificant(q25_sig[3])` |
-| QR-tau=0.50 |               `r emphSignificant(q50_sig[2])` |                  `r emphSignificant(q50_sig[4])` |             `r emphSignificant(q50_sig[3])` |
-| QR-tau=0.75 |               `r emphSignificant(q75_sig[2])` |                  `r emphSignificant(q75_sig[4])` |             `r emphSignificant(q75_sig[3])` |
-| QR-tau=0.90 |               `r emphSignificant(q90_sig[2])` |                  `r emphSignificant(q90_sig[4])` |             `r emphSignificant(q90_sig[3])` |
-|         OLS | `r emphSignificant(ols_pvalues["GrLivArea"])` | `r emphSignificant(ols_pvalues["TotRmsAbvGrd"])` | `r emphSignificant(ols_pvalues["LotArea"])` |
+| QR-tau=0.15 |               `r emphSignificant(q10_sig[2])` |                  `r emphSignificant(q10_sig[4])` |             `r emphSignificant(q10_sig[3])` |     |     |     |
+| QR-tau=0.25 |               `r emphSignificant(q25_sig[2])` |                  `r emphSignificant(q25_sig[4])` |             `r emphSignificant(q25_sig[3])` |     |     |     |
+| QR-tau=0.50 |               `r emphSignificant(q50_sig[2])` |                  `r emphSignificant(q50_sig[4])` |             `r emphSignificant(q50_sig[3])` |     |     |     |
+| QR-tau=0.75 |               `r emphSignificant(q75_sig[2])` |                  `r emphSignificant(q75_sig[4])` |             `r emphSignificant(q75_sig[3])` |     |     |     |
+| QR-tau=0.90 |               `r emphSignificant(q90_sig[2])` |                  `r emphSignificant(q90_sig[4])` |             `r emphSignificant(q90_sig[3])` |     |     |     |
+|         OLS | `r emphSignificant(ols_pvalues["GrLivArea"])` | `r emphSignificant(ols_pvalues["TotRmsAbvGrd"])` | `r emphSignificant(ols_pvalues["LotArea"])` |     |     |     |
 :::
 
 ```{r 'Mean absolute error', warning=FALSE, include=FALSE}
@@ -446,7 +447,6 @@ qr10_q10_rmse
 
 ## Errors for whole data testing
 
-
 |       Model | Data |                                                RMSE |                                                MAE |
 |-----------------:|-----------------:|-----------------:|-----------------:|
 |        OLS: |  All |  `r format(round(olsRmse, digits=2), scientific=F)` |  `r format(round(olsMae, digits=2), scientific=F)` |
@@ -454,12 +454,12 @@ qr10_q10_rmse
 
 ## Errors for focused data testing
 
+```{=html}
 <!-- 
 Most people when buying a house they will be looking at a specific price range
 -->
-
+```
 ::: r-fit-text
-
 For houses ***above*** 90% of others
 
 |       Model |          Data |                                                     RMSE |                                                     MAE |
@@ -475,6 +475,120 @@ For houses ***below*** 90% of others
 | QR-tau=0.1: | 10th-Quantile | `r format(round(qr10_q10_rmse, digits=2), scientific=F)` | `r format(round(qr10_q10_mae, digits=2), scientific=F)` |
 :::
 
+# Real-World Application
+
+## Value-at-Risk {.smaller}
+
+-   The Value-at-Risk (VaR) in an investment is the maximum amount of money that can be lost at stated level of confidence \[?\]. Ref = Value at Risk - Theory and Practice by Glyn A. Holton 1st Ed. published by Academic Press 2003
+
+-   We are 90% confident our profit will not fall in the red zone; i.e., the maximum amount of money we can lose on our investment is the 0.10 quantile of profits for this investment.
+
+![](images/VaR.png){width="613" fig-align="center"}
+
+## OLS and QR Model Assumptions {.smaller}
+
+OLS assumes ***homoskedasticity*** and ***normally distributed*** errors but QR does **NOT**
+
+```{r warning=FALSE}
+"%||%" <- function(a, b) {
+  if (!is.null(a)) a else b
+}
+
+geom_flat_violin <- function(mapping = NULL, data = NULL, stat = "ydensity",
+                        position = "dodge", trim = TRUE, scale = "area",
+                        show.legend = NA, inherit.aes = TRUE, ...) {
+  layer(
+    data = data,
+    mapping = mapping,
+    stat = stat,
+    geom = GeomFlatViolin,
+    position = position,
+    show.legend = show.legend,
+    inherit.aes = inherit.aes,
+    params = list(
+      trim = trim,
+      scale = scale,
+      ...
+    )
+  )
+}
+
+GeomFlatViolin <-
+  ggproto("GeomFlatViolin", Geom,
+          setup_data = function(data, params) {
+            data$width <- data$width %||%
+              params$width %||% (resolution(data$x, FALSE) * 0.9)
+
+            # ymin, ymax, xmin, and xmax define the bounding rectangle for each group
+            data |>
+              group_by(group) |>
+              mutate(ymin = min(y),
+                     ymax = max(y),
+                     xmin = x - width / 2,
+                     xmax = x)
+          },
+
+          draw_group = function(data, panel_scales, coord) {
+            # Find the points for the line to go all the way around
+            data <- transform(data, 
+                              xmaxv = x,
+                              xminv = x + violinwidth * (xmin - x))
+
+            # Make sure it's sorted properly to draw the outline
+            newdata <- rbind(plyr::arrange(transform(data, x = xminv), y),
+                             plyr::arrange(transform(data, x = xmaxv), -y))
+
+            # Close the polygon: set first and last point the same
+            # Needed for coord_polar and such
+            newdata <- rbind(newdata, newdata[1,])
+
+            ggplot2:::ggname("geom_flat_violin", GeomPolygon$draw_panel(newdata, panel_scales, coord))
+          },
+
+          draw_key = draw_key_polygon,
+
+          default_aes = aes(weight = 1, colour = "grey20", fill = "white", size = 0.5,
+                            alpha = NA, linetype = "solid"),
+
+          required_aes = c("x", "y")
+)
+
+# Define the number of bins and discretion the predictor variable 'x'
+num_bins <-5
+df$GrLivArea_bins <- cut(df$GrLivArea, breaks = num_bins, labels = FALSE)
+
+
+p1 <- df |> ggplot(aes(x = GrLivArea, y = SalePrice)) + geom_point(alpha=0.2) + geom_smooth(method=lm, color="red") +
+  theme_bw() + theme(axis.text = element_blank(), axis.ticks = element_blank()) + ylab("Sale Price ($)") + xlab("Gross Living Area (sq. ft.)")
+
+# get 75quantile line
+quantiles <- df |> aggregate(SalePrice ~ factor(GrLivArea_bins), FUN = function(x) quantile(x, probs = 0.75))
+
+p2 <- df |> ggplot(aes(x = factor(GrLivArea_bins), y = SalePrice)) +
+   geom_boxplot() + geom_flat_violin(trim=FALSE, draw_quantiles = 0.1, fill="red") +
+     theme_bw() + theme(axis.text = element_blank(), axis.ticks = element_blank()) + ylab("Sale Price ($)") + xlab("Gross Living Area (sq. ft.)") 
+
+
+# Arrange the plots side by side
+grid.arrange(p1, p2, nrow = 1)
+```
+
+## Property Developer Problem {.smaller}
+
+-   As a property developer we want to determine the risk associated with building a house with a ***gross living area*** (GLA) of 2,000 sq. ft., a total ***lot area*** of 10,000 sq. ft., 5 bedrooms, and a regular lot shape on top of a concrete foundation. What is the maximum loss we can expect if the estimated cost to build this house is \$300,000?
+-   Recall our 10% quantile regression:
+
+```{r}
+qr10 = rq(data=df, SalePrice ~ GrLivArea + LotArea + TotRmsAbvGrd + as.factor(LotShape) + as.factor(Foundation), tau=0.1)
+t(qr10$coefficients)
+```
+
+-   The 10% quantile of sale prices for homes meeting the above criteria is \$`r format(round(predict(qr10,newdata=data.frame(GrLivArea=2000,LotArea=10000,TotRmsAbvGrd=5,LotShape="Reg",Foundation="PConc")),digits=0), scientific=F)`. The cost to build the house is \$300,000, thus we are 90% sure the max loss on this investment is: $$ VaR =|\$180,114 - \$300,000| = \$119,886 $$
+
 # Summary
+
+-   QR is specified by minimizing the sum of ***weighted*** absolute residuals and this sum is best minimized by the conditional quantile.
+-   QR has greater predictive ability than OLS with extreme data points and better performance when the goal is to minimize MAE scores.
+-   OLS is a flexible model with relaxed assumptions, allowing it to have utility in a variety of fields where OLS may fall short.
 
 # References

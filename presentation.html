@@ -368,19 +368,20 @@ Jorge Galdos, Noureldin Kamel, and Thomas Domas
 <li>Illustration of QR behavior for different parameters</li>
 </ul>
 </section>
-<section id="real-world-benefits" class="slide level2">
-<h2>2. Real-World Benefits</h2>
+<section id="significance-analysis-and-model-interpretation" class="slide level2">
+<h2>2. Significance Analysis and Model Interpretation</h2>
 <ul>
+<li>QR model interpretation</li>
 <li>Comparison of QR to OLS performance using home price data</li>
-<li>Measuring performance in extreme subsets of the data</li>
-<li>Testing OLS and QR model assumptions on data</li>
+<li>Significance across different quantiles</li>
 </ul>
 </section>
-<section id="significance-analysis-and-model-interpretation" class="slide level2">
-<h2>3. Significance Analysis and Model Interpretation</h2>
+<section id="real-world-benefits" class="slide level2">
+<h2>3. Real-World Benefits</h2>
 <ul>
-<li>Significance across different quantiles</li>
-<li>QR model interpretation</li>
+<li>OLS and QR model assumptions on data</li>
+<li>QR application to VaR models</li>
+<li>Hands-on problem using QR on data</li>
 </ul>
 </section></section>
 <section>
@@ -443,7 +444,7 @@ F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarro
 
 </section>
 <section id="data-used" class="slide level2">
-<h2>1. data used</h2>
+<h2>1. Data Used</h2>
 <ul>
 <li><p>We used a dataset of houses that had several houses, their prices and thier different features. The variable we are predicting are the prices of the houses</p></li>
 <li><p>After cleaning the data, we ended up with 1460 entries.</p></li>
@@ -832,15 +833,59 @@ Most people when buying a house they will be looking at a specific price range
 </table>
 </div>
 </section></section>
+<section>
+<section id="real-world-application" class="title-slide slide level1 center">
+<h1>Real-World Application</h1>
+
+</section>
+<section id="value-at-risk" class="slide level2 smaller">
+<h2>Value-at-Risk</h2>
+<ul>
+<li><p>The Value-at-Risk (VaR) in an investment is the maximum amount of money that can be lost at stated level of confidence [?]. Ref = Value at Risk - Theory and Practice by Glyn A. Holton 1st Ed. published by Academic Press 2003</p></li>
+<li><p>We are 90% confident our profit will not fall in the red zone; i.e., the maximum amount of money we can lose on our investment is the 0.10 quantile of profits for this investment.</p></li>
+</ul>
+
+<img data-src="images/VaR.png" width="613" class="r-stretch quarto-figure-center"></section>
+<section id="ols-and-qr-model-assumptions" class="slide level2 smaller">
+<h2>OLS and QR Model Assumptions</h2>
+<p>OLS assumes <strong><em>homoskedasticity</em></strong> and <strong><em>normally distributed</em></strong> errors but QR does <strong>NOT</strong></p>
+
+<img data-src="presentation_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
+<section id="property-developer-problem" class="slide level2 smaller">
+<h2>Property Developer Problem</h2>
+<ul>
+<li>As a property developer we want to determine the risk associated with building a house with a <strong><em>gross living area</em></strong> (GLA) of 2,000 sq. ft., a total <strong><em>lot area</em></strong> of 10,000 sq. ft., 5 bedrooms, and a regular lot shape on top of a concrete foundation. What is the maximum loss we can expect if the estimated cost to build this house is $300,000?</li>
+<li>Recall our 10% quantile regression:</li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>     (Intercept) GrLivArea   LotArea TotRmsAbvGrd as.factor(LotShape)IR2
+[1,]    44918.14   59.7817 0.5073371    -3760.054               4840.551
+     as.factor(LotShape)IR3 as.factor(LotShape)Reg as.factor(Foundation)CBlock
+[1,]              -5205.533              -20808.19                    20043.99
+     as.factor(Foundation)PConc as.factor(Foundation)Slab
+[1,]                   50167.36                 -264.8337
+     as.factor(Foundation)Stone as.factor(Foundation)Wood
+[1,]                  -20399.97                  28298.39</code></pre>
+</div>
+</div>
+<ul>
+<li>The 10% quantile of sale prices for homes meeting the above criteria is $180114. The cost to build the house is $300,000, thus we are 90% sure the max loss on this investment is: <span class="math display">\[ VaR =|\$180,114 - \$300,000| = \$119,886 \]</span></li>
+</ul>
+</section></section>
 <section id="summary" class="title-slide slide level1 center">
 <h1>Summary</h1>
-
+<ul>
+<li>QR is specified by minimizing the sum of <strong><em>weighted</em></strong> absolute residuals and this sum is best minimized by the conditional quantile.</li>
+<li>QR has greater predictive ability than OLS with extreme data points and better performance when the goal is to minimize MAE scores.</li>
+<li>OLS is a flexible model with relaxed assumptions, allowing it to have utility in a variety of fields where OLS may fall short.</li>
+</ul>
 </section>
 
 <section id="references" class="title-slide slide level1 smaller scrollable">
 <h1>References</h1>
 <div class="footer footer-default">
-<p>Quantile Regression - Advanced Statistical Modeling Fall</p>
+<p>Quantile Regression - Advanced Statistical Modeling Fall 2023</p>
 </div>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-gridExtra" class="csl-entry" role="listitem">
