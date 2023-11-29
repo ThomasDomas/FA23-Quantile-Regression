@@ -446,13 +446,13 @@ F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarro
 <section id="data-used" class="slide level2">
 <h2>1. Data Used</h2>
 <ul>
-<li><p>We used a dataset of houses that had several houses, their prices and thier different features. The variable we are predicting are the prices of the houses</p></li>
+<li><p>We used a dataset of houses, and the variable we are predicting is the sale price</p></li>
 <li><p>After cleaning the data, we ended up with 1460 entries.</p></li>
-<li><p>The columns we used in our study were: above ground living area, Total number of rooms, Area of lot which were continuous variables. And we used foundation type and lot shape as our categorical variables.</p></li>
+<li><p>The columns that we used in our study were: gross living area, Total number of rooms, Area of lot which were continuous variables. And we used foundation type and lot shape as our categorical variables.</p></li>
 </ul>
 </section>
-<section id="visualizations" class="slide level2">
-<h2>2. Visualizations</h2>
+<section id="visualizing-data" class="slide level2">
+<h2>2. Visualizing data</h2>
 <p>Using gridExtra by <span class="citation" data-cites="gridExtra">Auguie (<a href="#/references" role="doc-biblioref" onclick="">2017</a>)</span> and ggplot2 by <span class="citation" data-cites="ggplot2">Wickham (<a href="#/references" role="doc-biblioref" onclick="">2016</a>)</span></p>
 
 <img data-src="presentation_files/figure-revealjs/Visualizing%20data-1.png" width="960" class="r-stretch"></section></section>
@@ -461,18 +461,29 @@ F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarro
 <h1>Analysis</h1>
 
 </section>
-<section id="analysis-1" class="slide level2">
-<h2>1. Analysis</h2>
+<section id="analysis-intro" class="slide level2">
+<h2>1. Analysis Intro</h2>
 <p>In this section we compared the results of OLS model with the results of quantile regression models</p>
+<ul>
+<li><p>Min/Max/Avg errors</p></li>
+<li><p>Significance</p></li>
+<li><p>Mean Average Error (MAE)</p></li>
+<li><p>Root mean squared error (RMSE)</p></li>
+</ul>
 </section>
 <section id="visualizing-models" class="slide level2">
 <h2>2. Visualizing models</h2>
 
-<img data-src="presentation_files/figure-revealjs/Visualizing%20housing%20cont-1.png" width="960" class="r-stretch"></section>
+<img data-src="presentation_files/figure-revealjs/Visualizing%20housing%20cont-1.png" width="960" class="r-stretch"></section></section>
+<section>
+<section id="metrics-comparisons" class="title-slide slide level1 center">
+<h1>3. Metrics comparisons</h1>
+
+</section>
 <section id="minmax-errors-table" class="slide level2">
-<h2>Min/Max Errors table</h2>
+<h2>3.1 Min/Max Errors table</h2>
 <div class="r-fit-text">
-<p>For testing with the whole data</p>
+<p>When predicting the whole data</p>
 <table style="width:100%;">
 <colgroup>
 <col style="width: 14%">
@@ -515,7 +526,7 @@ F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarro
 </tr>
 </tbody>
 </table>
-<p>For testing with focused data</p>
+<p>When predicting focused data</p>
 <table style="width:100%;">
 <colgroup>
 <col style="width: 14%">
@@ -579,9 +590,9 @@ F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarro
 </div>
 </section>
 <section id="significance-of-categorical-variables" class="slide level2">
-<h2>3.1 Significance of categorical variables</h2>
-<div class="r-fit-text">
+<h2>3.2 Significance of categorical variables</h2>
 <p>Alpha=0.01</p>
+<div class="r-fit-text">
 <table>
 <colgroup>
 <col style="width: 20%">
@@ -647,18 +658,15 @@ F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarro
 </div>
 </section>
 <section id="significance-of-continuous-variables" class="slide level2">
-<h2>3.2 Significance of continuous variables</h2>
-<div class="r-fit-text">
+<h2>3.3 Significance of continuous variables</h2>
 <p>Alpha=0.01</p>
-<table style="width:100%;">
+<div class="r-fit-text">
+<table>
 <colgroup>
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -666,9 +674,6 @@ F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarro
 <th style="text-align: right;">GrLivArea p-value</th>
 <th style="text-align: right;">TotRmsAbvGrd p-value</th>
 <th style="text-align: right;">LotArea p-value</th>
-<th style="text-align: right;"></th>
-<th style="text-align: right;"></th>
-<th style="text-align: right;"></th>
 </tr>
 </thead>
 <tbody>
@@ -677,61 +682,43 @@ F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarro
 <td style="text-align: right;">0e+00**</td>
 <td style="text-align: right;"><u>4.961475e-02</u></td>
 <td style="text-align: right;">9.462071e-03**</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">QR-tau=0.25</td>
 <td style="text-align: right;">0e+00**</td>
 <td style="text-align: right;">8.339263e-08**</td>
 <td style="text-align: right;">8.841816e-13**</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">QR-tau=0.50</td>
 <td style="text-align: right;">0e+00**</td>
 <td style="text-align: right;">7.382277e-10**</td>
 <td style="text-align: right;">0e+00**</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">QR-tau=0.75</td>
 <td style="text-align: right;">0e+00**</td>
 <td style="text-align: right;">4.860245e-04**</td>
 <td style="text-align: right;">0e+00**</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">QR-tau=0.90</td>
 <td style="text-align: right;">0e+00**</td>
 <td style="text-align: right;">1.852047e-04**</td>
 <td style="text-align: right;">0e+00**</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">OLS</td>
 <td style="text-align: right;">2.366789e-91**</td>
 <td style="text-align: right;">2.049363e-03**</td>
 <td style="text-align: right;">1.642606e-10**</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
 </tr>
 </tbody>
 </table>
 </div>
 </section>
-<section id="errors-for-whole-data-testing" class="slide level2">
-<h2>Errors for whole data testing</h2>
+<section id="mae-and-rmse-for-predicting-the-whole-data" class="slide level2">
+<h2>3.4 MAE and RMSE for predicting the whole data</h2>
 <table>
 <colgroup>
 <col style="width: 25%">
@@ -763,10 +750,9 @@ F(c)-\theta F(c)-\theta+\theta F(c)=0 \Longrightarrow F(c)=\theta \Longrightarro
 </tbody>
 </table>
 </section>
-<section id="errors-for-focused-data-testing" class="slide level2">
-<h2>Errors for focused data testing</h2>
+<section id="mae-and-rmse-for-predicting-focused-data" class="slide level2">
+<h2>3.5 MAE and RMSE for predicting focused data</h2>
 <!-- 
-Most people when buying a house they will be looking at a specific price range
 -->
 <div class="r-fit-text">
 <p>For houses <strong><em>above</em></strong> 90% of others</p>
@@ -795,8 +781,8 @@ Most people when buying a house they will be looking at a specific price range
 <tr class="even">
 <td style="text-align: right;">QR-tau=0.9:</td>
 <td style="text-align: right;">90th-Quantile</td>
-<td style="text-align: right;">82789.4</td>
-<td style="text-align: right;">55993.4</td>
+<td style="text-align: right;"><u>82789.4</u></td>
+<td style="text-align: right;"><u>55993.4</u></td>
 </tr>
 </tbody>
 </table>
@@ -826,8 +812,8 @@ Most people when buying a house they will be looking at a specific price range
 <tr class="even">
 <td style="text-align: right;">QR-tau=0.1:</td>
 <td style="text-align: right;">10th-Quantile</td>
-<td style="text-align: right;">24207.71</td>
-<td style="text-align: right;">19342.85</td>
+<td style="text-align: right;"><u>24207.71</u></td>
+<td style="text-align: right;"><u>19342.85</u></td>
 </tr>
 </tbody>
 </table>
