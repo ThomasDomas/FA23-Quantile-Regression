@@ -301,7 +301,7 @@ qr10_q10_r_max <- format(round(max(qr10_q10_r), digits=0), scientific=F)
 # Absolute max QR 10th error
 qr10_q10_r_max_abs <- format(round(max(abs(qr10_q10_r)), digits=0), scientific=F)
 
-# function to make text bold
+# function to make text underlined
 emphSmaller <- function(s, c) {
   ifelse(abs(as.numeric(s)) <= abs(as.numeric(c)), paste("<u>", s, "</u>", sep=""), paste(s, sep=""))
 }
@@ -313,14 +313,14 @@ emphSmaller <- function(s, c) {
 When predicting the whole data
 
 |      Model | Data |                                             Mean |                                    Min |                                        Abs Min |                                    Max |                                        Abs Max |
-|----------:|----------:|----------:|----------:|----------:|----------:|----------:|
+|-----------:|-----:|-------------------------------------------------:|---------------------------------------:|-----------------------------------------------:|---------------------------------------:|-----------------------------------------------:|
 |        OLS |  All |                               `r ols_r_mean_abs` |                          `r ols_r_min` |                              `r ols_r_min_abs` |                          `r ols_r_max` |                              `r ols_r_max_abs` |
 | QR-tau=0.5 |  All | `r emphSmaller(qr50_r_mean_abs, ols_r_mean_abs)` | `r emphSmaller(qr50_r_min, ols_r_min)` | `r emphSmaller(qr50_r_min_abs, ols_r_min_abs)` | `r emphSmaller(qr50_r_max, ols_r_max)` | `r emphSmaller(qr50_r_max_abs, ols_r_max_abs)` |
 
 When predicting focused data
 
 |      Model |          Data |                                                   Mean |                                            Min |                                                Abs Min |                                            Max |                                                Abs Max |
-|----------:|----------:|----------:|----------:|----------:|----------:|----------:|
+|-----------:|--------------:|-------------------------------------------------------:|-----------------------------------------------:|-------------------------------------------------------:|-----------------------------------------------:|-------------------------------------------------------:|
 |        OLS | 10th Quantile |                                  `r ols_q10_r_abs_avg` |                              `r ols_q10_r_min` |                                  `r ols_q10_r_min_abs` |                              `r ols_q10_r_max` |                                  `r ols_q10_r_max_abs` |
 | QR-tau=0.1 | 10th Quantile | `r emphSmaller(qr10_q10_r_abs_avg, ols_q10_r_abs_avg)` | `r emphSmaller(qr10_q10_r_min, ols_q10_r_min)` | `r emphSmaller(qr10_q10_r_min_abs, ols_q10_r_min_abs)` | `r emphSmaller(qr10_q10_r_max, ols_q10_r_max)` | `r emphSmaller(qr10_q10_r_max_abs, ols_q10_r_max_abs)` |
 |        OLS | 90th Quantile |                                  `r ols_q90_r_abs_avg` |                              `r ols_q90_r_min` |                                  `r ols_q90_r_min_abs` |                              `r ols_q90_r_max` |                                  `r ols_q90_r_max_abs` |
@@ -399,7 +399,7 @@ Alpha=0.01
 
 ::: r-fit-text
 |    Quantile |                                    foundation p-value |                                   lot shape p-value |     |     |
-|---------:|---------------------:|--------------------:|---------:|---------:|
+|------------:|------------------------------------------------------:|----------------------------------------------------:|----:|----:|
 | QR-tau=0.15 |                  `r emphSignificant(foundation_15_p)` |                  `r emphSignificant(lotshape_15_p)` |     |     |
 | QR-tau=0.25 |                  `r emphSignificant(foundation_25_p)` |                  `r emphSignificant(lotshape_25_p)` |     |     |
 | QR-tau=0.50 |                  `r emphSignificant(foundation_50_p)` |                  `r emphSignificant(lotshape_50_p)` |     |     |
@@ -430,7 +430,7 @@ Alpha=0.01
 
 ::: r-fit-text
 |       Model |                             GrLivArea p-value |                             TotRmsAbvGrd p-value |                             LotArea p-value |
-|--------------:|------------------:|-------------------:|-----------------:|
+|------------:|----------------------------------------------:|-------------------------------------------------:|--------------------------------------------:|
 | QR-tau=0.15 |               `r emphSignificant(q10_sig[2])` |                  `r emphSignificant(q10_sig[4])` |             `r emphSignificant(q10_sig[3])` |
 | QR-tau=0.25 |               `r emphSignificant(q25_sig[2])` |                  `r emphSignificant(q25_sig[4])` |             `r emphSignificant(q25_sig[3])` |
 | QR-tau=0.50 |               `r emphSignificant(q50_sig[2])` |                  `r emphSignificant(q50_sig[4])` |             `r emphSignificant(q50_sig[3])` |
@@ -470,7 +470,7 @@ qr10_q10_rmse
 ## 3.4 MAE and RMSE when predicting the whole data
 
 | Model       | Data |                                                RMSE |                                                MAE |
-|:-----------|-----------:|-----------------------:|-----------------------:|
+|:------------|-----:|----------------------------------------------------:|---------------------------------------------------:|
 | OLS:        |  All |  `r format(round(olsRmse, digits=2), scientific=F)` |  `r format(round(olsMae, digits=2), scientific=F)` |
 | QR-tau=0.5: |  All | `r format(round(Qr50Rmse, digits=2), scientific=F)` | `r format(round(Qr50Mae, digits=2), scientific=F)` |
 |             |      |                                                     |                                                    |
@@ -478,18 +478,17 @@ qr10_q10_rmse
 ## 3.5 MAE and RMSE for focused data
 
 ::: r-fit-text
-
 For houses ***above*** 90% of others
 
 |       Model |          Data |                                                                                RMSE |                                                                               MAE |
-|-----------------:|-----------------:|-----------------:|-----------------:|
+|------------:|--------------:|------------------------------------------------------------------------------------:|----------------------------------------------------------------------------------:|
 |        OLS: | 90th-Quantile |                             `r format(round(ols_q90_rmse, digits=2), scientific=F)` |                            `r format(round(ols_q90_mae, digits=2), scientific=F)` |
 | QR-tau=0.9: | 90th-Quantile | `r emphSmaller(format(round(qr90_q90_rmse, digits=2), scientific=F), ols_q90_rmse)` | `r emphSmaller(format(round(qr90_q90_mae, digits=2), scientific=F), ols_q90_mae)` |
 
 For houses ***below*** 90% of others
 
 |       Model |          Data |                                                                                RMSE |                                                                               MAE |
-|-----------------:|-----------------:|-----------------:|-----------------:|
+|------------:|--------------:|------------------------------------------------------------------------------------:|----------------------------------------------------------------------------------:|
 |        OLS: | 10th-Quantile |                             `r format(round(ols_q10_rmse, digits=2), scientific=F)` |                            `r format(round(ols_q10_mae, digits=2), scientific=F)` |
 | QR-tau=0.1: | 10th-Quantile | `r emphSmaller(format(round(qr10_q10_rmse, digits=2), scientific=F), ols_q10_rmse)` | `r emphSmaller(format(round(qr10_q10_mae, digits=2), scientific=F), ols_q10_mae)` |
 :::
