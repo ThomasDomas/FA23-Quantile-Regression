@@ -236,14 +236,14 @@ For ***All*** houses
 For houses ***above*** 90% of others
 
 |       Model |          Data |                                                                               MAE |
-|------------:|--------------:|----------------------------------------------------------------------------------:|
+|------------:|------------:|----------------------------------------------:|
 |        OLS: | 90th-Quantile |                            `r format(round(ols_q90_mae, digits=2), scientific=F)` |
 | QR-tau=0.9: | 90th-Quantile | `r emphSmaller(format(round(qr90_q90_mae, digits=2), scientific=F), ols_q90_mae)` |
 
 For houses ***below*** 90% of others
 
 |       Model |          Data |                                                                               MAE |
-|------------:|--------------:|----------------------------------------------------------------------------------:|
+|------------:|------------:|----------------------------------------------:|
 |        OLS: | 10th-Quantile |                            `r format(round(ols_q10_mae, digits=2), scientific=F)` |
 | QR-tau=0.1: | 10th-Quantile | `r emphSmaller(format(round(qr10_q10_mae, digits=2), scientific=F), ols_q10_mae)` |
 
@@ -288,14 +288,14 @@ For ***All*** houses
 For houses ***above*** 90% of others
 
 |       Model |          Data |                                                                                RMSE |
-|------------:|--------------:|------------------------------------------------------------------------------------:|
+|------------:|------------:|----------------------------------------------:|
 |        OLS: | 90th-Quantile |                             `r format(round(ols_q90_rmse, digits=2), scientific=F)` |
 | QR-tau=0.9: | 90th-Quantile | `r emphSmaller(format(round(qr90_q90_rmse, digits=2), scientific=F), ols_q90_rmse)` |
 
 For houses ***below*** 90% of others
 
 |       Model |          Data |                                                                                RMSE |
-|------------:|--------------:|------------------------------------------------------------------------------------:|
+|------------:|------------:|----------------------------------------------:|
 |        OLS: | 10th-Quantile |                             `r format(round(ols_q10_rmse, digits=2), scientific=F)` |
 | QR-tau=0.1: | 10th-Quantile | `r emphSmaller(format(round(qr10_q10_rmse, digits=2), scientific=F), ols_q10_rmse)` |
 
@@ -308,6 +308,23 @@ And when comparing Quantile regression (QR) for tau = 0.9 and 0.1 with OLS for t
 ### Variance of error
 
 ```{r 'Variance of error', warning=FALSE}
+
+##########################################################
+# Calculating residuals/errors
+##########################################################
+# ols residuals for all quantiles predictions
+ols_r <- ols_summary$residuals
+# QR-tau=0.5 residuals for all quantiles predictions
+qr50_r <- qr50_summary$residuals
+# ols residuals for 90th quantile predictions
+ols_q90_r <- (ols_q90_predictions - Q90SalePrice$SalePrice) * -1
+# QR-tau=0.9 residuals for 90th quantile predictions
+qr90_q90_r <- (qr90_q90_predictions - Q90SalePrice$SalePrice) * -1
+# ols residuals for 10th quantile predictions
+ols_q10_r <- (ols_q10_predictions - Q10SalePrice$SalePrice) * -1
+# QR-tau=0.1 residuals for 10th quantile predictions
+qr10_q10_r <- (qr10_q10_predictions - Q10SalePrice$SalePrice) * -1
+
 ols_var <- ols_summary$df[2]
 qr_var <- qr50_summary$rdf
 ```
@@ -325,8 +342,6 @@ Both have the same variance of error.
 # When predicting the whole data
 ##########################################################
 
-# ols residuals for all quantiles predictions
-ols_r <- ols_summary$residuals
 # Min OLS error
 ols_r_min <- format(round(min(ols_r), digits=0), scientific=F)
 # Absolute min OLS error
@@ -338,8 +353,6 @@ ols_r_max_abs <- format(round(max(abs(ols_r)), digits=0), scientific=F)
 # Avg QR OLS error
 ols_r_mean_abs <- format(round(mean(abs(ols_r)), digits=0), scientific=F)
 
-# QR-tau=0.5 residuals for all quantiles predictions
-qr50_r <- qr50_summary$residuals
 # Min QR 50th error
 qr50_r_min <- format(round(min(qr50_r), digits=0), scientific=F)
 # Absolute min QR 50th error
@@ -355,8 +368,6 @@ qr50_r_mean_abs <- format(round(mean(abs(qr50_r)), digits=0), scientific=F)
 # When predicting the top 10% of data (90th quantile)
 ##########################################################
 
-# ols residuals for 90th quantile predictions
-ols_q90_r <- (ols_q90_predictions - Q90SalePrice$SalePrice) * -1
 # Avg OLS error
 ols_q90_r_abs_avg <- format(round(mean(abs(ols_q90_r)), digits=0), scientific=F)
 # Min OLS error
@@ -368,8 +379,6 @@ ols_q90_r_max <- format(round(max(ols_q90_r), digits=0), scientific=F)
 # Absolute max OLS error
 ols_q90_r_max_abs <- format(round(max(abs(ols_q90_r)), digits=0), scientific=F)
 
-# QR-tau=0.9 residuals for 90th quantile predictions
-qr90_q90_r <- (qr90_q90_predictions - Q90SalePrice$SalePrice) * -1
 # Avg QR 90th error
 qr90_q90_r_abs_avg <- format(round(mean(abs(qr90_q90_r)), digits=0), scientific=F)
 # Min QR 90th error
@@ -385,8 +394,6 @@ qr90_q90_r_max_abs <- format(round(max(abs(qr90_q90_r)), digits=0), scientific=F
 # When predicting the lowest 10% of data (10th quantile)
 ##########################################################
 
-# ols residuals for 10th quantile predictions
-ols_q10_r <- (ols_q10_predictions - Q10SalePrice$SalePrice) * -1
 # Avg OLS error
 ols_q10_r_abs_avg <- format(round(mean(abs(ols_q10_r)), digits=0), scientific=F)
 # Min OLS error
@@ -398,8 +405,6 @@ ols_q10_r_max <- format(round(max(ols_q10_r), digits=0), scientific=F)
 # Absolute max OLS error
 ols_q10_r_max_abs <- format(round(max(abs(ols_q10_r)), digits=0), scientific=F)
 
-# QR-tau=0.1 residuals for 10th quantile predictions
-qr10_q10_r <- (qr10_q10_predictions - Q10SalePrice$SalePrice) * -1
 # Avg QR 10th error
 qr10_q10_r_abs_avg <- format(round(mean(abs(qr10_q10_r)), digits=0), scientific=F)
 # Min QR 10th error
@@ -415,14 +420,14 @@ qr10_q10_r_max_abs <- format(round(max(abs(qr10_q10_r)), digits=0), scientific=F
 When predicting the ***whole*** data
 
 |      Model | Data |                                             Mean |                                    Min |                                        Abs Min |                                    Max |                                        Abs Max |
-|-----------:|-----:|-------------------------------------------------:|---------------------------------------:|-----------------------------------------------:|---------------------------------------:|-----------------------------------------------:|
+|----------:|----------:|----------:|----------:|----------:|----------:|----------:|
 |        OLS |  All |                               `r ols_r_mean_abs` |                          `r ols_r_min` |                              `r ols_r_min_abs` |                          `r ols_r_max` |                              `r ols_r_max_abs` |
 | QR-tau=0.5 |  All | `r emphSmaller(qr50_r_mean_abs, ols_r_mean_abs)` | `r emphSmaller(qr50_r_min, ols_r_min)` | `r emphSmaller(qr50_r_min_abs, ols_r_min_abs)` | `r emphSmaller(qr50_r_max, ols_r_max)` | `r emphSmaller(qr50_r_max_abs, ols_r_max_abs)` |
 
 When predicting ***focused*** data
 
 |      Model |          Data |                                                   Mean |                                            Min |                                                Abs Min |                                            Max |                                                Abs Max |
-|-----------:|--------------:|-------------------------------------------------------:|-----------------------------------------------:|-------------------------------------------------------:|-----------------------------------------------:|-------------------------------------------------------:|
+|----------:|----------:|----------:|----------:|----------:|----------:|----------:|
 |        OLS | 10th Quantile |                                  `r ols_q10_r_abs_avg` |                              `r ols_q10_r_min` |                                  `r ols_q10_r_min_abs` |                              `r ols_q10_r_max` |                                  `r ols_q10_r_max_abs` |
 | QR-tau=0.1 | 10th Quantile | `r emphSmaller(qr10_q10_r_abs_avg, ols_q10_r_abs_avg)` | `r emphSmaller(qr10_q10_r_min, ols_q10_r_min)` | `r emphSmaller(qr10_q10_r_min_abs, ols_q10_r_min_abs)` | `r emphSmaller(qr10_q10_r_max, ols_q10_r_max)` | `r emphSmaller(qr10_q10_r_max_abs, ols_q10_r_max_abs)` |
 |        OLS | 90th Quantile |                                  `r ols_q90_r_abs_avg` |                              `r ols_q90_r_min` |                                  `r ols_q90_r_min_abs` |                              `r ols_q90_r_max` |                                  `r ols_q90_r_max_abs` |
@@ -503,7 +508,7 @@ anova_ols_lotshape <- anova(ols, lm(data=df, eq_no_lotshape))
 Alpha=0.01
 
 |    Quantile |                   foundation p-value |                              significant? |                  lot shape p-value |                            significant? |
-|------------:|-------------------------------------:|------------------------------------------:|-----------------------------------:|----------------------------------------:|
+|--------------:|--------------:|--------------:|--------------:|--------------:|
 | QR-tau=0.15 |                  `r foundation_15_p` |                  `r foundation_15_p<0.01` |                  `r lotshape_15_p` |                  `r lotshape_15_p<0.01` |
 | QR-tau=0.25 |                  `r foundation_25_p` |                  `r foundation_25_p<0.01` |                  `r lotshape_25_p` |                  `r lotshape_25_p<0.01` |
 | QR-tau=0.50 |                  `r foundation_50_p` |                  `r foundation_50_p<0.01` |                  `r lotshape_50_p` |                  `r lotshape_50_p<0.01` |
@@ -528,7 +533,7 @@ ols_pvalues <- ols_summary$coefficients[,4]
 ```
 
 |       Model |            GrLivArea p-value |                      significant? |            TotRmsAbvGrd p-value |                         significant? |            LotArea p-value |                    significant? |
-|------------:|-----------------------------:|----------------------------------:|--------------------------------:|-------------------------------------:|---------------------------:|--------------------------------:|
+|----------:|----------:|----------:|----------:|----------:|----------:|----------:|
 | QR-tau=0.15 |               `r q10_sig[2]` |               `r q10_sig[2]<0.01` |                  `r q10_sig[4]` |                  `r q10_sig[4]<0.01` |             `r q10_sig[3]` |             `r q10_sig[3]<0.01` |
 | QR-tau=0.25 |               `r q25_sig[2]` |               `r q25_sig[2]<0.01` |                  `r q25_sig[4]` |                  `r q25_sig[4]<0.01` |             `r q25_sig[3]` |             `r q25_sig[3]<0.01` |
 | QR-tau=0.50 |               `r q50_sig[2]` |               `r q50_sig[2]<0.01` |                  `r q50_sig[4]` |                  `r q50_sig[4]<0.01` |             `r q50_sig[3]` |             `r q50_sig[3]<0.01` |

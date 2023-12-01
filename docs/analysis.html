@@ -5205,9 +5205,9 @@ vertical-align: -.125em;
 <p>For houses <strong><em>above</em></strong> 90% of others</p>
 <table class="table">
 <colgroup>
-<col style="width: 11%">
-<col style="width: 13%">
-<col style="width: 74%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 64%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -5232,9 +5232,9 @@ vertical-align: -.125em;
 <p>For houses <strong><em>below</em></strong> 90% of others</p>
 <table class="table">
 <colgroup>
-<col style="width: 11%">
-<col style="width: 13%">
-<col style="width: 74%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 64%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -5320,9 +5320,9 @@ vertical-align: -.125em;
 <p>For houses <strong><em>above</em></strong> 90% of others</p>
 <table class="table">
 <colgroup>
-<col style="width: 11%">
-<col style="width: 13%">
-<col style="width: 75%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 64%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -5347,9 +5347,9 @@ vertical-align: -.125em;
 <p>For houses <strong><em>below</em></strong> 90% of others</p>
 <table class="table">
 <colgroup>
-<col style="width: 11%">
-<col style="width: 13%">
-<col style="width: 75%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 64%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -5380,8 +5380,24 @@ vertical-align: -.125em;
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ols_var <span class="ot">&lt;-</span> ols_summary<span class="sc">$</span>df[<span class="dv">2</span>]</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>qr_var <span class="ot">&lt;-</span> qr50_summary<span class="sc">$</span>rdf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">##########################################################</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculating residuals/errors</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="do">##########################################################</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ols residuals for all quantiles predictions</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>ols_r <span class="ot">&lt;-</span> ols_summary<span class="sc">$</span>residuals</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># QR-tau=0.5 residuals for all quantiles predictions</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>qr50_r <span class="ot">&lt;-</span> qr50_summary<span class="sc">$</span>residuals</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ols residuals for 90th quantile predictions</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>ols_q90_r <span class="ot">&lt;-</span> (ols_q90_predictions <span class="sc">-</span> Q90SalePrice<span class="sc">$</span>SalePrice) <span class="sc">*</span> <span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co"># QR-tau=0.9 residuals for 90th quantile predictions</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>qr90_q90_r <span class="ot">&lt;-</span> (qr90_q90_predictions <span class="sc">-</span> Q90SalePrice<span class="sc">$</span>SalePrice) <span class="sc">*</span> <span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co"># ols residuals for 10th quantile predictions</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>ols_q10_r <span class="ot">&lt;-</span> (ols_q10_predictions <span class="sc">-</span> Q10SalePrice<span class="sc">$</span>SalePrice) <span class="sc">*</span> <span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co"># QR-tau=0.1 residuals for 10th quantile predictions</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>qr10_q10_r <span class="ot">&lt;-</span> (qr10_q10_predictions <span class="sc">-</span> Q10SalePrice<span class="sc">$</span>SalePrice) <span class="sc">*</span> <span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>ols_var <span class="ot">&lt;-</span> ols_summary<span class="sc">$</span>df[<span class="dv">2</span>]</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>qr_var <span class="ot">&lt;-</span> qr50_summary<span class="sc">$</span>rdf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>The variance of error for OLS: 1448.</p>
@@ -5397,103 +5413,91 @@ vertical-align: -.125em;
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># When predicting the whole data</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="do">##########################################################</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ols residuals for all quantiles predictions</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>ols_r <span class="ot">&lt;-</span> ols_summary<span class="sc">$</span>residuals</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Min OLS error</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>ols_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(ols_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min OLS error</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>ols_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(ols_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Max OLS error</span></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>ols_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(ols_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max OLS error</span></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>ols_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(ols_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg QR OLS error</span></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>ols_r_mean_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(ols_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="co"># QR-tau=0.5 residuals for all quantiles predictions</span></span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>qr50_r <span class="ot">&lt;-</span> qr50_summary<span class="sc">$</span>residuals</span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Min QR 50th error</span></span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>qr50_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(qr50_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min QR 50th error</span></span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>qr50_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(qr50_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Max QR 50th error</span></span>
-<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>qr50_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(qr50_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max QR 50th error</span></span>
-<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>qr50_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(qr50_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg QR 50th error</span></span>
-<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>qr50_r_mean_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(qr50_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Min OLS error</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>ols_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(ols_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min OLS error</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>ols_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(ols_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Max OLS error</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>ols_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(ols_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max OLS error</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>ols_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(ols_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg QR OLS error</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>ols_r_mean_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(ols_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Min QR 50th error</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>qr50_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(qr50_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min QR 50th error</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>qr50_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(qr50_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Max QR 50th error</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>qr50_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(qr50_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max QR 50th error</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>qr50_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(qr50_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg QR 50th error</span></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>qr50_r_mean_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(qr50_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a><span class="do">##########################################################</span></span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a><span class="co"># When predicting the top 10% of data (90th quantile)</span></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a><span class="do">##########################################################</span></span>
 <span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a><span class="do">##########################################################</span></span>
-<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a><span class="co"># When predicting the top 10% of data (90th quantile)</span></span>
-<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a><span class="do">##########################################################</span></span>
-<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a><span class="co"># ols residuals for 90th quantile predictions</span></span>
-<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>ols_q90_r <span class="ot">&lt;-</span> (ols_q90_predictions <span class="sc">-</span> Q90SalePrice<span class="sc">$</span>SalePrice) <span class="sc">*</span> <span class="sc">-</span><span class="dv">1</span></span>
-<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg OLS error</span></span>
-<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>ols_q90_r_abs_avg <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(ols_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Min OLS error</span></span>
-<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>ols_q90_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(ols_q90_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min OLS error</span></span>
-<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a>ols_q90_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(ols_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Max OLS error</span></span>
-<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a>ols_q90_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(ols_q90_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max OLS error</span></span>
-<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a>ols_q90_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(ols_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a><span class="co"># QR-tau=0.9 residuals for 90th quantile predictions</span></span>
-<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a>qr90_q90_r <span class="ot">&lt;-</span> (qr90_q90_predictions <span class="sc">-</span> Q90SalePrice<span class="sc">$</span>SalePrice) <span class="sc">*</span> <span class="sc">-</span><span class="dv">1</span></span>
-<span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg QR 90th error</span></span>
-<span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a>qr90_q90_r_abs_avg <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(qr90_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Min QR 90th error</span></span>
-<span id="cb17-53"><a href="#cb17-53" aria-hidden="true" tabindex="-1"></a>qr90_q90_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(qr90_q90_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-54"><a href="#cb17-54" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min QR 90th error</span></span>
-<span id="cb17-55"><a href="#cb17-55" aria-hidden="true" tabindex="-1"></a>qr90_q90_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(qr90_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-56"><a href="#cb17-56" aria-hidden="true" tabindex="-1"></a><span class="co"># Max QR 90th error</span></span>
-<span id="cb17-57"><a href="#cb17-57" aria-hidden="true" tabindex="-1"></a>qr90_q90_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(qr90_q90_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-58"><a href="#cb17-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max QR 90th error</span></span>
-<span id="cb17-59"><a href="#cb17-59" aria-hidden="true" tabindex="-1"></a>qr90_q90_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(qr90_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-60"><a href="#cb17-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-61"><a href="#cb17-61" aria-hidden="true" tabindex="-1"></a><span class="do">##########################################################</span></span>
-<span id="cb17-62"><a href="#cb17-62" aria-hidden="true" tabindex="-1"></a><span class="co"># When predicting the lowest 10% of data (10th quantile)</span></span>
-<span id="cb17-63"><a href="#cb17-63" aria-hidden="true" tabindex="-1"></a><span class="do">##########################################################</span></span>
-<span id="cb17-64"><a href="#cb17-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-65"><a href="#cb17-65" aria-hidden="true" tabindex="-1"></a><span class="co"># ols residuals for 10th quantile predictions</span></span>
-<span id="cb17-66"><a href="#cb17-66" aria-hidden="true" tabindex="-1"></a>ols_q10_r <span class="ot">&lt;-</span> (ols_q10_predictions <span class="sc">-</span> Q10SalePrice<span class="sc">$</span>SalePrice) <span class="sc">*</span> <span class="sc">-</span><span class="dv">1</span></span>
-<span id="cb17-67"><a href="#cb17-67" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg OLS error</span></span>
-<span id="cb17-68"><a href="#cb17-68" aria-hidden="true" tabindex="-1"></a>ols_q10_r_abs_avg <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(ols_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-69"><a href="#cb17-69" aria-hidden="true" tabindex="-1"></a><span class="co"># Min OLS error</span></span>
-<span id="cb17-70"><a href="#cb17-70" aria-hidden="true" tabindex="-1"></a>ols_q10_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(ols_q10_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-71"><a href="#cb17-71" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min OLS error</span></span>
-<span id="cb17-72"><a href="#cb17-72" aria-hidden="true" tabindex="-1"></a>ols_q10_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(ols_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-73"><a href="#cb17-73" aria-hidden="true" tabindex="-1"></a><span class="co"># Max OLS error</span></span>
-<span id="cb17-74"><a href="#cb17-74" aria-hidden="true" tabindex="-1"></a>ols_q10_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(ols_q10_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-75"><a href="#cb17-75" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max OLS error</span></span>
-<span id="cb17-76"><a href="#cb17-76" aria-hidden="true" tabindex="-1"></a>ols_q10_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(ols_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-77"><a href="#cb17-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-78"><a href="#cb17-78" aria-hidden="true" tabindex="-1"></a><span class="co"># QR-tau=0.1 residuals for 10th quantile predictions</span></span>
-<span id="cb17-79"><a href="#cb17-79" aria-hidden="true" tabindex="-1"></a>qr10_q10_r <span class="ot">&lt;-</span> (qr10_q10_predictions <span class="sc">-</span> Q10SalePrice<span class="sc">$</span>SalePrice) <span class="sc">*</span> <span class="sc">-</span><span class="dv">1</span></span>
-<span id="cb17-80"><a href="#cb17-80" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg QR 10th error</span></span>
-<span id="cb17-81"><a href="#cb17-81" aria-hidden="true" tabindex="-1"></a>qr10_q10_r_abs_avg <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(qr10_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-82"><a href="#cb17-82" aria-hidden="true" tabindex="-1"></a><span class="co"># Min QR 10th error</span></span>
-<span id="cb17-83"><a href="#cb17-83" aria-hidden="true" tabindex="-1"></a>qr10_q10_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(qr10_q10_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-84"><a href="#cb17-84" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min QR 10th error</span></span>
-<span id="cb17-85"><a href="#cb17-85" aria-hidden="true" tabindex="-1"></a>qr10_q10_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(qr10_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-86"><a href="#cb17-86" aria-hidden="true" tabindex="-1"></a><span class="co"># Max QR 10th error</span></span>
-<span id="cb17-87"><a href="#cb17-87" aria-hidden="true" tabindex="-1"></a>qr10_q10_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(qr10_q10_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
-<span id="cb17-88"><a href="#cb17-88" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max QR 10th error</span></span>
-<span id="cb17-89"><a href="#cb17-89" aria-hidden="true" tabindex="-1"></a>qr10_q10_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(qr10_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg OLS error</span></span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>ols_q90_r_abs_avg <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(ols_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Min OLS error</span></span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>ols_q90_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(ols_q90_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min OLS error</span></span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>ols_q90_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(ols_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Max OLS error</span></span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>ols_q90_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(ols_q90_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max OLS error</span></span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>ols_q90_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(ols_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg QR 90th error</span></span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a>qr90_q90_r_abs_avg <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(qr90_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Min QR 90th error</span></span>
+<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a>qr90_q90_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(qr90_q90_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min QR 90th error</span></span>
+<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a>qr90_q90_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(qr90_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Max QR 90th error</span></span>
+<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a>qr90_q90_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(qr90_q90_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max QR 90th error</span></span>
+<span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a>qr90_q90_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(qr90_q90_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-53"><a href="#cb17-53" aria-hidden="true" tabindex="-1"></a><span class="do">##########################################################</span></span>
+<span id="cb17-54"><a href="#cb17-54" aria-hidden="true" tabindex="-1"></a><span class="co"># When predicting the lowest 10% of data (10th quantile)</span></span>
+<span id="cb17-55"><a href="#cb17-55" aria-hidden="true" tabindex="-1"></a><span class="do">##########################################################</span></span>
+<span id="cb17-56"><a href="#cb17-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-57"><a href="#cb17-57" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg OLS error</span></span>
+<span id="cb17-58"><a href="#cb17-58" aria-hidden="true" tabindex="-1"></a>ols_q10_r_abs_avg <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(ols_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-59"><a href="#cb17-59" aria-hidden="true" tabindex="-1"></a><span class="co"># Min OLS error</span></span>
+<span id="cb17-60"><a href="#cb17-60" aria-hidden="true" tabindex="-1"></a>ols_q10_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(ols_q10_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-61"><a href="#cb17-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min OLS error</span></span>
+<span id="cb17-62"><a href="#cb17-62" aria-hidden="true" tabindex="-1"></a>ols_q10_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(ols_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-63"><a href="#cb17-63" aria-hidden="true" tabindex="-1"></a><span class="co"># Max OLS error</span></span>
+<span id="cb17-64"><a href="#cb17-64" aria-hidden="true" tabindex="-1"></a>ols_q10_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(ols_q10_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-65"><a href="#cb17-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max OLS error</span></span>
+<span id="cb17-66"><a href="#cb17-66" aria-hidden="true" tabindex="-1"></a>ols_q10_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(ols_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-67"><a href="#cb17-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-68"><a href="#cb17-68" aria-hidden="true" tabindex="-1"></a><span class="co"># Avg QR 10th error</span></span>
+<span id="cb17-69"><a href="#cb17-69" aria-hidden="true" tabindex="-1"></a>qr10_q10_r_abs_avg <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(qr10_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-70"><a href="#cb17-70" aria-hidden="true" tabindex="-1"></a><span class="co"># Min QR 10th error</span></span>
+<span id="cb17-71"><a href="#cb17-71" aria-hidden="true" tabindex="-1"></a>qr10_q10_r_min <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(qr10_q10_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-72"><a href="#cb17-72" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute min QR 10th error</span></span>
+<span id="cb17-73"><a href="#cb17-73" aria-hidden="true" tabindex="-1"></a>qr10_q10_r_min_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">min</span>(<span class="fu">abs</span>(qr10_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-74"><a href="#cb17-74" aria-hidden="true" tabindex="-1"></a><span class="co"># Max QR 10th error</span></span>
+<span id="cb17-75"><a href="#cb17-75" aria-hidden="true" tabindex="-1"></a>qr10_q10_r_max <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(qr10_q10_r), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span>
+<span id="cb17-76"><a href="#cb17-76" aria-hidden="true" tabindex="-1"></a><span class="co"># Absolute max QR 10th error</span></span>
+<span id="cb17-77"><a href="#cb17-77" aria-hidden="true" tabindex="-1"></a>qr10_q10_r_max_abs <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">max</span>(<span class="fu">abs</span>(qr10_q10_r)), <span class="at">digits=</span><span class="dv">0</span>), <span class="at">scientific=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>When predicting the <strong><em>whole</em></strong> data</p>
 <table class="table">
 <colgroup>
-<col style="width: 4%">
-<col style="width: 2%">
-<col style="width: 20%">
-<col style="width: 16%">
-<col style="width: 19%">
-<col style="width: 16%">
-<col style="width: 19%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -5530,13 +5534,13 @@ vertical-align: -.125em;
 <p>When predicting <strong><em>focused</em></strong> data</p>
 <table class="table">
 <colgroup>
-<col style="width: 4%">
-<col style="width: 5%">
-<col style="width: 19%">
-<col style="width: 16%">
-<col style="width: 19%">
-<col style="width: 16%">
-<col style="width: 19%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -5665,11 +5669,11 @@ vertical-align: -.125em;
 <p>Alpha=0.01</p>
 <table class="table">
 <colgroup>
-<col style="width: 7%">
-<col style="width: 22%">
-<col style="width: 25%">
-<col style="width: 21%">
-<col style="width: 23%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -5745,13 +5749,13 @@ vertical-align: -.125em;
 </div>
 <table class="table">
 <colgroup>
-<col style="width: 6%">
 <col style="width: 14%">
-<col style="width: 16%">
-<col style="width: 15%">
-<col style="width: 18%">
-<col style="width: 13%">
-<col style="width: 15%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
 </colgroup>
 <thead>
 <tr class="header">
