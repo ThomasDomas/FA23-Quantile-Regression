@@ -225,7 +225,6 @@ qr10_q10_predictions <- predict(qr10_m, newdata=Q10SalePrice)
 qr10_q10_mae <- mae(qr10_q10_predictions, Q10SalePrice$SalePrice)
 ```
 
-
 For ***All*** houses
 
 | Model       | Data |                                                MAE |
@@ -252,7 +251,6 @@ For houses ***below*** 90% of others
 
 When predicting the whole dataset, OLS MAE: `r format(round(olsMae, digits=2), scientific=F)`, and QR 50th MAE: `r format(round(Qr50Mae, digits=2), scientific=F)` are almost the same, with a slight improvement with quantile regression.
 
-
 However when comparing Quantile regression (QR) for tau = 0.90 with OLS while predicting the top 10% priced houses when sorted by sales amount, and also when comparing QR with tau = 0.1 when prediction the lowest 10% priced houses, we can see that QR has much more accurate (lower error value) predictions because it is using a specialized model for the specific quantile of data it is predicting.
 
 ### Root mean squared error
@@ -278,7 +276,6 @@ ols_q10_rmse <- rmse(ols_q10_predictions, Q10SalePrice$SalePrice)
 # QR-tau=0.1 RMSE when predicting the bottom 10% priced houses
 qr10_q10_rmse <- rmse(qr10_q10_predictions, Q10SalePrice$SalePrice)
 ```
-
 
 For ***All*** houses
 
@@ -433,70 +430,9 @@ When predicting ***focused*** data
 
 **Note**: underlined Quantile regression values are smaller (better).
 
-#### OLS
+In the first table for predictions for the whole data, we can see that OLS and quantile regression have similar error metrics, with OLS having better min max values but that is because it cares a lot more to outliers therefore making these metrics better.
 
-Min OLS error: `r format(round(min(ols_r), digits=0), scientific=F)`.
-
-Absolute min OLS error: `r format(round(min(abs(ols_r)), digits=0), scientific=F)`.
-
-Max OLS error: `r format(round(max(ols_r), digits=0), scientific=F)`.
-
-Absolute max OLS error: `r format(round(max(abs(ols_r)), digits=0), scientific=F)`.
-
-mean OLS error: `r format(round(mean(abs(ols_r)), digits=0), scientific=F)`.
-
-#### QR
-
-##### QR tau = 0.5
-
-Min QR 50th error: `r format(round(min(qr50_r), digits=0), scientific=F)`.
-
-Absolute min QR 50th error: `r format(round(min(abs(qr50_r)), digits=0), scientific=F)`.
-
-Max QR 50th error: `r format(round(max(qr50_r), digits=0), scientific=F)`.
-
-Absolute max QR 50th error: `r format(round(max(abs(qr50_r)), digits=0), scientific=F)`.
-
-mean QR 50th error: `r format(round(mean(abs(qr50_r)), digits=0), scientific=F)`.
-
-##### QR tau = 0.9
-
-When predicting the 90th quantile:
-
-The average error for OLS predictions is: `r ols_q90_r_abs_avg`, while the average error for QR with tau = 0.9 predictions is: `r qr90_q90_r_abs_avg`.
-
-The minimum error for OLS predictions is: `r ols_q90_r_min`, while the minimum error for QR with tau = 0.9 predictions is: `r qr90_q90_r_min`.
-
-The absolute minimum error for OLS predictions is: `r ols_q90_r_min_abs`, while the absolute minimum error for QR with tau = 0.9 predictions is: `r qr90_q90_r_min_abs`.
-
-The maximum error for OLS predictions is: `r ols_q90_r_max`, while the maximum error for QR with tau = 0.9 predictions is: `r qr90_q90_r_max`.
-
-The absolute maximum error for OLS predictions is: `r ols_q90_r_max_abs`, while the absolute maximum error for QR with tau = 0.9 predictions is: `r qr90_q90_r_max_abs`.
-
-##### QR tau = 0.1
-
-When predicting the 10th quantile:
-
-The average error for OLS predictions is: `r ols_q10_r_abs_avg`, while the average error for QR with tau = 0.1 predictions is: `r qr10_q10_r_abs_avg`.
-
-The minimum error for OLS predictions is: `r ols_q10_r_min`, while the minimum error for QR with tau = 0.1 predictions is: `r qr10_q10_r_min`.
-
-The absolute minimum error for OLS predictions is: `r ols_q10_r_min_abs`, while the absolute minimum error for QR with tau = 0.1 predictions is: `r qr10_q10_r_min_abs`.
-
-The maximum error for OLS predictions is: `r ols_q10_r_max`, while the maximum error for QR with tau = 0.1 predictions is: `r qr10_q10_r_max`.
-
-The absolute maximum error for OLS predictions is: `r ols_q10_r_max_abs`, while the absolute maximum error for QR with tau = 0.1 predictions is: `r qr10_q10_r_max_abs`.
-
-#### Min/Max Summary table:
-
-|      Model |          Data |                   Mean |                Min |                Abs Min |                Max |                Abs Max |
-|-----------:|--------------:|-----------------------:|-------------------:|-----------------------:|-------------------:|-----------------------:|
-|        OLS |           All |     `r ols_r_mean_abs` |      `r ols_r_min` |      `r ols_r_min_abs` |      `r ols_r_max` |      `r ols_r_max_abs` |
-| QR-tau=0.5 |           All |    `r qr50_r_mean_abs` |     `r qr50_r_min` |     `r qr50_r_min_abs` |     `r qr50_r_max` |     `r qr50_r_max_abs` |
-|        OLS | 10th Quantile |  `r ols_q10_r_abs_avg` |  `r ols_q10_r_min` |  `r ols_q10_r_min_abs` |  `r ols_q10_r_max` |  `r ols_q10_r_max_abs` |
-| QR-tau=0.1 | 10th Quantile | `r qr10_q10_r_abs_avg` | `r qr10_q10_r_min` | `r qr10_q10_r_min_abs` | `r qr10_q10_r_max` | `r qr10_q10_r_max_abs` |
-|        OLS | 90th Quantile |  `r ols_q90_r_abs_avg` |  `r ols_q90_r_min` |  `r ols_q90_r_min_abs` |  `r ols_q90_r_max` |  `r ols_q90_r_max_abs` |
-| QR-tau=0.9 | 90th Quantile | `r qr90_q90_r_abs_avg` | `r qr90_q90_r_min` | `r qr90_q90_r_min_abs` | `r qr90_q90_r_max` | `r qr90_q90_r_max_abs` |
+However, if we look at the second table for results for predicting the top and bottom 10% of the data, we can see that the specialized quantile regression has better min max error values and are more accurate and consistent across the board. The QR with tau = 0.1 is better than OLS when predicting the bottom 10% priced houses, and the QR with tau = 0.9 is better than OLS when predicting the top 10% priced houses. The top 10% priced houses comparison minimum error is won by OLS but that could be due to a very far outlier and OLS caring about it more, or that it is affected by a variable that we're not evaluating in this study.
 
 ## Tests for significant variables
 
@@ -600,4 +536,8 @@ ols_pvalues <- ols_summary$coefficients[,4]
 | QR-tau=0.90 |               `r q90_sig[2]` |               `r q90_sig[2]<0.01` |                  `r q90_sig[4]` |                  `r q90_sig[4]<0.01` |             `r q90_sig[3]` |             `r q90_sig[3]<0.01` |
 |         OLS | `r ols_pvalues["GrLivArea"]` | `r ols_pvalues["GrLivArea"]<0.01` | `r ols_pvalues["TotRmsAbvGrd"]` | `r ols_pvalues["TotRmsAbvGrd"]<0.01` | `r ols_pvalues["LotArea"]` | `r ols_pvalues["LotArea"]<0.01` |
 
-As demonstrated in the previous 2 tables, p-value of each variable changes with the changing the quantile regressions' quantile. It can even switch from significant to non-significant. That is the case with lot shape in the 0.95th quantile. It was significant in all previous quantiles except in the 95th quantile. The same case is for number of the total rooms Gross living. It was significant across all quantiles but is insignificant for the 90th quantile On the other hand OLS assumes that the significance is constant throughout the whole data set.
+As demonstrated in the previous 2 tables when illustrating both the categorical and the continuous variables, the p-value of each variable changes with the changing of the quantile regressions' quantile. It can even switch from significant to non-significant. That is the case with lot shape in the 0.95th quantile. It was significant in all previous quantiles except 4in the 95th quantile. The same goes for the number of the total rooms Gross living. It was significant across all quantiles but is insignificant for the 90th quantile. On the other hand, OLS assumes that the significance is constant throughout the whole data set, and is unable to capture or understand this variance.
+
+## Summary
+
+To put our results into real world perspective, we have to take a step back and look at the bigger picture. In our example people normally when buying a house won't be looking across all the house price range, but they would probably only focus on a specific range of house prices, whether it be expensive, cheap, or moderate. So, this is when quantile regression shines as it is a lot better than regular mean dependent models like OLS in predicting a specialized/focused dataset that doesn't represent the whole population distribution. One more thing is that as demonstrated in our study, real world datasets are not normalized, and are not free from outliers, therefore when using OLS, it will suffer a lot from handling these types of data while quantile regression should be able to handle it in a much better way, providing more accurate results.
