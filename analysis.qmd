@@ -3,6 +3,7 @@
 In this analysis we aim to show that QR can achieve similar--- if not better--- performance to OLS across various metrics. OLS and QR are very different modeling techniques, and, as such, it is difficult to compare them. However, given that OLS estimates the mean value of the response variable for a given input vector and QR estimates the nth quantile of the response variable for a given input vector, the 50th quantile QR (QR50)--- which corresponds to the median--- can be used as a comparison to OLS as both the median and mean are measures of centrality. The limitation of this analysis is that the data set does not meet the assumptions of OLS. Specifically, the data is heavily skewed and the conditional distributions are also skewed, meaning median of the conditional distribution is a better proxy for the centrality of the distribution. The power of QR is that it is able to produce similar results to OLS regression without having to meet the strict assumptions of OLS. Regardless of the fact the OLS regressions are statistically invalid, it is still going to minimizee the square deviations of the residuals from the regression curve, which often results much higher scores across popular metrics than other modeling techniques, and will thus serve as a proper benchmark to test the mettle of QR in a data set that is beyond the capabilities of OLS regression.
 
 ```{r, echo=FALSE, include=FALSE}
+library(dplyr)
 library(quantreg)
 library(Metrics)
 require(gridExtra)
@@ -52,7 +53,105 @@ grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, nrow = 2)
 })
 ```
 
-Thus, the data fails to meet the assumptions of OLS, requiring the usage of a more flexible model like QR.
+This data fails to meet the assumptions of OLS, requiring the usage of quantile regression, if one seeks to interpret the betas of regression.
+
+### Assumptions of quantile regression vs OLS
+
+The main difference in the assumptions between quantile regression and OLS is that OLS assumes homoskedasticity and normally distributed errors. Quantile regression only assumes that the quantiles of the conditional distribution are linear and well defined.
+
+```{r warning=FALSE}
+"%||%" <- function(a, b) {
+  if (!is.null(a)) a else b
+}
+
+geom_flat_violin <- function(mapping = NULL, data = NULL, stat = "ydensity",
+                        position = "dodge", trim = TRUE, scale = "area",
+                        show.legend = NA, inherit.aes = TRUE, ...) {
+  layer(
+    data = data,
+    mapping = mapping,
+    stat = stat,
+    geom = GeomFlatViolin,
+    position = position,
+    show.legend = show.legend,
+    inherit.aes = inherit.aes,
+    params = list(
+      trim = trim,
+      scale = scale,
+      ...
+    )
+  )
+}
+
+GeomFlatViolin <-
+  ggproto("GeomFlatViolin", Geom,
+          setup_data = function(data, params) {
+            data$width <- data$width %||%
+              params$width %||% (resolution(data$x, FALSE) * 0.9)
+
+            # ymin, ymax, xmin, and xmax define the bounding rectangle for each group
+            data |>
+              group_by(group) |>
+              mutate(ymin = min(y),
+                     ymax = max(y),
+                     xmin = x - width / 2,
+                     xmax = x)
+          },
+
+          draw_group = function(data, panel_scales, coord) {
+            # Find the points for the line to go all the way around
+            data <- transform(data, 
+                              xmaxv = x,
+                              xminv = x + violinwidth * (xmin - x))
+
+            # Make sure it's sorted properly to draw the outline
+            newdata <- rbind(plyr::arrange(transform(data, x = xminv), y),
+                             plyr::arrange(transform(data, x = xmaxv), -y))
+
+            # Close the polygon: set first and last point the same
+            # Needed for coord_polar and such
+            newdata <- rbind(newdata, newdata[1,])
+
+            ggplot2:::ggname("geom_flat_violin", GeomPolygon$draw_panel(newdata, panel_scales, coord))
+          },
+
+          draw_key = draw_key_polygon,
+
+          default_aes = aes(weight = 1, colour = "grey20", fill = "white", size = 0.5,
+                            alpha = NA, linetype = "solid"),
+
+          required_aes = c("x", "y")
+)
+
+# Define the number of bins and discretion the predictor variable 'x'
+num_bins <-5
+df$GrLivArea_bins <- cut(df$GrLivArea, breaks = num_bins, labels = FALSE)
+
+
+p1 <- df |> ggplot(aes(x = GrLivArea, y = SalePrice)) + geom_point(alpha=0.2) + geom_smooth(method=lm, color="red") +
+  theme_bw() + theme(axis.text = element_blank(), axis.ticks = element_blank()) + ylab("Sale Price ($)") + xlab("Gross Living Area (sq. ft.)")
+
+# get 75quantile line
+quantiles <- df |> aggregate(SalePrice ~ factor(GrLivArea_bins), FUN = function(x) quantile(x, probs = 0.75))
+
+p2 <- df |> ggplot(aes(x = factor(GrLivArea_bins), y = SalePrice)) +
+   geom_boxplot() + geom_flat_violin(trim=FALSE, draw_quantiles = 0.1, fill="red") +
+     theme_bw() + theme(axis.text = element_blank(), axis.ticks = element_blank()) + ylab("Sale Price ($)") + xlab("Gross Living Area (sq. ft.)") 
+
+p1
+```
+
+In the figure, the house sale prices are plotted against their gross living areas, and an OLS regression line is fit to the data. Evidently, the data exhibits heteroskedasticity, as the observations are spread out at greater ranges from the regression line as gross living area increases, thus breaking the assumption of homoskedasticity of OLS, but this is perfectly acceptable for quantile regression.
+
+In order to show that the errors are not normally distributed, the figure below is a plot of 5 distributions. The distributions are made of the data from the above scatter plot, except the gross living area has been split into 5 bins. The distributions are the distribution of sale prices for each bin.
+
+```{r}
+p2
+```
+
+The heteroskedasticity of the data can be seen above as well as the previous chart in that each successive distribution, as gross living area increases, has a greater range and more outliers. The last 2 distributions can be ignored as, when referring back to the scatterplot it is apparent that there is not enough data for these to mean anything--- the scatterplot alpha has been reduced to further illustrate the sheer density of points in the cluster on the left. Looking at the first 3 it is clear the distributions progressively spread out. Furthermore, while the first distribution is approximately normal, the 2nd and 3rd are skewed towards the more expensive homes, with many expensive outliers and 0 outliers towards the affordable side. These skewed distributions show that the **conditional distribution** of sale price is not normal at multiple levels of the predictors.
+
+The above chart is merely an empirical illustration that attempts to show what the conditional distribution might look like at various cross-sections however it is of course not the true theoretical/underlying conditional distribution. In any case, the illustration is enough to support the fact that the errors of regression will not be normally distributed. Furthermore, the boxplots overlapping the distributions are enough to support the assumption of quantile regression. Quantile regression assumes the quantiles are clearly defined and linear. We can see this is the case by noting the 75% quantile--- the upper bar of each boxplot--- of the first 3 boxplots could easily be connected by a line. This is also the case for the median and the 25% quantile. This makes the data at hand a perfect dataset for leveraging the power of quantile regression. Meeting the assumptions of a model means that the resulting regressions will be highly efficient and generate an implied conditional distribution that can be used to make predictions for yet unseen observations.
 
 ### Visualizing quantile regression vs OLS
 
@@ -545,4 +644,4 @@ As demonstrated in the previous 2 tables when illustrating both the categorical 
 
 ## Summary
 
-To put our results into real world perspective, we have to take a step back and look at the bigger picture. In our example people normally when buying a house won't be looking across all the house price range, but they would probably only focus on a specific range of house prices, whether it be expensive, cheap, or moderate. So, this is when quantile regression shines as it is a lot better than regular mean dependent models like OLS in predicting a specialized/focused dataset that doesn't represent the whole population distribution. One more thing is that as demonstrated in our study, real world datasets are not normalized, and are not free from outliers, therefore when using OLS, it will suffer a lot from handling these types of data while quantile regression should be able to handle it in a much better way, providing more accurate results.
+To put our results into real world perspective, we have to take a step back and look at the bigger picture. In our example people normally when buying a house won't be looking across all the house price range, but they would probably only focus on a specific range of house prices, whether it be expensive, cheap, or moderate. So, this is when quantile regression shines as it is a lot better than regular mean dependent models like OLS in predicting a specialized/focused dataset that doesn't represent the whole population distribution. One more thing is that as demonstrated in our study, real world datasets are not normalized, and are not free from outliers, therefore when using OLS, it will suffer a lot from handling these types of data while quantile regression should be able to handle it in a much better way, providing more accurate results. Finally, in order to make statistical conclusions and gain the ability to interpret the betas of regression, model assumptions must be met. The data used in this paper is very much like rear world data, skewed conditional distribution and non-constant variance of errors. OLS betas are highly inefficient in this type of scenario, for the highest level of statistical accuracy, a more flexible model like quantile regression must be used.
